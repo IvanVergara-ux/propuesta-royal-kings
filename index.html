@@ -494,6 +494,10 @@
   .encuadre__marco--ancho { width: 160px; height: 100px; }
   .encuadre__marco img { width: 100%; height: 100%; object-fit: cover; }
   .pestanas { margin-bottom: 16px; }
+  .sub-admin { margin: 14px 0 0; font-size: 15px; color: var(--papel); }
+  .horas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  input[type="time"] { width: 100%; padding: 11px 12px; border-radius: 10px; border: 1px solid var(--linea); background: var(--carbon); color: var(--papel); font: inherit; color-scheme: dark; }
+  input[type="date"] { color-scheme: dark; }
   .bloque-admin { padding: 16px 0; border-bottom: 1px solid var(--linea); }
   .bloque-admin h3 { margin: 0 0 6px; font-size: 17px; }
   .bloque-admin p { margin: 0 0 10px; color: var(--papel-suave); font-size: 14px; }
@@ -883,22 +887,38 @@
   const especialDe = (d) => ajustesHorario().especiales.find((e) => e.fecha === fechaISO(d));
   const abreNormalmente = (d) => HORARIO.dias.includes(d.getDay()) || esLunesFestivo(d);
   const abreEseDia = (d) => { const e = especialDe(d); return e ? e.tipo === 'abierto' : abreNormalmente(d); };
+  // Horas: se guardan como "HH:MM"; por defecto 18:00 a 23:00
+  const HORA_ABRE = '18:00', HORA_CIERRA = '23:00';
+  const aMinutos = (hhmm) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
+  const horaLegible = (hhmm) => {
+    const [h, m] = hhmm.split(':').map(Number);
+    const h12 = ((h + 11) % 12) + 1;
+    return `${h12}:${String(m).padStart(2, '0')} ${h < 12 ? 'a. m.' : 'p. m.'}`;
+  };
+  function horasDe(d) {
+    const e = especialDe(d);
+    return e?.tipo === 'abierto' && e.abre && e.cierra ? { abre: e.abre, cierra: e.cierra } : { abre: HORA_ABRE, cierra: HORA_CIERRA };
+  }
+  const rangoLegible = ({ abre, cierra }) => `${horaLegible(abre)} a ${horaLegible(cierra)}`;
   const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
   const fechaLarga = (iso) => { const [y, m, d] = iso.split('-').map(Number); const f = new Date(y, m - 1, d); return `${NOMBRES_DIA[f.getDay()]} ${d} de ${MESES[m - 1]}`; };
 
   function estadoNegocio(ahora = new Date()) {
     if (simulacion === 'abierto') return { abierto: true, texto: 'Abierto ahora · hasta las 11:00 p. m.' };
     if (simulacion === 'cerrado') return { abierto: false, texto: 'Cerrado · abrimos el jueves a las 6:00 p. m.', corto: 'el jueves a las 6:00 p. m.' };
-    const h = ahora.getHours();
-    if (abreEseDia(ahora) && h >= HORARIO.abre && h < HORARIO.cierra) return { abierto: true, texto: 'Abierto ahora · hasta las 11:00 p. m.' };
+    const min = ahora.getHours() * 60 + ahora.getMinutes();
+    const hoyHoras = horasDe(ahora);
+    if (abreEseDia(ahora) && min >= aMinutos(hoyHoras.abre) && min < aMinutos(hoyHoras.cierra)) {
+      return { abierto: true, texto: `Abierto ahora · hasta las ${horaLegible(hoyHoras.cierra)}` };
+    }
     for (let i = 0; i < 8; i++) {
       const d = new Date(ahora); d.setDate(d.getDate() + i);
       if (!abreEseDia(d)) continue;
-      if (i === 0 && h >= HORARIO.cierra) continue;
+      const horas = horasDe(d);
+      if (i === 0 && min >= aMinutos(horas.cierra)) continue;
       const cuando = i === 0 ? 'hoy' : i === 1 ? 'mañana' : i < 7 ? `el ${NOMBRES_DIA[d.getDay()]}` : `el ${fechaLarga(fechaISO(d))}`;
-      const especialHoy = especialDe(ahora);
-      return { abierto: false, texto: `Cerrado · abrimos ${cuando} a las 6:00 p. m.`, corto: `${cuando} a las 6:00 p. m.`, cuando,
-        cerradoEspecial: especialHoy?.tipo === 'cerrado' ? especialHoy : null };
+      const a = `a las ${horaLegible(horas.abre)}`;
+      return { abierto: false, texto: `Cerrado · abrimos ${cuando} ${a}`, corto: `${cuando} ${a}`, cuando, aLas: a };
     }
     return { abierto: false, texto: 'Cerrado', corto: 'pronto' };
   }
@@ -918,11 +938,11 @@
     const hoyEsp = simulacion === 'real' ? especialDe(new Date()) : null;
     if (hoyEsp?.tipo === 'cerrado') {
       avisoDia.className = 'aviso-dia aviso-dia--cerrado';
-      avisoDia.innerHTML = `<strong>Hoy no abrimos${hoyEsp.motivo ? `: ${escapar(hoyEsp.motivo)}` : ''}.</strong> Te esperamos ${escapar(e.cuando || 'pronto')} a las 6:00 p. m.`;
+      avisoDia.innerHTML = `<strong>Hoy no abrimos${hoyEsp.motivo ? `: ${escapar(hoyEsp.motivo)}` : ''}.</strong> Te esperamos ${escapar(e.corto || 'pronto')}`;
       avisoDia.hidden = false;
-    } else if (hoyEsp?.tipo === 'abierto' && !abreNormalmente(new Date())) {
+    } else if (hoyEsp?.tipo === 'abierto' && (!abreNormalmente(new Date()) || hoyEsp.abre !== HORA_ABRE || hoyEsp.cierra !== HORA_CIERRA)) {
       avisoDia.className = 'aviso-dia';
-      avisoDia.innerHTML = `<strong>Hoy abrimos de 6:00 p. m. a 11:00 p. m.</strong>${hoyEsp.motivo ? ` ${escapar(hoyEsp.motivo)}` : ''}`;
+      avisoDia.innerHTML = `<strong>Hoy abrimos de ${rangoLegible(horasDe(new Date()))}</strong>${hoyEsp.motivo ? ` ${escapar(hoyEsp.motivo)}` : ''}`;
       avisoDia.hidden = false;
     } else avisoDia.hidden = true;
     pintarHorario();
@@ -943,7 +963,7 @@
       const esHoy = !especialHoy && (f.dia === hoy || (f.dia === 'festivo' && festivoHoy) || (f.dia === 'cerrado' && [1, 2, 3].includes(hoy) && !festivoHoy));
       return `<li class="${esHoy ? 'hoy' : ''}"><span>${f.nombre}</span><span class="${f.cerrado ? 'cerrado-txt' : ''}">${f.cerrado ? 'Cerrado' : '6:00 p. m. a 11:00 p. m.'}</span></li>`;
     }).join('') + (proximos.length ? `<li class="horario__titulo"><span>Días especiales</span></li>` + proximos.map((x) =>
-      `<li class="especial ${x.fecha === hoyISO ? 'hoy' : ''}"><span>${fechaLarga(x.fecha).replace(/^./, (c) => c.toUpperCase())}${x.fecha === hoyISO ? '<em> · hoy</em>' : ''}${x.motivo ? `<small>${escapar(x.motivo)}</small>` : ''}</span><span class="${x.tipo === 'cerrado' ? 'cerrado-txt' : ''}">${x.tipo === 'cerrado' ? 'Cerrado' : '6:00 p. m. a 11:00 p. m.'}</span></li>`).join('') : '');
+      `<li class="especial ${x.fecha === hoyISO ? 'hoy' : ''}"><span>${fechaLarga(x.fecha).replace(/^./, (c) => c.toUpperCase())}${x.fecha === hoyISO ? '<em> · hoy</em>' : ''}${x.motivo ? `<small>${escapar(x.motivo)}</small>` : ''}</span><span class="${x.tipo === 'cerrado' ? 'cerrado-txt' : ''}">${x.tipo === 'cerrado' ? 'Cerrado' : rangoLegible({ abre: x.abre || HORA_ABRE, cierra: x.cierra || HORA_CIERRA })}</span></li>`).join('') : '');
   }
 
   // ---------- Menú ----------
@@ -1452,19 +1472,31 @@
       <section class="bloque-admin">
         <h3>Hoy, ${fechaLarga(hoyISO)}</h3>
         ${abreHoy
-          ? `<p>La página muestra el negocio <strong>abierto</strong> de 6:00 p. m. a 11:00 p. m.${espHoy ? ' (día especial)' : ''}</p>
+          ? `<p>La página muestra el negocio <strong>abierto</strong> de ${rangoLegible(horasDe(hoy))}${espHoy ? ' (horario especial)' : ''}</p>
+             <h4 class="sub-admin">Cambiar el horario de hoy</h4>
+             <div class="horas">
+               <div class="campo"><label for="h-abre-hoy">Abre</label><input type="time" id="h-abre-hoy" value="${horasDe(hoy).abre}"></div>
+               <div class="campo"><label for="h-cierra-hoy">Cierra</label><input type="time" id="h-cierra-hoy" value="${horasDe(hoy).cierra}"></div>
+             </div>
+             <span class="error" id="h-error-hoy" hidden>La hora de cierre debe ser después de la de apertura.</span>
+             <button type="button" class="boton-sec" style="margin-top:10px" data-admin="horario-hoy">Guardar horario de hoy</button>
+             <h4 class="sub-admin">¿No abren hoy?</h4>
              <div class="campo"><label for="h-motivo-hoy">Motivo (opcional, lo verán los clientes)</label><input type="text" id="h-motivo-hoy" placeholder="Ej.: Evento privado, mantenimiento"></div>
-             <button type="button" class="agregar boton-peligro-lleno" data-admin="cerrar-hoy">Cerrar hoy</button>`
+             <button type="button" class="agregar boton-peligro-lleno" style="margin-top:10px" data-admin="cerrar-hoy">Cerrar hoy</button>`
           : `<p>La página muestra el negocio <strong>cerrado</strong> hoy${espHoy?.motivo ? `: ${escapar(espHoy.motivo)}` : ''}.</p>
              ${espHoy ? '<button type="button" class="boton-sec" data-admin="reabrir-hoy">Volver a abrir hoy</button>' : '<button type="button" class="boton-sec" data-admin="abrir-hoy">Abrir hoy de forma especial</button>'}`}
       </section>
       <section class="bloque-admin">
         <h3>Agregar un día especial</h3>
-        <p>Para cerrar un día que normalmente abren, o abrir uno que normalmente está cerrado.</p>
+        <p>Para cerrar un día, abrir uno que normalmente está cerrado o cambiar la hora de un día.</p>
         <div class="campo"><label for="h-fecha">Fecha</label><input type="date" id="h-fecha" min="${hoyISO}"></div>
         <div class="opciones opciones--2" style="margin-top:10px">
           <div class="opcion"><input type="radio" name="h-tipo" id="h-cerrado" value="cerrado" checked><label for="h-cerrado">Cerrado</label></div>
           <div class="opcion"><input type="radio" name="h-tipo" id="h-abierto" value="abierto"><label for="h-abierto">Abierto</label></div>
+        </div>
+        <div class="horas" id="h-horas" hidden>
+          <div class="campo"><label for="h-abre">Abre</label><input type="time" id="h-abre" value="${HORA_ABRE}"></div>
+          <div class="campo"><label for="h-cierra">Cierra</label><input type="time" id="h-cierra" value="${HORA_CIERRA}"></div>
         </div>
         <div class="campo"><label for="h-motivo">Motivo (opcional)</label><input type="text" id="h-motivo" placeholder="Ej.: Vacaciones del equipo"></div>
         <span class="error" id="h-error" hidden>Elige una fecha.</span>
@@ -1474,7 +1506,7 @@
         <h3>Próximos días especiales</h3>
         ${proximos.length ? proximos.map((x) => `
           <div class="fila-dia">
-            <span><strong>${fechaLarga(x.fecha)}</strong> · ${x.tipo === 'cerrado' ? 'Cerrado' : 'Abierto'}${x.motivo ? `<small>${escapar(x.motivo)}</small>` : ''}</span>
+            <span><strong>${fechaLarga(x.fecha)}</strong> · ${x.tipo === 'cerrado' ? 'Cerrado' : `Abierto de ${rangoLegible({ abre: x.abre || HORA_ABRE, cierra: x.cierra || HORA_CIERRA })}`}${x.motivo ? `<small>${escapar(x.motivo)}</small>` : ''}</span>
             <button type="button" class="boton-sec boton-peligro" data-admin="quitar-dia" data-fecha="${x.fecha}">Quitar</button>
           </div>`).join('') : '<p class="vacio" style="padding:8px 0;text-align:left">No hay días especiales programados.</p>'}
       </section>
@@ -1529,7 +1561,7 @@
         </div>
         <div class="campo"><label for="f-nombre">Nombre</label><input type="text" id="f-nombre" value="${escapar(p?.nombre || '')}" placeholder="Ej.: La Duquesa"><span class="error" id="e-nombre" hidden>Escribe el nombre.</span></div>
         <div class="campo"><label for="f-desc">Descripción</label><textarea id="f-desc" placeholder="Ingredientes y detalles">${escapar(p?.desc || '')}</textarea></div>
-        <div class="campo"><label for="f-precio">Precio</label><input type="text" id="f-precio" inputmode="numeric" value="${p ? p.precio.toLocaleString('es-CO') : ''}" placeholder="Ej.: 22.000"><span class="error" id="e-precio" hidden>Escribe un precio mayor que cero.</span></div>
+        <div class="campo"><label for="f-precio">Precio</label><input type="text" id="f-precio" inputmode="numeric" autocomplete="off" value="${p ? p.precio.toLocaleString('es-CO') : ''}" placeholder="Ej.: 22.000"><span class="error" id="e-precio" hidden>Escribe un precio mayor que cero.</span></div>
         <div class="campo"><label for="f-cat">Categoría</label>
           <select id="f-cat">${menu.map((c) => `<option value="${c.id}" ${c.id === catActual ? 'selected' : ''}>${escapar(c.nombre)}</option>`).join('')}</select>
         </div>
@@ -1601,15 +1633,34 @@
       return cambiarHorario((h) => { h.especiales = h.especiales.filter((x) => x.fecha !== hoyISO); h.especiales.push({ fecha: hoyISO, tipo: 'cerrado', motivo }); }, 'Listo: la página muestra que hoy está cerrado.');
     }
     if (accion === 'reabrir-hoy') return cambiarHorario((h) => { h.especiales = h.especiales.filter((x) => x.fecha !== hoyISO); }, 'Hoy vuelve a su horario normal.');
-    if (accion === 'abrir-hoy') return cambiarHorario((h) => { h.especiales.push({ fecha: hoyISO, tipo: 'abierto', motivo: '' }); }, 'Listo: hoy abre de 6:00 p. m. a 11:00 p. m.');
+    if (accion === 'abrir-hoy') return cambiarHorario((h) => { h.especiales.push({ fecha: hoyISO, tipo: 'abierto', motivo: '', abre: HORA_ABRE, cierra: HORA_CIERRA }); }, `Listo: hoy abre de ${rangoLegible({ abre: HORA_ABRE, cierra: HORA_CIERRA })}`);
+    if (accion === 'horario-hoy') {
+      const abre = $('#h-abre-hoy').value, cierra = $('#h-cierra-hoy').value;
+      const ok = abre && cierra && aMinutos(cierra) > aMinutos(abre);
+      $('#h-error-hoy').hidden = ok;
+      if (!ok) return;
+      const normal = abre === HORA_ABRE && cierra === HORA_CIERRA && abreNormalmente(new Date());
+      return cambiarHorario((h) => {
+        const previo = h.especiales.find((x) => x.fecha === hoyISO);
+        h.especiales = h.especiales.filter((x) => x.fecha !== hoyISO);
+        if (!normal) h.especiales.push({ fecha: hoyISO, tipo: 'abierto', motivo: previo?.motivo || '', abre, cierra });
+      }, `Listo: hoy abre de ${rangoLegible({ abre, cierra })}`);
+    }
     if (accion === 'agregar-dia') {
       const fecha = $('#h-fecha').value;
+      $('#h-error').textContent = 'Elige una fecha.';
       $('#h-error').hidden = !!fecha;
       if (!fecha) return $('#h-fecha').focus();
       const tipo = document.querySelector('[name="h-tipo"]:checked').value;
       const motivo = $('#h-motivo').value.trim();
-      return cambiarHorario((h) => { h.especiales = h.especiales.filter((x) => x.fecha !== fecha); h.especiales.push({ fecha, tipo, motivo }); },
-        `Agregado: ${fechaLarga(fecha)} ${tipo === 'cerrado' ? 'cerrado' : 'abierto'}.`);
+      const abre = $('#h-abre').value, cierra = $('#h-cierra').value;
+      if (tipo === 'abierto' && !(abre && cierra && aMinutos(cierra) > aMinutos(abre))) {
+        $('#h-error').textContent = 'La hora de cierre debe ser después de la de apertura.'; $('#h-error').hidden = false; return;
+      }
+      return cambiarHorario((h) => {
+        h.especiales = h.especiales.filter((x) => x.fecha !== fecha);
+        h.especiales.push(tipo === 'abierto' ? { fecha, tipo, motivo, abre, cierra } : { fecha, tipo, motivo });
+      }, `Agregado: ${fechaLarga(fecha)} ${tipo === 'cerrado' ? 'cerrado' : `abierto de ${rangoLegible({ abre, cierra })}`}`);
     }
     if (accion === 'quitar-dia') return cambiarHorario((h) => { h.especiales = h.especiales.filter((x) => x.fecha !== b.dataset.fecha); }, 'Día especial quitado.');
     if (accion === 'cancelar') { panel.vista = 'lista'; panel.aviso = ''; return pintarPanel(); }
@@ -1621,8 +1672,21 @@
     if (accion === 'restaurar') return cambiarMenu(() => { menu = copiar(MENU); }, 'Se restauró el menú original.');
   });
 
+  // Precio con puntos de miles mientras se escribe (35000 → 35.000)
+  $('#admin').addEventListener('input', (e) => {
+    if (e.target.id !== 'f-precio') return;
+    const campo = e.target;
+    const digitosAntes = campo.value.slice(0, campo.selectionStart).replace(/\D/g, '').length;
+    const digitos = campo.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 9);
+    campo.value = digitos ? Number(digitos).toLocaleString('es-CO') : '';
+    let pos = 0, vistos = 0;
+    while (pos < campo.value.length && vistos < digitosAntes) { if (/\d/.test(campo.value[pos])) vistos += 1; pos += 1; }
+    campo.setSelectionRange(pos, pos);
+  });
+
   $('#admin').addEventListener('change', async (e) => {
     const t = e.target;
+    if (t.name === 'h-tipo') { $('#h-horas').hidden = t.value !== 'abierto'; return; }
     if (t.id === 'f-foto' && t.files[0]) {
       try { panel.foto = await comprimirFoto(t.files[0]); } catch { panel.foto = null; }
       const vista = $('#admin .foto-carga__vista');
