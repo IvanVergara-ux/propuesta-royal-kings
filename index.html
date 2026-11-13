@@ -139,18 +139,19 @@
   .titulo-dorado {
     color: var(--papel);
     background: linear-gradient(110deg,
-      var(--papel) 0%, var(--papel) 44%,
-      #e6ad32 47.5%, #fff1bf 50%, #e6ad32 52.5%,
-      var(--papel) 56%, var(--papel) 100%);
-    background-size: 400% 100%;
+      var(--papel) 0%, var(--papel) 34%,
+      #f2c14e 41%, #e6ad32 45%, #fff7d6 50%, #e6ad32 55%, #f2c14e 59%,
+      var(--papel) 66%, var(--papel) 100%);
+    background-size: 260% 100%;
     background-position: 100% 0;
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: destello 7s ease-in-out 0.6s infinite;
+    filter: drop-shadow(0 0 16px rgba(230,173,50,.18));
+    animation: destello 4s ease-in-out 0.4s infinite;
   }
   @keyframes destello {
     0% { background-position: 100% 0; }
-    35%, 100% { background-position: 0% 0; }
+    55%, 100% { background-position: 0% 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .titulo-dorado { animation: none; background: none; -webkit-text-fill-color: currentColor; }
@@ -165,12 +166,37 @@
   }
   .destacada__foto { position: relative; aspect-ratio: 16 / 10; }
   .destacada__foto img { width: 100%; height: 100%; object-fit: cover; }
+  /* Etiqueta dorada con corona y destello */
   .sello {
-    position: absolute; left: 12px; top: 12px; padding: 5px 11px; border-radius: 999px;
-    background: var(--ketchup); color: #fff; font-size: 12px; font-weight: 700;
+    position: absolute; left: 12px; top: 12px; overflow: hidden;
+    display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px 7px 11px; border-radius: 999px;
+    background: linear-gradient(135deg, #fff1bf 0%, #f2c14e 30%, #c98f17 70%, #f6d77a 100%);
+    color: #2a1a06; font-size: 13px; font-weight: 700; letter-spacing: .01em;
+    border: 1px solid rgba(255,241,191,.7);
+    box-shadow: 0 6px 18px rgba(0,0,0,.45), 0 0 18px rgba(230,173,50,.45), inset 0 1px 0 rgba(255,255,255,.6);
   }
+  .sello svg { flex: none; }
+  .sello::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent);
+    animation: brillo-sello 4.5s ease-in-out 1s infinite;
+  }
+  @keyframes brillo-sello { 0% { left: -60%; } 30%, 100% { left: 130%; } }
+
+  /* Nombre de la hamburguesa del mes: oro brillante */
+  .destacada h2 {
+    background: linear-gradient(110deg,
+      #c98f17 0%, #f6d77a 18%, #fff7d6 26%, #e6ad32 36%, #b87d10 50%,
+      #f2c14e 64%, #fff7d6 72%, #f6d77a 80%, #c98f17 100%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #e6ad32;
+    filter: drop-shadow(0 0 14px rgba(230,173,50,.45)) drop-shadow(0 2px 0 rgba(0,0,0,.35));
+    animation: oro 5s ease-in-out infinite;
+  }
+  @keyframes oro { 0%, 100% { background-position: 0% 0; } 50% { background-position: 100% 0; } }
+  @media (prefers-reduced-motion: reduce) { .sello::after, .destacada h2 { animation: none; } }
   .destacada__cuerpo { padding: 16px; }
-  .destacada h2 { margin: 0; font-family: var(--display); font-weight: 900; font-size: 34px; line-height: 1; }
+  .destacada h2 { margin: 0; font-family: var(--display); font-weight: 900; font-size: 40px; line-height: 1; padding-bottom: 2px; }
   .destacada p { margin: 8px 0 14px; color: var(--papel-suave); font-size: 15px; }
 
   /* Categorías fijas */
@@ -262,6 +288,13 @@
   }
   .enlace--boton svg { color: var(--carbon); }
   .enlace--boton:hover span { border-color: transparent; }
+  @media (max-width: 899px) {
+    .info__cabeza, .info__col { text-align: center; }
+    .info__icono { margin-inline: auto; }
+    .domicilio-info { margin-inline: auto; }
+    .contactos { justify-items: center; }
+    .horario { max-width: 420px; margin-inline: auto; }
+  }
   @media (min-width: 900px) {
     .info { padding: 96px 0 80px; }
     .info__cols { grid-template-columns: 1.15fr 1fr 1fr; gap: 56px; margin-top: 56px; }
@@ -773,10 +806,11 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="txt">Agregar</span></button>`;
 
   function pintarMenu() {
-    const d = [...platos.values()].find((p) => p.destacada && !p.oculto && p.foto);
+    const hamburguesas = menu.find((c) => c.id === 'hamburguesas')?.platos ?? [];
+    const d = hamburguesas.find((p) => p.destacada && !p.oculto && p.foto);
     $('#destacada').hidden = !d;
     if (d) $('#destacada').innerHTML = `
-      <div class="destacada__foto"><img src="${d.foto}" alt="${escapar(d.nombre)}" width="640" height="400"><span class="sello">Hamburguesa del mes</span></div>
+      <div class="destacada__foto"><img src="${d.foto}" alt="${escapar(d.nombre)}" width="640" height="400"><span class="sello"><svg width="16" height="13" viewBox="0 0 200 140" aria-hidden="true"><path d="M20 118 L10 34 L58 74 L100 12 L142 74 L190 34 L180 118 Z" fill="currentColor"/><rect x="20" y="124" width="160" height="14" rx="4" fill="currentColor"/></svg>Hamburguesa del mes</span></div>
       <div class="destacada__cuerpo">
         <h2>${escapar(d.nombre)}</h2>
         <p>${escapar(d.desc)}</p>
@@ -1147,7 +1181,7 @@
             <div class="item-admin__ajustes">
               <label class="interruptor"><input type="checkbox" data-admin="disponible" data-id="${p.id}" ${p.agotado ? '' : 'checked'}> Disponible hoy</label>
               <label class="interruptor"><input type="checkbox" data-admin="visible" data-id="${p.id}" ${p.oculto ? '' : 'checked'}> Visible en el menú</label>
-              ${p.foto ? `<label class="interruptor"><input type="checkbox" data-admin="destacada" data-id="${p.id}" ${p.destacada ? 'checked' : ''}> Hamburguesa del mes</label>` : ''}
+              ${p.foto && cat.id === 'hamburguesas' ? `<label class="interruptor"><input type="checkbox" data-admin="destacada" data-id="${p.id}" ${p.destacada ? 'checked' : ''}> Hamburguesa del mes</label>` : ''}
               <button type="button" class="boton-sec" data-admin="editar" data-id="${p.id}">Editar</button>
               ${panel.confirmar === p.id
                 ? `<span>¿Eliminar?</span><button type="button" class="boton-sec boton-peligro" data-admin="eliminar-si" data-id="${p.id}">Sí, eliminar</button><button type="button" class="boton-sec" data-admin="eliminar-no">No</button>`
@@ -1281,6 +1315,7 @@
           const origen = menu.find((c) => c.platos.includes(p));
           if (origen !== destino) { origen.platos = origen.platos.filter((x) => x !== p); destino.platos.push(p); }
           p.producto = destino.id === 'bebidas' && !!p.foto;
+          if (destino.id !== 'hamburguesas') p.destacada = false;
         } else {
           destino.platos.unshift({ id: 'p' + Date.now().toString(36), producto: destino.id === 'bebidas', ...datos });
         }
