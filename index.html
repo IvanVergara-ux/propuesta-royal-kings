@@ -452,6 +452,10 @@
   }
   @media (min-width: 800px) { dialog.admin { height: 92dvh; max-height: 92dvh; margin: auto; border-radius: 20px; border: 1px solid var(--linea); } }
   .admin__cab { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 10px; padding: 14px 18px; background: var(--carbon); border-bottom: 1px solid var(--linea); }
+  .admin__marca { display: flex; align-items: center; gap: 10px; }
+  .admin__marca img { width: 38px; height: 38px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px var(--mostaza); }
+  .admin__marca span { display: grid; font-size: 20px; }
+  .admin__marca small { font-family: var(--texto); font-weight: 600; font-size: 11px; color: var(--gris); letter-spacing: .02em; }
   .admin__cab h2 { margin: 0 auto 0 0; font-family: var(--display); font-weight: 900; font-size: 24px; line-height: 1; white-space: nowrap; }
   .admin__login { max-width: 380px; margin: 8vh auto 0; }
   .admin__login p { color: var(--papel-suave); }
@@ -576,8 +580,12 @@
   .tarjeta-admin__cab h3 { margin: 0; font-size: 17px; }
   .tarjeta-admin__eti { margin: 0; color: var(--gris); font-size: 13px; }
   .tarjeta-admin__vacio { margin: 4px 0 0; color: var(--gris); font-size: 13px; }
-  .tarjeta-hoy.es-abierto { border-color: rgba(79,174,106,.5); background: linear-gradient(160deg, rgba(79,174,106,.14), var(--brasa) 60%); }
-  .tarjeta-hoy.es-cerrado { border-color: rgba(196,54,31,.5); background: linear-gradient(160deg, rgba(196,54,31,.16), var(--brasa) 60%); }
+  .tarjeta-hoy { border-left-width: 4px; }
+  .tarjeta-hoy.es-abierto { border-left-color: #5f9e6e; }
+  .tarjeta-hoy.es-cerrado { border-left-color: #a8483a; }
+  .tarjeta-hoy .hoy-estado::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 8px; border-radius: 50%; vertical-align: 6px; }
+  .tarjeta-hoy.es-abierto .hoy-estado::before { background: #5f9e6e; }
+  .tarjeta-hoy.es-cerrado .hoy-estado::before { background: #a8483a; }
   .hoy-estado { margin: 2px 0 4px; font-family: var(--display); font-weight: 900; font-size: 28px; line-height: 1.05; }
   .hoy-estado span { display: block; font-family: var(--texto); font-weight: 600; font-size: 16px; color: var(--papel-suave); margin-top: 2px; }
   .hoy-estado i { font-style: normal; }
@@ -620,12 +628,28 @@
   .progreso-admin li.actual small { color: var(--papel); font-weight: 700; }
   .confirmar-paso { margin: 0 14px 14px; padding: 12px; border-radius: 12px; background: rgba(230,173,50,.12); border: 1px solid rgba(230,173,50,.4); }
   .confirmar-paso p { margin: 0; font-size: 14px; }
-  .cancelar-caja { background: rgba(196,54,31,.12); border-color: rgba(196,54,31,.45); }
+  .cancelar-caja { background: var(--brasa-2); border-color: var(--linea); }
+  .cancelar-caja .boton-peligro-lleno { background: #8f3a2d; }
+  .cancelar-caja .boton-peligro-lleno:hover { background: #a2463a; }
   .motivos { display: grid; gap: 6px; margin-top: 10px; }
   .motivo { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
-  .motivo input { accent-color: var(--ketchup); width: 18px; height: 18px; }
-  .cancelar-pedido { display: block; margin: -4px 14px 8px; padding: 4px 0; }
-  .alerta-pago { margin: 0 14px 10px; padding: 8px 10px; border-radius: 10px; background: rgba(196,54,31,.15); color: #f0b3a8; font-size: 13px; }
+  .motivo input { accent-color: var(--mostaza); width: 18px; height: 18px; }
+  .cancelar-pedido { display: block; width: calc(100% - 28px); margin: 0 14px 12px; height: 40px; color: var(--papel-suave); font-size: 14px; }
+  .herramientas-pedidos { display: grid; gap: 8px; margin-bottom: 12px; }
+  .segmentado { display: grid; grid-template-columns: repeat(3, 1fr); padding: 3px; border-radius: 12px; background: var(--brasa); border: 1px solid var(--linea); }
+  .segmentado button { padding: 8px 4px; border: 0; border-radius: 9px; background: none; color: var(--papel-suave); font-weight: 600; font-size: 14px; }
+  .segmentado button[aria-pressed="true"] { background: var(--brasa-2); color: var(--papel); box-shadow: 0 1px 0 rgba(255,255,255,.06); }
+  .buscador-sm input { padding: 9px 0; }
+  .periodo { margin-top: -4px; }
+  .periodo button { padding: 5px 12px; font-size: 13px; }
+  .ventas { display: grid; grid-template-columns: 1.3fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .ventas div { display: grid; padding: 12px; border-radius: 12px; background: var(--brasa); border: 1px solid var(--linea); }
+  .ventas span { color: var(--gris); font-size: 13px; }
+  .ventas strong { font-size: 22px; color: var(--mostaza); }
+  .ventas small { color: var(--gris); font-size: 12px; }
+  .nota-orden-pedidos { margin: 0 0 8px; color: var(--gris); font-size: 12px; }
+  .hace { font-style: normal; font-size: 12px; color: var(--gris); margin-left: 4px; }
+  .alerta-pago { margin: 0 14px 10px; padding: 8px 10px; border-radius: 10px; background: var(--brasa-2); border-left: 3px solid #b8743a; color: var(--papel-suave); font-size: 13px; }
   .estado-cancelado { opacity: .7; }
   .estado-cancelado .chip-estado { background: rgba(196,54,31,.2); color: #f0b3a8; }
   .pedido-admin__detalle { padding: 0 14px 6px; font-size: 14px; color: var(--papel-suave); }
@@ -956,7 +980,7 @@
 
   <dialog class="admin" id="admin" aria-labelledby="admin-titulo">
     <div class="admin__cab">
-      <h2 id="admin-titulo">Royal Kings</h2>
+      <h2 id="admin-titulo" class="admin__marca"><img src="data:image/webp;base64,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" alt="" width="38" height="38"><span>Panel<small>Royal Kings Burger</small></span></h2>
       <span class="estado" id="admin-estado" hidden></span>
       <button type="button" class="boton-texto-sm" id="admin-salir" hidden>Salir</button>
       <button type="button" class="cerrar" id="admin-cerrar" aria-label="Volver a la página">
@@ -1836,11 +1860,22 @@
   function pintarPanelPedidos(cuerpo, pestanas) {
     const todos = leerPedidos();
     const vista = panel.vistaPedidos || 'curso';
-    const lista = todos.filter((p) => (vista === 'entregados' ? p.estado === 'entregado' : vista === 'cancelados' ? p.estado === 'cancelado' : !['entregado', 'cancelado'].includes(p.estado)));
+    const tipo = panel.tipoEntrega || 'todos';
+    const q = (panel.buscarPedido || '').trim().toLowerCase();
+    const periodo = panel.periodo || 'hoy';
+    const desde = periodo === 'hoy' ? new Date(new Date().setHours(0, 0, 0, 0)) : periodo === '7d' ? new Date(Date.now() - 7 * 864e5) : new Date(0);
+    let lista = todos.filter((p) => (vista === 'entregados' ? p.estado === 'entregado' : vista === 'cancelados' ? p.estado === 'cancelado' : !['entregado', 'cancelado'].includes(p.estado)));
+    if (vista !== 'curso') lista = lista.filter((p) => new Date(p.fecha) >= desde);
+    const totalVista = lista.length;
+    if (tipo !== 'todos') lista = lista.filter((p) => p.entrega === tipo);
+    if (q) lista = lista.filter((p) => p.numero.toLowerCase().includes(q) || p.cliente.toLowerCase().includes(q));
+    if (vista === 'curso') lista = [...lista].sort((a, b) => a.fecha.localeCompare(b.fecha));
+    const ventas = lista.reduce((t, p) => t + p.total, 0);
+    const nDom = lista.filter((p) => p.entrega === 'domicilio').length;
     const cuenta = (ids) => todos.filter((p) => ids.includes(p.estado)).length;
     cuerpo.innerHTML = `
       ${pestanas}
-      <div class="resumen-dia resumen-3">
+      <div class="resumen-dia resumen-3" ${vista === 'curso' ? '' : 'hidden'}>
         <div class="r-pago"><strong>${cuenta(['recibido'])}</strong><span>Esperan pago</span></div>
         <div class="r-cocina"><strong>${cuenta(['pagado', 'preparacion'])}</strong><span>En cocina</span></div>
         <div class="r-camino"><strong>${cuenta(['camino'])}</strong><span>Por entregar</span></div>
@@ -1850,6 +1885,21 @@
         <button type="button" data-admin="ver-pedidos" data-vista="entregados" aria-pressed="${vista === 'entregados'}">Entregados</button>
         <button type="button" data-admin="ver-pedidos" data-vista="cancelados" aria-pressed="${vista === 'cancelados'}">Cancelados</button>
       </div>
+      ${vista !== 'curso' ? `<div class="filtros periodo" role="group" aria-label="Periodo">
+          ${[['hoy', 'Hoy'], ['7d', 'Últimos 7 días'], ['todo', 'Todo']].map(([v, t]) => `<button type="button" data-admin="periodo" data-valor="${v}" aria-pressed="${periodo === v}">${t}</button>`).join('')}
+        </div>` : ''}
+      ${vista === 'entregados' ? `<div class="ventas">
+          <div><span>Vendido por la página</span><strong>${pesos(ventas)}</strong></div>
+          <div><span>Pedidos</span><strong>${lista.length}</strong><small>${nDom} domicilio · ${lista.length - nDom} recoger</small></div>
+        </div>` : ''}
+      ${totalVista > 1 || tipo !== 'todos' || q ? `<div class="herramientas-pedidos">
+          <div class="segmentado" role="group" aria-label="Tipo de entrega">
+            ${[['todos', 'Todos'], ['domicilio', 'Domicilio'], ['recoger', 'Recoger']].map(([v, t]) => `<button type="button" data-admin="tipo-entrega" data-valor="${v}" aria-pressed="${tipo === v}">${t}</button>`).join('')}
+          </div>
+          <label class="buscador buscador-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input type="search" id="buscar-pedido" placeholder="Nombre o número" value="${escapar(panel.buscarPedido || '')}" aria-label="Buscar pedido"></label>
+        </div>` : ''}
+      ${vista === 'curso' && lista.length > 1 ? '<p class="nota-orden-pedidos">Los más antiguos van primero.</p>' : ''}
       <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
       ${lista.length ? lista.map((p) => {
         const idx = ESTADOS.findIndex((e) => e.id === p.estado);
@@ -1868,7 +1918,7 @@
           <button type="button" class="pedido-admin__cab" data-admin="abrir-pedido" data-numero="${escapar(p.numero)}" aria-expanded="${abierto}">
             <span class="pedido-admin__tit">
               <span class="tipo-entrega ${p.entrega === 'domicilio' ? 'es-domicilio' : 'es-recoger'}">${p.entrega === 'domicilio' ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h7l2-6h-4l-2-4H8"/><path d="M15 7h3"/></svg>Domicilio' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Recoger en el local'}</span>
-              <span><strong>${escapar(p.numero)}</strong> · ${hora}</span>
+              <span><strong>${escapar(p.numero)}</strong> · ${hora}${p.estado !== 'entregado' ? ` <em class="hace">hace ${minutos < 60 ? minutos + ' min' : Math.floor(minutos / 60) + ' h'}</em>` : ''}</span>
               <small>${escapar(p.cliente)} · ${pesos(p.total)} · ${escapar(p.pago)}</small>
             </span>
             <span class="chip-estado">${escapar(nombreEstado(p, p.estado))}</span>
@@ -1904,8 +1954,8 @@
               : sig.id === 'pagado' ? 'Confirmar pago recibido' : sig.id === 'preparacion' ? 'Pasar a cocina' : sig.id === 'entregado' ? (p.entrega === 'domicilio' ? 'Marcar entregado' : 'Marcar recogido') : `Marcar: ${escapar(nombreEstado(p, sig.id))}`}</button>` : ''}
             ${idx > 0 ? `<button type="button" class="boton-sec" data-admin="retroceder" data-numero="${escapar(p.numero)}">Deshacer</button>` : ''}
           </div>`}
-          ${!['camino', 'entregado'].includes(p.estado) && panel.cancelando !== p.numero && panel.confirmar?.numero !== p.numero ? `<button type="button" class="enlace-sutil peligro cancelar-pedido" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
-          ${sig?.id === 'camino' ? `<p class="aviso-alterno">Al tocarlo se abre WhatsApp con el mensaje listo para ${escapar(p.cliente.split(/\s+/)[0])}. Solo dale <strong>Enviar</strong>.</p>` : ''}
+          ${!['camino', 'entregado'].includes(p.estado) && panel.cancelando !== p.numero && panel.confirmar?.numero !== p.numero ? `<button type="button" class="boton-sec cancelar-pedido" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
+          ${sig?.id === 'camino' && panel.cancelando !== p.numero && panel.confirmar?.numero !== p.numero ? `<p class="aviso-alterno">Al tocarlo se abre WhatsApp con el mensaje listo para ${escapar(p.cliente.split(/\s+/)[0])}. Solo dale <strong>Enviar</strong>.</p>` : ''}
           ${p.estado === 'camino' ? `<div class="aviso-alterno">
               <p>Se abrió WhatsApp con el aviso. Si no se abrió el chat del cliente, puede que haya escrito mal su número. Como su pedido te llegó por WhatsApp, busca <strong>${escapar(p.numero)}</strong> en tus chats, entra a esa conversación y pega el aviso.</p>
               <div class="acciones-2">
@@ -1914,7 +1964,7 @@
               </div>
             </div>` : ''}
         </article>`;
-      }).join('') : `<p class="vacio" style="text-align:left">${vista === 'entregados' ? 'Todavía no hay pedidos entregados.' : vista === 'cancelados' ? 'No hay pedidos cancelados.' : 'No hay pedidos en curso. Los pedidos que hagan los clientes por la página aparecen aquí.'}</p>`}
+      }).join('') : (tipo !== 'todos' || q) ? '<p class="vacio" style="text-align:left">No hay pedidos con ese filtro.</p>' : `<p class="vacio" style="text-align:left">${vista === 'entregados' ? 'Todavía no hay pedidos entregados.' : vista === 'cancelados' ? 'No hay pedidos cancelados.' : 'No hay pedidos en curso. Los pedidos que hagan los clientes por la página aparecen aquí.'}</p>`}
       <div class="demo-zona"><span>Solo en la demo</span><button type="button" class="enlace-sutil" data-admin="pedido-prueba">Crear un pedido de prueba</button></div>`;
   }
 
@@ -1947,12 +1997,14 @@
     const proximos = h.especiales.filter((x) => x.fecha >= hoyISO).sort((a, b) => a.fecha.localeCompare(b.fecha));
     const festivos = [...lunesFestivos(hoy.getFullYear()), ...lunesFestivos(hoy.getFullYear() + 1)].filter((f) => f >= hoyISO).sort().slice(0, 3);
     const modo = panel.hoyModo;
+    const minAhora = hoy.getHours() * 60 + hoy.getMinutes();
+    const etiquetaHoy = minAhora < aMinutos(horasHoy.abre) ? 'Hoy abrimos' : minAhora < aMinutos(horasHoy.cierra) ? 'Abierto ahora' : 'Ya cerramos por hoy';
     cuerpo.innerHTML = `
       <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
 
       <section class="tarjeta-admin tarjeta-hoy ${abreHoy ? 'es-abierto' : 'es-cerrado'}">
         <p class="tarjeta-admin__eti">Hoy · ${fechaLarga(hoyISO)}</p>
-        <p class="hoy-estado">${abreHoy ? `Abierto <span>de <i class="sin-corte">${horaLegible(horasHoy.abre)}</i> a <i class="sin-corte">${horaLegible(horasHoy.cierra)}</i></span>` : 'Cerrado'}</p>
+        <p class="hoy-estado">${abreHoy ? `${etiquetaHoy} <span>de <i class="sin-corte">${horaLegible(horasHoy.abre)}</i> a <i class="sin-corte">${horaLegible(horasHoy.cierra)}</i></span>` : 'Hoy no abrimos'}</p>
         ${espHoy ? `<p class="hoy-nota">${espHoy.tipo === 'cerrado' ? 'Cerrado por ti' : 'Horario especial'}${espHoy.motivo ? `: ${escapar(espHoy.motivo)}` : ''}</p>` : ''}
         ${abreHoy && !modo ? `<div class="acciones-2">
             <button type="button" class="boton-sec" data-admin="hoy-modo" data-modo="hora">Cambiar hora</button>
@@ -2133,6 +2185,8 @@
       panel.seccion = b.dataset.seccion; panel.aviso = ''; panel.vista = 'lista'; panel.editando = null; panel.hoyModo = null; panel.formDia = false;
       pintarPanel(); $('#admin-cuerpo').scrollTop = 0; $('#admin').scrollTop = 0; return;
     }
+    if (b.dataset.admin === 'tipo-entrega') { panel.tipoEntrega = b.dataset.valor; return pintarPanel(); }
+    if (b.dataset.admin === 'periodo') { panel.periodo = b.dataset.valor; return pintarPanel(); }
     if (b.dataset.admin === 'ver-pedidos') { panel.vistaPedidos = b.dataset.vista; panel.aviso = ''; panel.confirmar = null; return pintarPanel(); }
     if (b.dataset.admin === 'abrir-pedido') { panel.abierto = panel.abierto === b.dataset.numero ? null : b.dataset.numero; return pintarPanel(); }
     if (b.dataset.admin === 'cancelar-paso') { panel.confirmar = null; return pintarPanel(); }
@@ -2265,6 +2319,12 @@
   });
 
   $('#admin').addEventListener('input', (e) => {
+    if (e.target.id === 'buscar-pedido') {
+      panel.buscarPedido = e.target.value;
+      const pos = e.target.selectionStart; pintarPanel();
+      const c = $('#buscar-pedido'); if (c) { c.focus(); c.setSelectionRange(pos, pos); }
+      return;
+    }
     if (e.target.id !== 'buscar-producto') return;
     panel.buscar = e.target.value;
     const pos = e.target.selectionStart;
