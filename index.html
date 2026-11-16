@@ -701,6 +701,61 @@
   .aviso-alterno .acciones-2 { margin-top: 8px; }
 
 
+
+  /* Comandas (pedidos en curso) */
+  .admin { --et-pago: #e6ad32; --et-cocina: #e5853b; --et-entregar: #6dbb85; }
+  .comanda { position: relative; margin-bottom: 10px; border-radius: 14px; background: var(--brasa); border: 1px solid var(--linea); overflow: hidden; }
+  .comanda::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--et, var(--linea)); }
+  .comanda.etapa-pago { --et: var(--et-pago); }
+  .comanda.etapa-cocina { --et: var(--et-cocina); }
+  .comanda.etapa-entregar { --et: var(--et-entregar); }
+  .comanda__cab { width: 100%; display: grid; gap: 6px; padding: 14px 16px 12px 18px; border: 0; background: none; color: var(--papel); text-align: left; }
+  .comanda__cab:hover { background: rgba(255,255,255,.02); }
+  .comanda__l1 { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+  .comanda .pa-id { font-size: 26px; }
+  .comanda__cliente { flex: 1; min-width: 0; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .comanda__total { flex: none; font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
+  .comanda__meta { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--papel-suave); }
+  .comanda__meta-izq { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 3px 12px; }
+  .comanda__etapa { display: inline-flex; align-items: center; gap: 6px; color: var(--papel); font-weight: 600; }
+  .comanda__etapa::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--et); }
+  .tipo-txt { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; }
+  .tipo-txt.es-domicilio { color: var(--mostaza); }
+  .tipo-txt.es-recoger { color: #a9c1ff; }
+  .comanda__hace { flex: none; color: var(--gris); white-space: nowrap; }
+  .comanda__hace.tarde { color: var(--et-cocina); font-weight: 700; }
+  .comanda__items { flex: 1; min-width: 0; color: var(--papel); font-size: 14px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .comanda__l3 { display: flex; align-items: flex-end; gap: 10px; }
+  .comanda__nota { display: inline-block; margin-left: 4px; padding: 0 7px; vertical-align: 1px; border-radius: 6px; border: 1px solid rgba(230,173,50,.5); color: var(--mostaza); font-size: 12px; font-weight: 700; }
+  .comanda__ver { flex: none; margin-left: auto; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--brasa-2); color: var(--papel-suave); }
+  .comanda__ver svg { transition: transform .15s; }
+  .abierta .comanda__ver svg { transform: rotate(180deg); }
+  .comanda__detalle { margin: 0 16px 12px 18px; padding: 12px 0 0; border-top: 1px dashed var(--linea); font-size: 14px; }
+  .comanda__detalle ul { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 6px; }
+  .comanda__detalle li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; font-variant-numeric: tabular-nums; }
+  .comanda__detalle li small { width: 100%; padding-left: 10px; border-left: 2px solid var(--mostaza); color: var(--mostaza); font-size: 13px; }
+  .comanda__detalle li.extra { color: var(--gris); font-size: 13px; }
+  .comanda__detalle dl { display: grid; gap: 6px; margin: 0; }
+  .comanda__detalle dl div { display: grid; grid-template-columns: 78px 1fr; gap: 10px; }
+  .comanda__detalle dt { color: var(--gris); font-size: 13px; }
+  .comanda__detalle dd { margin: 0; color: var(--papel); }
+  .comanda__detalle dd a { color: var(--papel); }
+  .comanda__secundarias { display: flex; gap: 8px; margin-top: 12px; }
+  .comanda__secundarias .boton-sec { flex: 1; height: 38px; justify-content: center; color: var(--papel-suave); white-space: nowrap; padding: 0 8px; }
+  .comanda__accion { padding: 0 16px 14px 18px; }
+  .comanda__accion .agregar { width: 100%; justify-content: center; height: 44px; }
+  .comanda__accion p { margin: 8px 0 0; color: var(--gris); font-size: 12.5px; }
+  .comanda .confirmar-paso { margin: 0 16px 14px 18px; }
+  .comanda .alerta-pago { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; margin: 0 16px 10px 18px; }
+  .comanda .alerta-pago .enlace-sutil { color: var(--papel); font-size: 13px; padding: 0; }
+  .comanda__reaviso { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 12px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--brasa-2); color: var(--gris); font-size: 12.5px; }
+  .comanda__reaviso span { flex-basis: 100%; }
+  .comanda__reaviso .enlace-sutil { font-size: 13px; padding: 0; color: var(--papel-suave); }
+  .flujo-cocina strong { color: var(--et-cocina); }
+  .flujo-entregar strong { color: var(--et-entregar); }
+  .admin__cuerpo .aviso-ok:empty { display: none; }
+  .admin__cuerpo .aviso-ok { display: flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin: 0 0 12px; padding: 8px 12px; border-radius: 10px; background: rgba(109,187,133,.12); color: #a8dcb7; font-size: 13.5px; }
+  .admin__cuerpo .aviso-ok::before { content: ""; flex: none; width: 14px; height: 14px; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center / contain no-repeat; }
   /* Historial (entregados y cancelados) */
   .historial { border-radius: 12px; border: 1px solid var(--linea); overflow: hidden; background: var(--brasa); }
   .hist-cab { display: none; }
@@ -780,9 +835,13 @@
     .columna { min-height: 200px; padding: 12px; border-radius: 14px; background: rgba(255,255,255,.025); border: 1px solid var(--linea); }
     .columna h3 { display: flex; align-items: center; gap: 8px; margin: 2px 4px 12px; font-size: 16px; }
     .columna h3 b { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 7px; border-radius: 999px; background: var(--brasa-2); font-size: 13px; }
-    .columna-pago h3 b { background: rgba(230,173,50,.2); color: var(--mostaza); }
     .columna-vacia { margin: 20px 4px; color: var(--gris); font-size: 14px; }
-    .columna .pedido-admin { margin-bottom: 10px; }
+    .columna .comanda { margin-bottom: 10px; }
+    .columna .comanda__etapa { display: none; }
+    .columna h3::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
+    .columna-pago { --c: var(--et-pago); } .columna-cocina { --c: var(--et-cocina); } .columna-entregar { --c: var(--et-entregar); }
+    .columna { border-top: 2px solid var(--c); }
+    .admin__cuerpo:has(.vistas-pedidos) > .comanda { max-width: 760px; }
     .item-admin { grid-template-columns: 64px 1fr auto; }
   }
   .pedido-admin__tit { display: grid; gap: 4px; min-width: 0; }
@@ -1983,7 +2042,7 @@
     const q = (panel.buscarPedido || '').trim().toLowerCase();
     const periodo = panel.periodo || 'hoy';
     const desde = periodo === 'hoy' ? new Date(new Date().setHours(0, 0, 0, 0)) : periodo === '7d' ? new Date(Date.now() - 7 * 864e5) : new Date(0);
-    const ETAPAS = [['pago', 'Por cobrar', ['recibido']], ['cocina', 'En cocina', ['pagado', 'preparacion']], ['entregar', 'Por entregar', ['camino']]];
+    const ETAPAS = [['pago', 'Por cobrar', ['recibido', 'pagado']], ['cocina', 'En cocina', ['preparacion']], ['entregar', 'Por entregar', ['camino']]];
     if (vista !== 'curso') panel.etapa = null;
     const etapa = ETAPAS.find((e) => e[0] === panel.etapa);
     let base = todos.filter((p) => (vista === 'entregados' ? p.estado === 'entregado' : vista === 'cancelados' ? p.estado === 'cancelado' : !['entregado', 'cancelado'].includes(p.estado)));
@@ -2046,31 +2105,59 @@
             <small>${escapar(p.cliente)} · ${pesos(p.total)}${p.motivoCancel ? ` · ${escapar(p.motivoCancel)}` : ''}</small></span>
             <span class="chip-estado">Cancelado</span></div>
         </article>`;
+        const et = etapaDe(p);
+        const etTxt = p.estado === 'pagado' ? 'Pagado, sin empezar' : et === 'pago' ? 'Por cobrar' : et === 'cocina' ? 'En cocina' : nombreEstado(p, 'camino');
+        const haceTxt = minutos < 1 ? 'Recién llegó' : `Hace ${minutos < 60 ? minutos + ' min' : Math.floor(minutos / 60) + ' h' + (minutos % 60 ? ' ' + (minutos % 60) + ' min' : '')}`;
+        const tarde = (et === 'cocina' && minutos >= 25) || (et === 'pago' && minutos >= 30);
+        const conNotas = p.notas || p.lineas.some((l) => l.nota);
+        const accion = p.estado === 'recibido' ? 'Confirmar pago recibido' : p.estado === 'pagado' ? 'Pasar a cocina' : p.estado === 'preparacion' ? (p.entrega === 'domicilio' ? 'Avisar: va en camino' : 'Avisar: listo para recoger') : (p.entrega === 'domicilio' ? 'Marcar entregado' : 'Marcar recogido');
+        const icoWa = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2z"/></svg>';
+        const atras = p.estado === 'preparacion' ? 'recibido' : ESTADOS[idx - 1]?.id;
+        const ocupado = panel.cancelando === p.numero || panel.confirmar?.numero === p.numero;
         return `
-        <article class="pedido-admin estado-${p.estado}">
-          <button type="button" class="pedido-admin__cab" data-admin="abrir-pedido" data-numero="${escapar(p.numero)}" aria-expanded="${abierto}">
-            <span class="pa-fila">
-              <span class="tipo-entrega ${p.entrega === 'domicilio' ? 'es-domicilio' : 'es-recoger'}">${p.entrega === 'domicilio' ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h7l2-6h-4l-2-4H8"/><path d="M15 7h3"/></svg>Domicilio' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Recoger en el local'}</span>
-              <span class="pa-hora">${p.estado === 'entregado' ? hora : minutos < 1 ? 'Recién llegó' : `Hace ${minutos < 60 ? minutos + ' min' : Math.floor(minutos / 60) + ' h ' + (minutos % 60 ? (minutos % 60) + ' min' : '')}`}</span>
+        <article class="comanda etapa-${et} ${abierto ? 'abierta' : ''}">
+          <button type="button" class="comanda__cab" data-admin="abrir-pedido" data-numero="${escapar(p.numero)}" aria-expanded="${abierto}" aria-label="#${escapar(corto(p))} ${escapar(p.cliente)}: ${abierto ? 'ocultar' : 'ver'} detalle">
+            <span class="comanda__l1">
+              <span class="pa-id">#${escapar(corto(p))}</span>
+              <strong class="comanda__cliente">${escapar(p.cliente)}</strong>
+              <span class="comanda__total">${pesos(p.total)}</span>
             </span>
-            <span class="pa-cliente"><span class="pa-id">#${escapar(corto(p))}</span><strong>${escapar(p.cliente)}</strong></span>
-            <span class="pa-datos"><span>${pesos(p.total)} · ${escapar(p.pago)}${p.estado !== 'entregado' ? ' · ' + hora : ''}</span>
-              <span class="pa-ver">${abierto ? 'Ocultar' : 'Ver pedido'}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></span>
+            <span class="comanda__meta">
+              <span class="comanda__meta-izq">
+                <span class="comanda__etapa">${etTxt}</span>
+                <span class="tipo-txt ${p.entrega === 'domicilio' ? 'es-domicilio' : 'es-recoger'}">${p.entrega === 'domicilio' ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h7l2-6h-4l-2-4H8"/><path d="M15 7h3"/></svg>Domicilio' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Recoger'}</span>
+                ${et === 'pago' ? `<span class="comanda__pago">${escapar(p.pago)}</span>` : ''}
+              </span>
+              <span class="comanda__hace ${tarde ? 'tarde' : ''}" title="Llegó a las ${hora}">${haceTxt}</span>
+            </span>
+            <span class="comanda__l3">
+              <span class="comanda__items">${p.lineas.map((l) => `${l.cantidad}× ${escapar(l.nombre)}`).join(', ')}${conNotas ? ' <span class="comanda__nota">Con notas</span>' : ''}</span>
+              <span class="comanda__ver" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+            </span>
           </button>
-          ${abierto ? `<div class="pedido-admin__detalle">
-            <p class="pa-codigo">Pedido ${escapar(p.numero)}</p>
-            <ul>${p.lineas.map((l) => `<li>${l.cantidad} × ${escapar(l.nombre)} <span>${pesos(l.precio * l.cantidad)}</span>${l.nota ? `<small>Nota: ${escapar(l.nota)}</small>` : ''}</li>`).join('')}</ul>
-            <p>Pago: <strong>${escapar(p.pago)}</strong>${p.dom ? ' · Domicilio ' + pesos(p.dom) : ''}${p.recargo ? ' · Recargo ' + pesos(p.recargo) : ''}</p>
-            ${p.dir ? `<p>Dirección: ${escapar(p.dir)}</p>` : ''}
-            ${p.notas ? `<p>Notas: ${escapar(p.notas)}</p>` : ''}
-            <p>Celular: ${escapar(p.tel.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3'))}</p>
+          ${abierto ? `<div class="comanda__detalle">
+            <ul>${p.lineas.map((l) => `<li><span>${l.cantidad}× ${escapar(l.nombre)}</span><span>${pesos(l.precio * l.cantidad)}</span>${l.nota ? `<small>${escapar(l.nota)}</small>` : ''}</li>`).join('')}
+              ${p.dom ? `<li class="extra"><span>Domicilio</span><span>${pesos(p.dom)}</span></li>` : ''}${p.recargo ? `<li class="extra"><span>Recargo tarjeta</span><span>${pesos(p.recargo)}</span></li>` : ''}</ul>
+            <dl>
+              ${p.dir ? `<div><dt>Dirección</dt><dd>${escapar(p.dir)}</dd></div>` : ''}
+              ${p.notas ? `<div><dt>Notas</dt><dd>${escapar(p.notas)}</dd></div>` : ''}
+              <div><dt>Pago</dt><dd>${escapar(p.pago)}</dd></div>
+              <div><dt>Celular</dt><dd><a href="tel:+57${escapar(p.tel)}">${escapar(p.tel.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3'))}</a></dd></div>
+              <div><dt>Código</dt><dd>${escapar(p.numero)} · llegó a las ${hora}</dd></div>
+            </dl>
+          ${p.estado === 'camino' ? `<div class="comanda__reaviso">
+              <span>¿No se abrió el chat? Busca ${escapar(p.numero)} en WhatsApp.</span>
+              <button type="button" class="enlace-sutil" data-admin="reabrir-aviso" data-numero="${escapar(p.numero)}">Abrir de nuevo</button>
+              <button type="button" class="enlace-sutil" data-admin="copiar-aviso" data-numero="${escapar(p.numero)}">Copiar aviso</button>
+            </div>` : ''}
+            ${ocupado ? '' : `<div class="comanda__secundarias">
+              ${atras ? `<button type="button" class="boton-sec" data-admin="retroceder" data-numero="${escapar(p.numero)}">Deshacer</button>` : ''}
+              ${p.estado !== 'camino' ? `<button type="button" class="boton-sec" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
+            </div>`}
           </div>` : ''}
-          ${p.estado === 'recibido' && minutos >= 30 ? `<p class="alerta-pago">Lleva ${minutos} min sin pago. Si el cliente no responde, puedes cancelarlo.</p>` : ''}
-          <ol class="progreso-admin" aria-label="Estado del pedido">
-            ${ESTADOS.map((e, i) => `<li class="${i < idx ? 'hecho' : i === idx ? 'actual' : ''}"><span></span><small>${escapar(nombreEstado(p, e.id).replace('Pago confirmado', 'Pagado').replace('En preparación', 'Cocina').replace('Listo para recoger', 'Listo'))}</small></li>`).join('')}
-          </ol>
+          ${p.estado === 'recibido' && minutos >= 30 && !ocupado ? `<div class="alerta-pago"><span>Lleva ${minutos} min sin pago.</span><button type="button" class="enlace-sutil" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button></div>` : ''}
           ${panel.cancelando === p.numero ? `<div class="confirmar-paso cancelar-caja">
-              <p><strong>¿Cancelar el pedido ${escapar(p.numero)}?</strong> Elige el motivo:</p>
+              <p><strong>¿Cancelar el pedido #${escapar(corto(p))}?</strong> Elige el motivo:</p>
               <div class="motivos">
                 ${['No envió el pago', 'El cliente lo canceló', 'Producto agotado', 'Otro motivo'].map((m, i) => `<label class="motivo"><input type="radio" name="motivo-${escapar(p.numero)}" value="${m}" ${i === 0 ? 'checked' : ''}><span>${m}</span></label>`).join('')}
               </div>
@@ -2078,28 +2165,14 @@
                 <button type="button" class="agregar boton-peligro-lleno" data-admin="cancelar-si" data-numero="${escapar(p.numero)}">Sí, cancelar</button></div>
             </div>` : panel.confirmar?.numero === p.numero ? `<div class="confirmar-paso">
               <p>${panel.confirmar.accion === 'avanzar'
-                ? (sig.id === 'pagado' ? `¿Ya recibiste el pago de <strong>${pesos(p.total)}</strong> por ${escapar(p.pago.toLowerCase())}?` : `¿Marcar el pedido como <strong>${escapar(nombreEstado(p, sig.id))}</strong>?`)
-                : `¿Devolver el pedido a <strong>${escapar(nombreEstado(p, ESTADOS[idx - 1].id))}</strong>?`}</p>
+                ? `¿Ya recibiste <strong>${pesos(p.total)}</strong> por ${escapar(p.pago.toLowerCase())}? El pedido pasa directo a cocina.`
+                : `¿Devolver el pedido a <strong>${atras === 'recibido' ? 'Por cobrar' : escapar(nombreEstado(p, atras))}</strong>?`}</p>
               <div class="acciones-2"><button type="button" class="boton-sec" data-admin="cancelar-paso">No</button>
-                <button type="button" class="agregar" data-admin="${panel.confirmar.accion}" data-numero="${escapar(p.numero)}" data-ok="1">Sí, ${panel.confirmar.accion === 'avanzar' ? (sig.id === 'pagado' ? 'ya pagó' : 'marcar') : 'devolver'}</button></div>
-            </div>` : `<div class="pedido-admin__acciones">
-            ${sig ? `<button type="button" class="agregar" data-admin="avanzar" data-numero="${escapar(p.numero)}">${sig.id === 'camino' && p.entrega === 'domicilio'
-              ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2z"/></svg>Avisar: va en camino'
-              : sig.id === 'camino' ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2z"/></svg>Avisar: listo para recoger'
-              : sig.id === 'pagado' ? 'Confirmar pago recibido' : sig.id === 'preparacion' ? 'Pasar a cocina' : sig.id === 'entregado' ? (p.entrega === 'domicilio' ? 'Marcar entregado' : 'Marcar recogido') : `Marcar: ${escapar(nombreEstado(p, sig.id))}`}</button>` : ''}
-            ${idx > 0 || !['camino', 'entregado'].includes(p.estado) ? `<div class="pa-secundarias">
-              ${idx > 0 ? `<button type="button" class="boton-sec" data-admin="retroceder" data-numero="${escapar(p.numero)}">Deshacer</button>` : ''}
-              ${!['camino', 'entregado'].includes(p.estado) ? `<button type="button" class="boton-sec" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
-            </div>` : ''}
-          </div>`}
-          ${sig?.id === 'camino' && panel.cancelando !== p.numero && panel.confirmar?.numero !== p.numero ? `<p class="aviso-alterno">Al tocarlo se abre WhatsApp con el mensaje listo para ${escapar(p.cliente.split(/\s+/)[0])}. Solo dale <strong>Enviar</strong>.</p>` : ''}
-          ${p.estado === 'camino' ? `<div class="aviso-alterno">
-              <p>¿No se abrió el chat del cliente? Busca <strong>${escapar(p.numero)}</strong> en tus chats de WhatsApp y pega el aviso ahí.</p>
-              <div class="acciones-2">
-                <button type="button" class="boton-sec" data-admin="reabrir-aviso" data-numero="${escapar(p.numero)}">Abrir de nuevo</button>
-                <button type="button" class="boton-sec" data-admin="copiar-aviso" data-numero="${escapar(p.numero)}">Copiar mensaje</button>
-              </div>
-            </div>` : ''}
+                <button type="button" class="agregar" data-admin="${panel.confirmar.accion}" data-numero="${escapar(p.numero)}" data-ok="1">${panel.confirmar.accion === 'avanzar' ? 'Sí, a cocina' : 'Sí, devolver'}</button></div>
+            </div>` : `<div class="comanda__accion">
+              <button type="button" class="agregar" data-admin="avanzar" data-numero="${escapar(p.numero)}">${p.estado === 'preparacion' ? icoWa : ''}${accion}</button>
+              ${p.estado === 'preparacion' ? `<p>Se abre WhatsApp con el mensaje listo para ${escapar(p.cliente.split(/\s+/)[0])}. Solo dale <strong>Enviar</strong>.</p>` : ''}
+            </div>`}
         </article>`;
     };
     cuerpo.innerHTML = `
@@ -2136,6 +2209,7 @@
   }
 
   const corto = (p) => p.numero.split('-').pop();
+  const etapaDe = (p) => (['recibido', 'pagado'].includes(p.estado) ? 'pago' : p.estado === 'preparacion' ? 'cocina' : p.estado === 'camino' ? 'entregar' : p.estado);
   window.matchMedia('(min-width: 1024px)').addEventListener('change', () => { if ($('#admin').open) pintarPanel(); });
   function textoAviso(p) {
     const nombre = p.cliente.split(/\s+/)[0];
@@ -2149,7 +2223,8 @@
     const lista = leerPedidos();
     const p = lista.find((x) => x.numero === numero);
     if (!p) return null;
-    const idx = Math.min(ESTADOS.length - 1, Math.max(0, ESTADOS.findIndex((e) => e.id === p.estado) + delta));
+    let idx = Math.min(ESTADOS.length - 1, Math.max(0, ESTADOS.findIndex((e) => e.id === p.estado) + delta));
+    if (ESTADOS[idx].id === 'pagado') idx += delta;
     p.estado = ESTADOS[idx].id;
     guardarPedidos(lista);
     pintarSeguimiento();
@@ -2387,7 +2462,7 @@
       if (b.dataset.admin === 'avanzar' && p.estado === 'camino') {
         abrirAviso(p);
         panel.aviso = '';
-      } else panel.aviso = `${p.numero}: ${nombreEstado(p, p.estado)}.`;
+      } else panel.aviso = `#${corto(p)} ${({ recibido: 'volvió a Por cobrar', preparacion: 'pasó a cocina', camino: p.entrega === 'domicilio' ? 'volvió a En camino' : 'volvió a Listo para recoger', entregado: p.entrega === 'domicilio' ? 'quedó entregado' : 'quedó recogido' })[p.estado] || nombreEstado(p, p.estado)}.`;
       return pintarPanel();
     }
     if (b.dataset.admin === 'reabrir-aviso') { abrirAviso(leerPedidos().find((x) => x.numero === b.dataset.numero)); return; }
