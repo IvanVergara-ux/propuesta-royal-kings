@@ -452,7 +452,10 @@
   }
   @media (min-width: 800px) { dialog.admin { height: 92dvh; max-height: 92dvh; margin: auto; border-radius: 20px; border: 1px solid var(--linea); } }
   .admin__cab { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 10px; padding: 14px 18px; background: var(--carbon); border-bottom: 1px solid var(--linea); }
-  .admin__marca { display: flex; align-items: center; gap: 10px; }
+  .admin__marca { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .admin__marca span { min-width: 0; }
+  .admin__marca small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 359px) { .admin__marca small { display: none; } }
   .admin__marca img { width: 38px; height: 38px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px var(--mostaza); }
   .admin__marca span { display: grid; font-size: 20px; }
   .admin__marca small { font-family: var(--texto); font-weight: 600; font-size: 11px; color: var(--gris); letter-spacing: .02em; }
@@ -610,7 +613,7 @@
   .resumen-dia strong { display: block; font-size: 20px; }
   .resumen-dia span { color: var(--gris); font-size: 13px; }
   .pedido-admin { border: 1px solid var(--linea); border-radius: 14px; margin-bottom: 10px; background: var(--brasa); overflow: hidden; }
-  .pedido-admin.estado-recibido { border-color: rgba(230,173,50,.6); }
+  .pedido-admin.estado-recibido { box-shadow: inset 3px 0 0 var(--mostaza); }
   .pedido-admin__cab { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border: 0; background: none; text-align: left; }
   .pedido-admin__cab small { display: block; color: var(--papel-suave); font-size: 13px; margin-top: 2px; }
   .chip-estado { flex: none; padding: 4px 10px; border-radius: 999px; background: var(--brasa-2); font-size: 12px; font-weight: 700; color: var(--papel); }
@@ -635,18 +638,52 @@
   .motivo { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
   .motivo input { accent-color: var(--mostaza); width: 18px; height: 18px; }
   .cancelar-pedido { display: block; width: calc(100% - 28px); margin: 0 14px 12px; height: 40px; color: var(--papel-suave); font-size: 14px; }
-  .herramientas-pedidos { display: grid; gap: 8px; margin-bottom: 12px; }
+  .herramientas-pedidos { display: grid; gap: 8px; margin-bottom: 4px; }
+  .herramientas-pedidos .boton-despacho { order: -1; margin-bottom: 4px; }
+  .herramientas-pedidos .buscador { margin-top: 0; }
+  .vistas-pedidos { display: grid; grid-template-columns: repeat(3, 1fr); margin: -4px 0 14px; border-bottom: 1px solid var(--linea); }
+  .vistas-pedidos button { padding: 10px 2px 11px; border: 0; background: none; color: var(--gris); font-weight: 600; font-size: 14.5px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .vistas-pedidos button[aria-selected="true"] { color: var(--papel); border-bottom-color: var(--mostaza); }
+  .vistas-pedidos b { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; margin-left: 2px; border-radius: 999px; background: var(--brasa-2); color: var(--papel); font-size: 12px; }
+  .flujo { display: flex; margin-bottom: 10px; filter: drop-shadow(0 0 0 transparent); }
+  .flujo button { flex: 1; min-width: 0; display: grid; justify-items: start; gap: 1px; padding: 9px 10px 9px 20px; margin-left: -8px; border: 0; background: var(--brasa); color: var(--papel-suave); text-align: left;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); }
+  .flujo button:first-child { margin-left: 0; padding-left: 12px; border-radius: 12px 0 0 12px; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); }
+  .flujo button:last-child { border-radius: 0 12px 12px 0; padding-right: 10px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%); }
+  .flujo strong { font-size: 21px; line-height: 1.1; color: var(--papel); font-variant-numeric: tabular-nums; }
+  .flujo span { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .flujo-pago strong { color: var(--mostaza); }
+  .flujo .sin strong, .flujo .sin span { color: var(--gris); opacity: .7; }
+  .flujo button[aria-pressed="true"] { background: var(--papel); }
+  .flujo button[aria-pressed="true"] strong, .flujo button[aria-pressed="true"] span { color: var(--carbon); opacity: 1; }
+  .segmentado b { font-weight: 600; color: var(--gris); margin-left: 2px; font-variant-numeric: tabular-nums; }
+  .segmentado button[aria-pressed="true"] b { color: var(--mostaza); }
+  .segmentado + .buscador { margin-top: 8px; }
+  .linea-filtro { margin: 10px 0 8px; color: var(--gris); font-size: 13px; line-height: 1.45; }
+  .linea-filtro .enlace-sutil { font-size: 13px; color: var(--mostaza); }
+  .pa-fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .pa-hora { font-size: 12.5px; color: var(--gris); white-space: nowrap; }
+  .pa-cliente { display: flex; align-items: baseline; gap: 8px; min-width: 0; margin-top: 2px; }
+  .pa-cliente strong { font-size: 16.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pa-num { flex: none; font-size: 12.5px; color: var(--gris); font-variant-numeric: tabular-nums; }
+  .pa-datos { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13.5px; color: var(--papel-suave); }
+  .pa-ver { flex: none; display: inline-flex; align-items: center; gap: 3px; color: var(--gris); font-size: 12.5px; }
+  [aria-expanded="true"] .pa-ver svg { transform: rotate(180deg); }
+  .pa-secundarias { display: flex; gap: 8px; width: 100%; }
+  .pa-secundarias .boton-sec { flex: 1; justify-content: center; height: 40px; font-size: 14px; color: var(--papel-suave); }
   .segmentado { display: grid; grid-template-columns: repeat(3, 1fr); padding: 3px; border-radius: 12px; background: var(--brasa); border: 1px solid var(--linea); }
   .segmentado button { padding: 8px 4px; border: 0; border-radius: 9px; background: none; color: var(--papel-suave); font-weight: 600; font-size: 14px; }
   .segmentado button[aria-pressed="true"] { background: var(--brasa-2); color: var(--papel); box-shadow: 0 1px 0 rgba(255,255,255,.06); }
   .buscador-sm input { padding: 9px 0; }
   .periodo { margin-top: -4px; }
   .periodo button { padding: 5px 12px; font-size: 13px; }
-  .ventas { display: grid; grid-template-columns: 1.3fr 1fr; gap: 10px; margin-bottom: 12px; }
-  .ventas div { display: grid; padding: 12px; border-radius: 12px; background: var(--brasa); border: 1px solid var(--linea); }
+  .ventas { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-bottom: 12px; border-radius: 12px; overflow: hidden; background: var(--linea); }
+  .ventas > div { display: grid; gap: 1px; padding: 12px 14px; background: var(--brasa); }
+  .ventas__total { grid-column: 1 / -1; box-shadow: inset 3px 0 0 var(--mostaza); }
+  .ventas > div:not(.ventas__total) strong { font-size: 18px; }
   .ventas span { color: var(--gris); font-size: 13px; }
-  .ventas strong { font-size: 22px; color: var(--mostaza); }
-  .ventas small { color: var(--gris); font-size: 12px; }
+  .ventas strong { font-size: 26px; color: var(--papel); font-variant-numeric: tabular-nums; }
+  .ventas small { color: var(--papel-suave); font-size: 13px; }
   .nota-orden-pedidos { margin: 0 0 8px; color: var(--gris); font-size: 12px; }
   .hace { font-style: normal; font-size: 12px; color: var(--gris); margin-left: 4px; }
   .alerta-pago { margin: 0 14px 10px; padding: 8px 10px; border-radius: 10px; background: var(--brasa-2); border-left: 3px solid #b8743a; color: var(--papel-suave); font-size: 13px; }
@@ -661,13 +698,132 @@
   .pedido-admin__acciones .agregar { flex: 1; justify-content: center; }
   .aviso-alterno { margin: 0; padding: 0 14px 12px; color: var(--papel-suave); font-size: 13px; }
   .aviso-alterno p { margin: 0; }
+  .ancho-total { width: 100%; height: 40px; justify-content: center; }
   .aviso-alterno .acciones-2 { margin-top: 8px; }
-  .resumen-3 { grid-template-columns: repeat(3, 1fr); }
-  .resumen-3 div { padding: 10px; }
-  .resumen-3 strong { font-size: 22px; }
-  .resumen-3 .r-pago strong { color: var(--mostaza); }
-  .resumen-3 .r-camino strong { color: #8fd6a2; }
+
+
+  /* Historial (entregados y cancelados) */
+  .historial { border-radius: 12px; border: 1px solid var(--linea); overflow: hidden; background: var(--brasa); }
+  .hist-cab { display: none; }
+  .fila-hist + .fila-hist { border-top: 1px solid var(--linea); }
+  .fila-hist__main { width: 100%; display: grid; grid-template-columns: auto 1fr auto auto; grid-template-areas: "id cli total flecha" "id cli hora flecha"; align-items: center; column-gap: 12px; padding: 12px 14px; border: 0; background: none; color: var(--papel); text-align: left; }
+  .fila-hist__main:hover { background: rgba(255,255,255,.03); }
+  .fila-hist .pa-id { grid-area: id; font-size: 20px; min-width: 42px; }
+  .fh-cliente { grid-area: cli; display: grid; min-width: 0; }
+  .fh-cliente strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fh-cliente small { color: var(--gris); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fh-col { display: none; }
+  .fh-hora { grid-area: hora; justify-self: end; color: var(--gris); font-size: 12.5px; white-space: nowrap; }
+  .fh-total { grid-area: total; justify-self: end; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .fh-flecha { grid-area: flecha; color: var(--gris); transition: transform .15s; }
+  .abierta .fh-flecha { transform: rotate(180deg); }
+  .fila-hist.estado-cancelado .fh-total { color: var(--gris); text-decoration: line-through; font-weight: 600; }
+  .fila-hist.estado-cancelado .pa-id { color: var(--gris); }
+  .fila-hist__detalle { padding: 0 0 14px; background: rgba(255,255,255,.02); }
+  .fila-hist__detalle .pedido-admin__detalle { padding-top: 4px; }
+  .fh-deshacer { margin: 6px 14px 0; height: 38px; color: var(--papel-suave); }
+  .fila-hist .confirmar-paso { margin-top: 8px; }
+  /* Número de pedido, salida del domiciliario y tablero */
+  .pa-id { flex: none; font-family: var(--display); font-weight: 900; font-size: 22px; line-height: 1; color: var(--mostaza); font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+  .pa-cliente { align-items: center; gap: 10px; }
+  .pa-codigo { color: var(--gris); font-size: 12.5px; }
+  .estado-cancelado .pa-id { font-size: 18px; color: var(--gris); }
+  .boton-despacho { width: 100%; display: flex; align-items: center; gap: 12px; margin: 0 0 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(230,173,50,.45); background: rgba(230,173,50,.08); color: var(--mostaza); text-align: left; }
+  .boton-despacho span { display: grid; gap: 1px; }
+  .boton-despacho strong { color: var(--papel); font-size: 15.5px; }
+  .boton-despacho small { color: var(--papel-suave); font-size: 13px; }
+  .boton-despacho:hover { background: rgba(230,173,50,.14); }
+  .despacho-cab { margin-bottom: 12px; }
+  .despacho-cab h3 { margin: 0 0 4px; font-size: 18px; }
+  .despacho-cab p { margin: 0 0 6px; color: var(--papel-suave); font-size: 14px; }
+  .despacho-cab .enlace-sutil { color: var(--mostaza); font-size: 14px; padding: 0; }
+  .elegible { display: grid; grid-template-columns: auto auto 1fr auto; align-items: center; gap: 12px; padding: 14px; cursor: pointer; }
+  .elegible input { width: 22px; height: 22px; accent-color: var(--mostaza); margin: 0; }
+  .elegible__txt { display: grid; min-width: 0; }
+  .elegible__txt strong { font-size: 16px; }
+  .elegible__txt small { color: var(--gris); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .elegible__total { color: var(--papel-suave); font-size: 14px; font-variant-numeric: tabular-nums; }
+  .elegible.elegido { border-color: var(--mostaza); background: rgba(230,173,50,.07); }
+  .barra-despacho { position: sticky; bottom: 0; z-index: 2; display: grid; grid-template-columns: auto 1fr; gap: 8px; margin: 12px -16px 0; padding: 12px 16px; background: var(--carbon); border-top: 1px solid var(--linea); }
+  .barra-despacho .boton-sec { height: 46px; }
+  .barra-despacho .agregar { justify-content: center; height: 46px; }
+  .barra-despacho .agregar:disabled { background: var(--brasa-2); color: var(--gris); }
+  .ronda { margin-bottom: 14px; padding: 14px; border-radius: 12px; background: var(--brasa); border-left: 3px solid var(--verde); }
+  .ronda__cab { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .ronda h3 { margin: 0; font-size: 17px; }
+  .ronda h3 span { color: var(--gris); font-weight: 600; font-size: 14px; margin-left: 4px; }
+  .ronda > p { margin: 4px 0 10px; color: var(--papel-suave); font-size: 14px; }
+  .ronda ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .ronda li { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 6px 6px 10px; border-radius: 10px; background: var(--brasa-2); }
+  .ronda__cliente { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ronda li .agregar, .ronda li .boton-sec { flex: none; height: 38px; padding: 0 18px; }
+  .ronda li.hecho { background: none; }
+  .ronda li.hecho .pa-id, .ronda li.hecho .ronda__cliente { opacity: .55; }
+  .ronda__ok { display: inline-flex; align-items: center; gap: 4px; color: #8fd6a2; font-size: 13.5px; font-weight: 600; }
+  .ronda li .enlace-sutil { font-size: 13px; }
+
+  @media (min-width: 1024px) {
+    dialog.admin, dialog.admin[open] { width: 100vw; max-width: none; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; border: 0;
+      display: grid; grid-template-columns: 220px 1fr; grid-template-rows: auto 1fr; }
+    .admin__cab { grid-column: 1 / -1; padding: 12px 28px; }
+    .admin__nav[hidden] + * { }
+    .admin__nav { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: 4px; padding: 18px 12px; border-top: 0; border-right: 1px solid var(--linea); order: -1; }
+    .admin__nav button { grid-template-columns: 22px 1fr auto; justify-items: start; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; font-size: 15px; }
+    .admin__nav button:hover { background: var(--brasa); color: var(--papel); }
+    .admin__nav button[aria-current="true"] { background: var(--brasa); }
+    .admin__nav button[aria-current="true"]::before { top: 10px; bottom: 10px; left: 0; right: auto; width: 3px; height: auto; border-radius: 0 3px 3px 0; }
+    .admin__nav .conteo { position: static; }
+    .admin__cuerpo { grid-column: 2; grid-row: 2; padding: 24px 32px 48px; }
+    .admin__nav[hidden] ~ .admin__cuerpo, .admin__cuerpo:has(#form-login) { grid-column: 1 / -1; }
+    .admin__cuerpo > * { max-width: 760px; }
+    .admin__cuerpo:has(.vistas-pedidos) > *, .admin__cuerpo:has(.lista-productos) > * { max-width: none; }
+    .admin__cuerpo > .vistas-pedidos { max-width: 520px; }
+    .admin__cuerpo:has(.vistas-pedidos) > .pedido-admin, .admin__cuerpo > .despacho-cab, .admin__cuerpo > .barra-despacho, .admin__cuerpo > .ventas, .admin__cuerpo > .linea-filtro, .admin__cuerpo > .periodo, .admin__cuerpo > .vacio { max-width: 760px; }
+    .admin__cuerpo > .ronda { max-width: 760px; }
+    .herramientas-pedidos { display: flex; align-items: center; gap: 12px; }
+    .herramientas-pedidos .segmentado { flex: 0 1 400px; }
+    .herramientas-pedidos .buscador { flex: 0 1 360px; margin: 0 !important; height: 44px; }
+    .herramientas-pedidos .boton-despacho { order: 3; width: auto; margin: 0 0 0 auto; padding: 8px 14px; }
+    .lista-productos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .admin__cuerpo:has(.lista-productos) > .buscador, .admin__cuerpo:has(.lista-productos) > .admin__barra { max-width: 760px; }
+    .barra-despacho { margin: 12px 0 0; border-radius: 12px; border: 1px solid var(--linea); }
+    .historial { max-width: none !important; }
+    .hist-cab { display: grid; grid-template-columns: 70px minmax(160px, 1.6fr) 1fr 1.2fr 1fr 120px 24px; column-gap: 16px; padding: 10px 18px; border-bottom: 1px solid var(--linea); color: var(--gris); font-size: 12.5px; font-weight: 600; }
+    .hist-cab span:nth-child(6) { text-align: right; }
+    .fila-hist__main { grid-template-columns: 70px minmax(160px, 1.6fr) 1fr 1.2fr 1fr 120px 24px; grid-template-areas: none; column-gap: 16px; padding: 12px 18px; }
+    .fila-hist__main > * { grid-area: auto !important; }
+    .fh-col { display: block; font-size: 14px; color: var(--papel-suave); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fh-cliente small { display: none; }
+    .fh-hora { justify-self: start; font-size: 14px; color: var(--papel-suave); }
+    .fila-hist__detalle { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 16px; padding: 4px 18px 16px 104px; }
+    .fila-hist__detalle .pedido-admin__detalle { padding: 0; max-width: 520px; }
+    .fh-deshacer { margin: 0; }
+    .ventas { grid-template-columns: 1.4fr 1fr 1fr; max-width: none !important; }
+    .ventas__total { grid-column: auto; }
+    .ventas > div { padding: 16px 20px; }
+    .ventas strong { font-size: 26px !important; }
+    .admin__cuerpo > .periodo { max-width: none !important; }
+    .horario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; max-width: 1100px !important; }
+    .horario-grid .tarjeta-hoy { grid-column: 1 / -1; }
+    .horario-grid .tarjeta-admin { margin: 0; }
+    .admin__cuerpo:has(.horario-grid) > .aviso-ok { max-width: 1100px; }
+    .admin__cuerpo:has(#form-producto) > * { margin-inline: auto; }
+    .encuadre:not([hidden]) { grid-template-columns: 280px 1fr; column-gap: 24px; align-items: start; }
+    .encuadre > :not(.encuadre__original):not(.encuadre__previas) { grid-column: 1 / -1; }
+    .encuadre__previas { flex-direction: column; align-items: flex-start; }
+    .encuadre__marco--ancho { width: 220px; height: 136px; }
+    .encuadre__marco:not(.encuadre__marco--ancho) { width: 110px; height: 110px; }
+    .tablero { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+    .columna { min-height: 200px; padding: 12px; border-radius: 14px; background: rgba(255,255,255,.025); border: 1px solid var(--linea); }
+    .columna h3 { display: flex; align-items: center; gap: 8px; margin: 2px 4px 12px; font-size: 16px; }
+    .columna h3 b { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 7px; border-radius: 999px; background: var(--brasa-2); font-size: 13px; }
+    .columna-pago h3 b { background: rgba(230,173,50,.2); color: var(--mostaza); }
+    .columna-vacia { margin: 20px 4px; color: var(--gris); font-size: 14px; }
+    .columna .pedido-admin { margin-bottom: 10px; }
+    .item-admin { grid-template-columns: 64px 1fr auto; }
+  }
   .pedido-admin__tit { display: grid; gap: 4px; min-width: 0; }
+  .pedido-admin__cab:has(.pa-fila) { display: grid; gap: 4px; justify-content: stretch; }
   .tipo-entrega { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 3px 10px 3px 8px; border-radius: 999px; font-size: 13px; font-weight: 800; }
   .tipo-entrega.es-domicilio { background: rgba(230,173,50,.18); color: var(--mostaza); }
   .tipo-entrega.es-recoger { background: rgba(120,160,255,.16); color: #a9c1ff; }
@@ -1864,66 +2020,106 @@
     const q = (panel.buscarPedido || '').trim().toLowerCase();
     const periodo = panel.periodo || 'hoy';
     const desde = periodo === 'hoy' ? new Date(new Date().setHours(0, 0, 0, 0)) : periodo === '7d' ? new Date(Date.now() - 7 * 864e5) : new Date(0);
-    let lista = todos.filter((p) => (vista === 'entregados' ? p.estado === 'entregado' : vista === 'cancelados' ? p.estado === 'cancelado' : !['entregado', 'cancelado'].includes(p.estado)));
-    if (vista !== 'curso') lista = lista.filter((p) => new Date(p.fecha) >= desde);
-    const totalVista = lista.length;
-    if (tipo !== 'todos') lista = lista.filter((p) => p.entrega === tipo);
+    const ETAPAS = [['pago', 'Por cobrar', ['recibido']], ['cocina', 'En cocina', ['pagado', 'preparacion']], ['entregar', 'Por entregar', ['camino']]];
+    if (vista !== 'curso') panel.etapa = null;
+    const etapa = ETAPAS.find((e) => e[0] === panel.etapa);
+    let base = todos.filter((p) => (vista === 'entregados' ? p.estado === 'entregado' : vista === 'cancelados' ? p.estado === 'cancelado' : !['entregado', 'cancelado'].includes(p.estado)));
+    if (vista !== 'curso') base = base.filter((p) => new Date(p.fecha) >= desde);
+    const deTipo = (l, t) => (t === 'todos' ? l : l.filter((p) => p.entrega === t));
+    const deEtapa = (l, e) => (e ? l.filter((p) => e[2].includes(p.estado)) : l);
+    const totalVista = base.length;
+    const enCurso = todos.filter((p) => !['entregado', 'cancelado'].includes(p.estado)).length;
+    let lista = deEtapa(deTipo(base, tipo), etapa);
     if (q) lista = lista.filter((p) => p.numero.toLowerCase().includes(q) || p.cliente.toLowerCase().includes(q));
-    if (vista === 'curso') lista = [...lista].sort((a, b) => a.fecha.localeCompare(b.fecha));
+    lista = [...lista].sort((a, b) => (vista === 'curso' ? a.fecha.localeCompare(b.fecha) : b.fecha.localeCompare(a.fecha)));
     const ventas = lista.reduce((t, p) => t + p.total, 0);
     const nDom = lista.filter((p) => p.entrega === 'domicilio').length;
-    const cuenta = (ids) => todos.filter((p) => ids.includes(p.estado)).length;
-    cuerpo.innerHTML = `
-      ${pestanas}
-      <div class="resumen-dia resumen-3" ${vista === 'curso' ? '' : 'hidden'}>
-        <div class="r-pago"><strong>${cuenta(['recibido'])}</strong><span>Esperan pago</span></div>
-        <div class="r-cocina"><strong>${cuenta(['pagado', 'preparacion'])}</strong><span>En cocina</span></div>
-        <div class="r-camino"><strong>${cuenta(['camino'])}</strong><span>Por entregar</span></div>
-      </div>
-      <div class="filtros" role="group" aria-label="Ver pedidos">
-        <button type="button" data-admin="ver-pedidos" data-vista="curso" aria-pressed="${vista === 'curso'}">En curso</button>
-        <button type="button" data-admin="ver-pedidos" data-vista="entregados" aria-pressed="${vista === 'entregados'}">Entregados</button>
-        <button type="button" data-admin="ver-pedidos" data-vista="cancelados" aria-pressed="${vista === 'cancelados'}">Cancelados</button>
-      </div>
-      ${vista !== 'curso' ? `<div class="filtros periodo" role="group" aria-label="Periodo">
-          ${[['hoy', 'Hoy'], ['7d', 'Últimos 7 días'], ['todo', 'Todo']].map(([v, t]) => `<button type="button" data-admin="periodo" data-valor="${v}" aria-pressed="${periodo === v}">${t}</button>`).join('')}
-        </div>` : ''}
-      ${vista === 'entregados' ? `<div class="ventas">
-          <div><span>Vendido por la página</span><strong>${pesos(ventas)}</strong></div>
-          <div><span>Pedidos</span><strong>${lista.length}</strong><small>${nDom} domicilio · ${lista.length - nDom} recoger</small></div>
-        </div>` : ''}
-      ${totalVista > 1 || tipo !== 'todos' || q ? `<div class="herramientas-pedidos">
-          <div class="segmentado" role="group" aria-label="Tipo de entrega">
-            ${[['todos', 'Todos'], ['domicilio', 'Domicilio'], ['recoger', 'Recoger']].map(([v, t]) => `<button type="button" data-admin="tipo-entrega" data-valor="${v}" aria-pressed="${tipo === v}">${t}</button>`).join('')}
-          </div>
-          <label class="buscador buscador-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-            <input type="search" id="buscar-pedido" placeholder="Nombre o número" value="${escapar(panel.buscarPedido || '')}" aria-label="Buscar pedido"></label>
-        </div>` : ''}
-      ${vista === 'curso' && lista.length > 1 ? '<p class="nota-orden-pedidos">Los más antiguos van primero.</p>' : ''}
-      <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
-      ${lista.length ? lista.map((p) => {
+    const conTipo = deEtapa(base, etapa);
+    const nTipo = { todos: conTipo.length, domicilio: deTipo(conTipo, 'domicilio').length, recoger: deTipo(conTipo, 'recoger').length };
+    const conEtapa = deTipo(base, tipo);
+    const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+    const descFiltro = [etapa ? etapa[1].toLowerCase() : '', tipo === 'domicilio' ? 'a domicilio' : tipo === 'recoger' ? 'para recoger' : ''].filter(Boolean).join(' ');
+    const hayFiltro = etapa || tipo !== 'todos' || q;
+    const esPC = window.matchMedia('(min-width: 1024px)').matches;
+    const listos = todos.filter((p) => p.entrega === 'domicilio' && p.estado === 'preparacion').sort((a, b) => a.fecha.localeCompare(b.fecha));
+    if (panel.despacho) { panel.despacho = panel.despacho.filter((n) => listos.some((p) => p.numero === n)); if (vista !== 'curso' || !listos.length) panel.despacho = null; }
+    if (panel.despacho) { lista = listos; }
+    const tablero = vista === 'curso' && esPC && !panel.despacho && !etapa;
+    const rondaHtml = () => {
+      const ronda = (panel.ronda || []).map((n) => todos.find((p) => p.numero === n)).filter((p) => p && p.estado === 'camino');
+      if (!ronda.length || vista !== 'curso') return '';
+      const hechos = ronda.filter((p) => p.avisado).length;
+      const siguiente = ronda.find((p) => !p.avisado);
+      return `<section class="ronda" aria-label="Avisos de la salida">
+        <div class="ronda__cab"><h3>${hechos === ronda.length ? 'Todos avisados' : `Avisa a cada cliente <span>${hechos} de ${ronda.length}</span>`}</h3>
+          <button type="button" class="enlace-sutil" data-admin="cerrar-ronda">${hechos === ronda.length ? 'Listo' : 'Ocultar'}</button></div>
+        ${hechos < ronda.length ? '<p>Toca <strong>Avisar</strong>, dale <strong>Enviar</strong> en WhatsApp y vuelve aquí para el siguiente.</p>' : '<p>Los pedidos quedaron en «Por entregar». Márcalos como entregados cuando el domiciliario vuelva.</p>'}
+        <ol>${ronda.map((p) => `<li class="${p.avisado ? 'hecho' : ''}"><span class="pa-id">#${escapar(corto(p))}</span><span class="ronda__cliente">${escapar(p.cliente)}</span>
+          ${p.avisado ? `<span class="ronda__ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Avisado</span><button type="button" class="enlace-sutil" data-admin="avisar-ronda" data-numero="${escapar(p.numero)}">Otra vez</button>`
+            : `<button type="button" class="${p === siguiente ? 'agregar' : 'boton-sec'}" data-admin="avisar-ronda" data-numero="${escapar(p.numero)}">Avisar</button>`}</li>`).join('')}</ol>
+      </section>`;
+    };
+    const tarjeta = (p) => {
         const idx = ESTADOS.findIndex((e) => e.id === p.estado);
         const sig = ESTADOS[idx + 1];
         const hora = new Date(p.fecha).toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' });
         const abierto = panel.abierto === p.numero;
         const minutos = Math.round((Date.now() - new Date(p.fecha).getTime()) / 60000);
+        if (panel.despacho) return `
+        <label class="pedido-admin elegible ${panel.despacho.includes(p.numero) ? 'elegido' : ''}">
+          <input type="checkbox" data-despacho="${escapar(p.numero)}" ${panel.despacho.includes(p.numero) ? 'checked' : ''}>
+          <span class="pa-id">#${escapar(corto(p))}</span>
+          <span class="elegible__txt"><strong>${escapar(p.cliente)}</strong><small>${escapar(p.dir || 'Sin dirección')}</small></span>
+          <span class="elegible__total">${pesos(p.total)}</span>
+        </label>`;
+        if (['entregado', 'cancelado'].includes(p.estado)) {
+          const f = new Date(p.fecha);
+          const esHoy = f.toDateString() === new Date().toDateString();
+          const cuando = (esHoy ? '' : f.toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) + ', ') + hora;
+          const tipoTxt = p.entrega === 'domicilio' ? 'Domicilio' : 'Recoger';
+          return `
+        <article class="fila-hist estado-${p.estado} ${abierto ? 'abierta' : ''}">
+          <button type="button" class="fila-hist__main" data-admin="abrir-pedido" data-numero="${escapar(p.numero)}" aria-expanded="${abierto}">
+            <span class="pa-id">#${escapar(corto(p))}</span>
+            <span class="fh-cliente"><strong>${escapar(p.cliente)}</strong><small>${tipoTxt} · ${escapar(p.pago)}${p.estado === 'cancelado' && p.motivoCancel ? ' · ' + escapar(p.motivoCancel) : ''}</small></span>
+            <span class="fh-col fh-tipo"><span class="tipo-entrega ${p.entrega === 'domicilio' ? 'es-domicilio' : 'es-recoger'}">${tipoTxt}</span></span>
+            <span class="fh-col fh-pago">${p.estado === 'cancelado' ? escapar(p.motivoCancel || 'Cancelado') : escapar(p.pago)}</span>
+            <span class="fh-hora">${cuando}</span>
+            <span class="fh-total">${pesos(p.total)}</span>
+            <svg class="fh-flecha" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          ${abierto ? `<div class="fila-hist__detalle">
+            <div class="pedido-admin__detalle">
+              <p class="pa-codigo">Pedido ${escapar(p.numero)}</p>
+              <ul>${p.lineas.map((l) => `<li>${l.cantidad} × ${escapar(l.nombre)} <span>${pesos(l.precio * l.cantidad)}</span>${l.nota ? `<small>Nota: ${escapar(l.nota)}</small>` : ''}</li>`).join('')}</ul>
+              ${p.dir ? `<p>Dirección: ${escapar(p.dir)}</p>` : ''}
+              <p>Celular: ${escapar(p.tel.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3'))}</p>
+            </div>
+            ${p.estado === 'entregado' ? (panel.confirmar?.numero === p.numero ? `<div class="confirmar-paso"><p>¿Devolver el pedido a <strong>${escapar(nombreEstado(p, 'camino'))}</strong>?</p>
+                <div class="acciones-2"><button type="button" class="boton-sec" data-admin="cancelar-paso">No</button><button type="button" class="agregar" data-admin="retroceder" data-numero="${escapar(p.numero)}" data-ok="1">Sí, devolver</button></div></div>`
+              : `<button type="button" class="boton-sec fh-deshacer" data-admin="retroceder" data-numero="${escapar(p.numero)}">Deshacer: no se ha ${p.entrega === 'domicilio' ? 'entregado' : 'recogido'}</button>`) : ''}
+          </div>` : ''}
+        </article>`;
+        }
         if (p.estado === 'cancelado') return `
         <article class="pedido-admin estado-cancelado">
-          <div class="pedido-admin__cab"><span class="pedido-admin__tit"><span><strong>${escapar(p.numero)}</strong> · ${hora}</span>
+          <div class="pedido-admin__cab"><span class="pedido-admin__tit"><span><strong class="pa-id">#${escapar(corto(p))}</strong> · ${hora}</span>
             <small>${escapar(p.cliente)} · ${pesos(p.total)}${p.motivoCancel ? ` · ${escapar(p.motivoCancel)}` : ''}</small></span>
             <span class="chip-estado">Cancelado</span></div>
         </article>`;
         return `
         <article class="pedido-admin estado-${p.estado}">
           <button type="button" class="pedido-admin__cab" data-admin="abrir-pedido" data-numero="${escapar(p.numero)}" aria-expanded="${abierto}">
-            <span class="pedido-admin__tit">
+            <span class="pa-fila">
               <span class="tipo-entrega ${p.entrega === 'domicilio' ? 'es-domicilio' : 'es-recoger'}">${p.entrega === 'domicilio' ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h7l2-6h-4l-2-4H8"/><path d="M15 7h3"/></svg>Domicilio' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Recoger en el local'}</span>
-              <span><strong>${escapar(p.numero)}</strong> · ${hora}${p.estado !== 'entregado' ? ` <em class="hace">hace ${minutos < 60 ? minutos + ' min' : Math.floor(minutos / 60) + ' h'}</em>` : ''}</span>
-              <small>${escapar(p.cliente)} · ${pesos(p.total)} · ${escapar(p.pago)}</small>
+              <span class="pa-hora">${p.estado === 'entregado' ? hora : minutos < 1 ? 'Recién llegó' : `Hace ${minutos < 60 ? minutos + ' min' : Math.floor(minutos / 60) + ' h ' + (minutos % 60 ? (minutos % 60) + ' min' : '')}`}</span>
             </span>
-            <span class="chip-estado">${escapar(nombreEstado(p, p.estado))}</span>
+            <span class="pa-cliente"><span class="pa-id">#${escapar(corto(p))}</span><strong>${escapar(p.cliente)}</strong></span>
+            <span class="pa-datos"><span>${pesos(p.total)} · ${escapar(p.pago)}${p.estado !== 'entregado' ? ' · ' + hora : ''}</span>
+              <span class="pa-ver">${abierto ? 'Ocultar' : 'Ver pedido'}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></span>
           </button>
           ${abierto ? `<div class="pedido-admin__detalle">
+            <p class="pa-codigo">Pedido ${escapar(p.numero)}</p>
             <ul>${p.lineas.map((l) => `<li>${l.cantidad} × ${escapar(l.nombre)} <span>${pesos(l.precio * l.cantidad)}</span>${l.nota ? `<small>Nota: ${escapar(l.nota)}</small>` : ''}</li>`).join('')}</ul>
             <p>Pago: <strong>${escapar(p.pago)}</strong>${p.dom ? ' · Domicilio ' + pesos(p.dom) : ''}${p.recargo ? ' · Recargo ' + pesos(p.recargo) : ''}</p>
             ${p.dir ? `<p>Dirección: ${escapar(p.dir)}</p>` : ''}
@@ -1952,22 +2148,69 @@
               ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2z"/></svg>Avisar: va en camino'
               : sig.id === 'camino' ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2z"/></svg>Avisar: listo para recoger'
               : sig.id === 'pagado' ? 'Confirmar pago recibido' : sig.id === 'preparacion' ? 'Pasar a cocina' : sig.id === 'entregado' ? (p.entrega === 'domicilio' ? 'Marcar entregado' : 'Marcar recogido') : `Marcar: ${escapar(nombreEstado(p, sig.id))}`}</button>` : ''}
-            ${idx > 0 ? `<button type="button" class="boton-sec" data-admin="retroceder" data-numero="${escapar(p.numero)}">Deshacer</button>` : ''}
+            ${idx > 0 || !['camino', 'entregado'].includes(p.estado) ? `<div class="pa-secundarias">
+              ${idx > 0 ? `<button type="button" class="boton-sec" data-admin="retroceder" data-numero="${escapar(p.numero)}">Deshacer</button>` : ''}
+              ${!['camino', 'entregado'].includes(p.estado) ? `<button type="button" class="boton-sec" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
+            </div>` : ''}
           </div>`}
-          ${!['camino', 'entregado'].includes(p.estado) && panel.cancelando !== p.numero && panel.confirmar?.numero !== p.numero ? `<button type="button" class="boton-sec cancelar-pedido" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
           ${sig?.id === 'camino' && panel.cancelando !== p.numero && panel.confirmar?.numero !== p.numero ? `<p class="aviso-alterno">Al tocarlo se abre WhatsApp con el mensaje listo para ${escapar(p.cliente.split(/\s+/)[0])}. Solo dale <strong>Enviar</strong>.</p>` : ''}
-          ${p.estado === 'camino' ? `<div class="aviso-alterno">
-              <p>Se abrió WhatsApp con el aviso. Si no se abrió el chat del cliente, puede que haya escrito mal su número. Como su pedido te llegó por WhatsApp, busca <strong>${escapar(p.numero)}</strong> en tus chats, entra a esa conversación y pega el aviso.</p>
+          ${p.estado === 'camino' ? (p.avisado === false ? `<div class="aviso-alterno"><button type="button" class="boton-sec ancho-total" data-admin="avisar-ronda" data-numero="${escapar(p.numero)}">Avisar al cliente por WhatsApp</button></div>` : `<div class="aviso-alterno">
+              <p>¿No se abrió el chat del cliente? Busca <strong>${escapar(p.numero)}</strong> en tus chats de WhatsApp y pega el aviso ahí.</p>
               <div class="acciones-2">
                 <button type="button" class="boton-sec" data-admin="reabrir-aviso" data-numero="${escapar(p.numero)}">Abrir de nuevo</button>
                 <button type="button" class="boton-sec" data-admin="copiar-aviso" data-numero="${escapar(p.numero)}">Copiar mensaje</button>
               </div>
-            </div>` : ''}
+            </div>`) : ''}
         </article>`;
-      }).join('') : (tipo !== 'todos' || q) ? '<p class="vacio" style="text-align:left">No hay pedidos con ese filtro.</p>' : `<p class="vacio" style="text-align:left">${vista === 'entregados' ? 'Todavía no hay pedidos entregados.' : vista === 'cancelados' ? 'No hay pedidos cancelados.' : 'No hay pedidos en curso. Los pedidos que hagan los clientes por la página aparecen aquí.'}</p>`}
+    };
+    cuerpo.innerHTML = `
+      ${pestanas}
+      <div class="vistas-pedidos" role="tablist" aria-label="Pedidos">
+        ${[['curso', 'En curso', enCurso], ['entregados', 'Entregados'], ['cancelados', 'Cancelados']].map(([v, t, n]) => `<button type="button" role="tab" data-admin="ver-pedidos" data-vista="${v}" aria-selected="${vista === v}">${t}${n ? ` <b>${n}</b>` : ''}</button>`).join('')}
+      </div>
+      ${panel.despacho ? '' : rondaHtml()}
+      ${panel.despacho ? `<div class="despacho-cab">
+          <h3>¿Qué pedidos se lleva el domiciliario?</h3>
+          <p>Están listos en cocina. Marca los que salen ahora; los demás se quedan como están.</p>
+          <button type="button" class="enlace-sutil" data-admin="despacho-todos">${panel.despacho.length === listos.length ? 'Quitar todos' : 'Marcar todos'}</button>
+        </div>` : ''}
+      ${vista === 'curso' && totalVista && !panel.despacho && !esPC ? `<div class="flujo" role="group" aria-label="Filtrar por paso">
+          ${ETAPAS.map((e) => { const n = deEtapa(conEtapa, e).length; return `<button type="button" data-admin="etapa" data-valor="${e[0]}" aria-pressed="${panel.etapa === e[0]}" class="${n ? '' : 'sin'} flujo-${e[0]}"><strong>${n}</strong><span>${e[1]}</span></button>`; }).join('')}
+        </div>` : ''}
+      ${vista !== 'curso' ? `<div class="filtros periodo" role="group" aria-label="Periodo">
+          ${[['hoy', 'Hoy'], ['7d', 'Últimos 7 días'], ['todo', 'Todo']].map(([v, t]) => `<button type="button" data-admin="periodo" data-valor="${v}" aria-pressed="${periodo === v}">${t}</button>`).join('')}
+        </div>` : ''}
+      ${vista === 'entregados' && totalVista ? `<div class="ventas">
+          <div class="ventas__total"><span>Vendido por la página</span><strong>${pesos(ventas)}</strong><small>${plural(lista.length, 'pedido entregado', 'pedidos entregados')}</small></div>
+          <div><span>A domicilio</span><strong>${pesos(lista.filter((p) => p.entrega === 'domicilio').reduce((t, p) => t + p.total, 0))}</strong><small>${plural(nDom, 'pedido', 'pedidos')}</small></div>
+          <div><span>Para recoger</span><strong>${pesos(lista.filter((p) => p.entrega === 'recoger').reduce((t, p) => t + p.total, 0))}</strong><small>${plural(lista.length - nDom, 'pedido', 'pedidos')}</small></div>
+        </div>` : ''}
+      <div class="herramientas-pedidos">
+      ${vista === 'curso' && listos.length >= 2 && !panel.despacho ? `<button type="button" class="boton-despacho" data-admin="despacho-iniciar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h7l2-6h-4l-2-4H8"/><path d="M15 7h3"/></svg>
+          <span><strong>Sale el domiciliario</strong><small>${listos.length} domicilios listos en cocina. Elige cuáles salen y avisa a todos.</small></span></button>` : ''}
+      ${totalVista && !panel.despacho ? `<div class="segmentado" role="group" aria-label="Tipo de entrega">
+          ${[['todos', 'Todos'], ['domicilio', 'Domicilio'], ['recoger', 'Recoger']].map(([v, t]) => `<button type="button" data-admin="tipo-entrega" data-valor="${v}" aria-pressed="${tipo === v}">${t} <b>${nTipo[v]}</b></button>`).join('')}
+        </div>` : ''}
+      ${(totalVista > 3 || q) && !panel.despacho ? `<label class="buscador buscador-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input type="search" id="buscar-pedido" placeholder="Buscar cliente o número, ej. 06" value="${escapar(panel.buscarPedido || '')}" aria-label="Buscar por nombre del cliente o número de pedido"></label>` : ''}
+      </div>
+      ${panel.despacho || tablero ? '' : totalVista && hayFiltro ? `<p class="linea-filtro">${lista.length ? `${plural(lista.length, 'pedido', 'pedidos')} ${descFiltro}` : 'Ningún pedido con ese filtro'}${vista === 'curso' && lista.length > 1 ? ', el más antiguo arriba' : ''}. <button type="button" class="enlace-sutil" data-admin="quitar-filtros">Ver todos</button></p>`
+        : vista === 'curso' && lista.length > 1 ? '<p class="linea-filtro">El más antiguo va arriba.</p>' : ''}
+      <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
+      ${tablero ? `<div class="tablero">${ETAPAS.map((e) => { const l = deEtapa(lista, e); return `<section class="columna columna-${e[0]}"><h3>${e[1]} <b>${l.length}</b></h3>${l.length ? l.map(tarjeta).join('') : '<p class="columna-vacia">Nada por ahora.</p>'}</section>`; }).join('')}</div>`
+        : lista.length ? (vista === 'curso' ? lista.map(tarjeta).join('') : `<div class="historial">
+            <div class="hist-cab" aria-hidden="true"><span>Pedido</span><span>Cliente</span><span>Entrega</span><span>${vista === 'cancelados' ? 'Motivo' : 'Pago'}</span><span>Hora</span><span>Total</span><span></span></div>
+            ${lista.map(tarjeta).join('')}</div>`) : hayFiltro && totalVista ? '' : `<p class="vacio" style="text-align:left">${vista === 'entregados' ? 'Todavía no hay pedidos entregados.' : vista === 'cancelados' ? 'No hay pedidos cancelados.' : 'No hay pedidos en curso. Los pedidos que hagan los clientes por la página aparecen aquí.'}</p>`}
+      ${panel.despacho ? `<div class="barra-despacho">
+          <button type="button" class="boton-sec" data-admin="despacho-cancelar">Cancelar</button>
+          <button type="button" class="agregar" data-admin="despacho-salen" ${panel.despacho.length ? '' : 'disabled'}>${panel.despacho.length ? `Salen ${panel.despacho.length} · avisar a cada uno` : 'Marca al menos uno'}</button>
+        </div>` : ''}
       <div class="demo-zona"><span>Solo en la demo</span><button type="button" class="enlace-sutil" data-admin="pedido-prueba">Crear un pedido de prueba</button></div>`;
   }
 
+  const corto = (p) => p.numero.split('-').pop();
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', () => { if ($('#admin').open) pintarPanel(); });
   function textoAviso(p) {
     const nombre = p.cliente.split(/\s+/)[0];
     return p.entrega === 'domicilio'
@@ -2001,7 +2244,7 @@
     const etiquetaHoy = minAhora < aMinutos(horasHoy.abre) ? 'Hoy abrimos' : minAhora < aMinutos(horasHoy.cierra) ? 'Abierto ahora' : 'Ya cerramos por hoy';
     cuerpo.innerHTML = `
       <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
-
+      <div class="horario-grid">
       <section class="tarjeta-admin tarjeta-hoy ${abreHoy ? 'es-abierto' : 'es-cerrado'}">
         <p class="tarjeta-admin__eti">Hoy · ${fechaLarga(hoyISO)}</p>
         <p class="hoy-estado">${abreHoy ? `${etiquetaHoy} <span>de <i class="sin-corte">${horaLegible(horasHoy.abre)}</i> a <i class="sin-corte">${horaLegible(horasHoy.cierra)}</i></span>` : 'Hoy no abrimos'}</p>
@@ -2059,7 +2302,8 @@
           <li><span>Lunes a miércoles</span><span class="cerrado-txt">Cerrado</span></li>
         </ul>
         <p class="tarjeta-admin__vacio">Próximos festivos (automáticos): ${festivos.map((f) => fechaLarga(f)).join(', ')}.</p>
-      </section>`;
+      </section>
+      </div>`;
   }
 
   function cambiarHorario(fn, aviso) {
@@ -2185,6 +2429,28 @@
       panel.seccion = b.dataset.seccion; panel.aviso = ''; panel.vista = 'lista'; panel.editando = null; panel.hoyModo = null; panel.formDia = false;
       pintarPanel(); $('#admin-cuerpo').scrollTop = 0; $('#admin').scrollTop = 0; return;
     }
+    if (b.dataset.admin === 'despacho-iniciar') { panel.despacho = []; panel.aviso = ''; pintarPanel(); $('#admin-cuerpo').scrollTop = 0; return; }
+    if (b.dataset.admin === 'despacho-cancelar') { panel.despacho = null; return pintarPanel(); }
+    if (b.dataset.admin === 'despacho-todos') {
+      const listos = leerPedidos().filter((p) => p.entrega === 'domicilio' && p.estado === 'preparacion').map((p) => p.numero);
+      panel.despacho = panel.despacho.length === listos.length ? [] : listos; return pintarPanel();
+    }
+    if (b.dataset.admin === 'despacho-salen') {
+      const lista = leerPedidos();
+      lista.forEach((p) => { if (panel.despacho.includes(p.numero)) { p.estado = 'camino'; p.avisado = false; } });
+      guardarPedidos(lista);
+      panel.ronda = [...panel.despacho]; panel.despacho = null; panel.etapa = null;
+      pintarSeguimiento(); pintarPanel(); $('#admin-cuerpo').scrollTop = 0; return;
+    }
+    if (b.dataset.admin === 'avisar-ronda') {
+      const lista = leerPedidos();
+      const p = lista.find((x) => x.numero === b.dataset.numero);
+      abrirAviso(p); p.avisado = true; guardarPedidos(lista); return pintarPanel();
+    }
+    if (b.dataset.admin === 'cerrar-ronda') { panel.ronda = null; return pintarPanel(); }
+    if (['etapa', 'quitar-filtros', 'tipo-entrega', 'periodo'].includes(b.dataset.admin)) panel.aviso = '';
+    if (b.dataset.admin === 'etapa') { panel.etapa = panel.etapa === b.dataset.valor ? null : b.dataset.valor; return pintarPanel(); }
+    if (b.dataset.admin === 'quitar-filtros') { panel.etapa = null; panel.tipoEntrega = 'todos'; panel.buscarPedido = ''; return pintarPanel(); }
     if (b.dataset.admin === 'tipo-entrega') { panel.tipoEntrega = b.dataset.valor; return pintarPanel(); }
     if (b.dataset.admin === 'periodo') { panel.periodo = b.dataset.valor; return pintarPanel(); }
     if (b.dataset.admin === 'ver-pedidos') { panel.vistaPedidos = b.dataset.vista; panel.aviso = ''; panel.confirmar = null; return pintarPanel(); }
@@ -2213,6 +2479,7 @@
       if (!p) return;
       if (b.dataset.admin === 'avanzar' && p.estado === 'camino') {
         abrirAviso(p);
+        const l2 = leerPedidos(); const p2 = l2.find((x) => x.numero === p.numero); if (p2) { p2.avisado = true; guardarPedidos(l2); }
         panel.aviso = '';
       } else panel.aviso = `${p.numero}: ${nombreEstado(p, p.estado)}.`;
       return pintarPanel();
@@ -2334,6 +2601,11 @@
 
   $('#admin').addEventListener('change', async (e) => {
     const t = e.target;
+    if (t.dataset.despacho) {
+      const n = t.dataset.despacho;
+      panel.despacho = t.checked ? [...panel.despacho, n] : panel.despacho.filter((x) => x !== n);
+      const y = $('#admin-cuerpo').scrollTop; pintarPanel(); $('#admin-cuerpo').scrollTop = y; return;
+    }
     if (t.name === 'h-tipo') {
       $('#h-horas').hidden = t.value !== 'abierto';
       $('#h-motivo').placeholder = t.value === 'abierto' ? 'Ej.: Abrimos por el puente festivo, horario extendido' : 'Ej.: Vacaciones del equipo, mantenimiento';
