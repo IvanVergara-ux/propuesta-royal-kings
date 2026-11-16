@@ -639,7 +639,6 @@
   .motivo input { accent-color: var(--mostaza); width: 18px; height: 18px; }
   .cancelar-pedido { display: block; width: calc(100% - 28px); margin: 0 14px 12px; height: 40px; color: var(--papel-suave); font-size: 14px; }
   .herramientas-pedidos { display: grid; gap: 8px; margin-bottom: 4px; }
-  .herramientas-pedidos .boton-despacho { order: -1; margin-bottom: 4px; }
   .herramientas-pedidos .buscador { margin-top: 0; }
   .vistas-pedidos { display: grid; grid-template-columns: repeat(3, 1fr); margin: -4px 0 14px; border-bottom: 1px solid var(--linea); }
   .vistas-pedidos button { padding: 10px 2px 11px; border: 0; background: none; color: var(--gris); font-weight: 600; font-size: 14.5px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
@@ -728,42 +727,9 @@
   .pa-cliente { align-items: center; gap: 10px; }
   .pa-codigo { color: var(--gris); font-size: 12.5px; }
   .estado-cancelado .pa-id { font-size: 18px; color: var(--gris); }
-  .boton-despacho { width: 100%; display: flex; align-items: center; gap: 12px; margin: 0 0 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(230,173,50,.45); background: rgba(230,173,50,.08); color: var(--mostaza); text-align: left; }
-  .boton-despacho span { display: grid; gap: 1px; }
-  .boton-despacho strong { color: var(--papel); font-size: 15.5px; }
-  .boton-despacho small { color: var(--papel-suave); font-size: 13px; }
-  .boton-despacho:hover { background: rgba(230,173,50,.14); }
-  .despacho-cab { margin-bottom: 12px; }
-  .despacho-cab h3 { margin: 0 0 4px; font-size: 18px; }
-  .despacho-cab p { margin: 0 0 6px; color: var(--papel-suave); font-size: 14px; }
-  .despacho-cab .enlace-sutil { color: var(--mostaza); font-size: 14px; padding: 0; }
-  .elegible { display: grid; grid-template-columns: auto auto 1fr auto; align-items: center; gap: 12px; padding: 14px; cursor: pointer; }
-  .elegible input { width: 22px; height: 22px; accent-color: var(--mostaza); margin: 0; }
-  .elegible__txt { display: grid; min-width: 0; }
-  .elegible__txt strong { font-size: 16px; }
-  .elegible__txt small { color: var(--gris); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .elegible__total { color: var(--papel-suave); font-size: 14px; font-variant-numeric: tabular-nums; }
-  .elegible.elegido { border-color: var(--mostaza); background: rgba(230,173,50,.07); }
-  .barra-despacho { position: sticky; bottom: 0; z-index: 2; display: grid; grid-template-columns: auto 1fr; gap: 8px; margin: 12px -16px 0; padding: 12px 16px; background: var(--carbon); border-top: 1px solid var(--linea); }
-  .barra-despacho .boton-sec { height: 46px; }
-  .barra-despacho .agregar { justify-content: center; height: 46px; }
-  .barra-despacho .agregar:disabled { background: var(--brasa-2); color: var(--gris); }
-  .ronda { margin-bottom: 14px; padding: 14px; border-radius: 12px; background: var(--brasa); border-left: 3px solid var(--verde); }
-  .ronda__cab { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-  .ronda h3 { margin: 0; font-size: 17px; }
-  .ronda h3 span { color: var(--gris); font-weight: 600; font-size: 14px; margin-left: 4px; }
-  .ronda > p { margin: 4px 0 10px; color: var(--papel-suave); font-size: 14px; }
-  .ronda ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-  .ronda li { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 6px 6px 10px; border-radius: 10px; background: var(--brasa-2); }
-  .ronda__cliente { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .ronda li .agregar, .ronda li .boton-sec { flex: none; height: 38px; padding: 0 18px; }
-  .ronda li.hecho { background: none; }
-  .ronda li.hecho .pa-id, .ronda li.hecho .ronda__cliente { opacity: .55; }
-  .ronda__ok { display: inline-flex; align-items: center; gap: 4px; color: #8fd6a2; font-size: 13.5px; font-weight: 600; }
-  .ronda li .enlace-sutil { font-size: 13px; }
 
   @media (min-width: 1024px) {
-    dialog.admin, dialog.admin[open] { width: 100vw; max-width: none; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; border: 0;
+    dialog.admin[open] { width: 100vw; max-width: none; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; border: 0;
       display: grid; grid-template-columns: 220px 1fr; grid-template-rows: auto 1fr; }
     .admin__cab { grid-column: 1 / -1; padding: 12px 28px; }
     .admin__nav[hidden] + * { }
@@ -778,15 +744,12 @@
     .admin__cuerpo > * { max-width: 760px; }
     .admin__cuerpo:has(.vistas-pedidos) > *, .admin__cuerpo:has(.lista-productos) > * { max-width: none; }
     .admin__cuerpo > .vistas-pedidos { max-width: 520px; }
-    .admin__cuerpo:has(.vistas-pedidos) > .pedido-admin, .admin__cuerpo > .despacho-cab, .admin__cuerpo > .barra-despacho, .admin__cuerpo > .ventas, .admin__cuerpo > .linea-filtro, .admin__cuerpo > .periodo, .admin__cuerpo > .vacio { max-width: 760px; }
-    .admin__cuerpo > .ronda { max-width: 760px; }
-    .herramientas-pedidos { display: flex; align-items: center; gap: 12px; }
+    .admin__cuerpo:has(.vistas-pedidos) > .pedido-admin, .admin__cuerpo > .ventas, .admin__cuerpo > .linea-filtro, .admin__cuerpo > .periodo, .admin__cuerpo > .vacio { max-width: 760px; }
+    .herramientas-pedidos { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
     .herramientas-pedidos .segmentado { flex: 0 1 400px; }
     .herramientas-pedidos .buscador { flex: 0 1 360px; margin: 0 !important; height: 44px; }
-    .herramientas-pedidos .boton-despacho { order: 3; width: auto; margin: 0 0 0 auto; padding: 8px 14px; }
     .lista-productos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .admin__cuerpo:has(.lista-productos) > .buscador, .admin__cuerpo:has(.lista-productos) > .admin__barra { max-width: 760px; }
-    .barra-despacho { margin: 12px 0 0; border-radius: 12px; border: 1px solid var(--linea); }
     .historial { max-width: none !important; }
     .hist-cab { display: grid; grid-template-columns: 70px minmax(160px, 1.6fr) 1fr 1.2fr 1fr 120px 24px; column-gap: 16px; padding: 10px 18px; border-bottom: 1px solid var(--linea); color: var(--gris); font-size: 12.5px; font-weight: 600; }
     .hist-cab span:nth-child(6) { text-align: right; }
@@ -2041,37 +2004,13 @@
     const descFiltro = [etapa ? etapa[1].toLowerCase() : '', tipo === 'domicilio' ? 'a domicilio' : tipo === 'recoger' ? 'para recoger' : ''].filter(Boolean).join(' ');
     const hayFiltro = etapa || tipo !== 'todos' || q;
     const esPC = window.matchMedia('(min-width: 1024px)').matches;
-    const listos = todos.filter((p) => p.entrega === 'domicilio' && p.estado === 'preparacion').sort((a, b) => a.fecha.localeCompare(b.fecha));
-    if (panel.despacho) { panel.despacho = panel.despacho.filter((n) => listos.some((p) => p.numero === n)); if (vista !== 'curso' || !listos.length) panel.despacho = null; }
-    if (panel.despacho) { lista = listos; }
-    const tablero = vista === 'curso' && esPC && !panel.despacho && !etapa;
-    const rondaHtml = () => {
-      const ronda = (panel.ronda || []).map((n) => todos.find((p) => p.numero === n)).filter((p) => p && p.estado === 'camino');
-      if (!ronda.length || vista !== 'curso') return '';
-      const hechos = ronda.filter((p) => p.avisado).length;
-      const siguiente = ronda.find((p) => !p.avisado);
-      return `<section class="ronda" aria-label="Avisos de la salida">
-        <div class="ronda__cab"><h3>${hechos === ronda.length ? 'Todos avisados' : `Avisa a cada cliente <span>${hechos} de ${ronda.length}</span>`}</h3>
-          <button type="button" class="enlace-sutil" data-admin="cerrar-ronda">${hechos === ronda.length ? 'Listo' : 'Ocultar'}</button></div>
-        ${hechos < ronda.length ? '<p>Toca <strong>Avisar</strong>, dale <strong>Enviar</strong> en WhatsApp y vuelve aquí para el siguiente.</p>' : '<p>Los pedidos quedaron en «Por entregar». Márcalos como entregados cuando el domiciliario vuelva.</p>'}
-        <ol>${ronda.map((p) => `<li class="${p.avisado ? 'hecho' : ''}"><span class="pa-id">#${escapar(corto(p))}</span><span class="ronda__cliente">${escapar(p.cliente)}</span>
-          ${p.avisado ? `<span class="ronda__ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Avisado</span><button type="button" class="enlace-sutil" data-admin="avisar-ronda" data-numero="${escapar(p.numero)}">Otra vez</button>`
-            : `<button type="button" class="${p === siguiente ? 'agregar' : 'boton-sec'}" data-admin="avisar-ronda" data-numero="${escapar(p.numero)}">Avisar</button>`}</li>`).join('')}</ol>
-      </section>`;
-    };
+    const tablero = vista === 'curso' && esPC && !etapa;
     const tarjeta = (p) => {
         const idx = ESTADOS.findIndex((e) => e.id === p.estado);
         const sig = ESTADOS[idx + 1];
         const hora = new Date(p.fecha).toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' });
         const abierto = panel.abierto === p.numero;
         const minutos = Math.round((Date.now() - new Date(p.fecha).getTime()) / 60000);
-        if (panel.despacho) return `
-        <label class="pedido-admin elegible ${panel.despacho.includes(p.numero) ? 'elegido' : ''}">
-          <input type="checkbox" data-despacho="${escapar(p.numero)}" ${panel.despacho.includes(p.numero) ? 'checked' : ''}>
-          <span class="pa-id">#${escapar(corto(p))}</span>
-          <span class="elegible__txt"><strong>${escapar(p.cliente)}</strong><small>${escapar(p.dir || 'Sin dirección')}</small></span>
-          <span class="elegible__total">${pesos(p.total)}</span>
-        </label>`;
         if (['entregado', 'cancelado'].includes(p.estado)) {
           const f = new Date(p.fecha);
           const esHoy = f.toDateString() === new Date().toDateString();
@@ -2154,13 +2093,13 @@
             </div>` : ''}
           </div>`}
           ${sig?.id === 'camino' && panel.cancelando !== p.numero && panel.confirmar?.numero !== p.numero ? `<p class="aviso-alterno">Al tocarlo se abre WhatsApp con el mensaje listo para ${escapar(p.cliente.split(/\s+/)[0])}. Solo dale <strong>Enviar</strong>.</p>` : ''}
-          ${p.estado === 'camino' ? (p.avisado === false ? `<div class="aviso-alterno"><button type="button" class="boton-sec ancho-total" data-admin="avisar-ronda" data-numero="${escapar(p.numero)}">Avisar al cliente por WhatsApp</button></div>` : `<div class="aviso-alterno">
+          ${p.estado === 'camino' ? `<div class="aviso-alterno">
               <p>¿No se abrió el chat del cliente? Busca <strong>${escapar(p.numero)}</strong> en tus chats de WhatsApp y pega el aviso ahí.</p>
               <div class="acciones-2">
                 <button type="button" class="boton-sec" data-admin="reabrir-aviso" data-numero="${escapar(p.numero)}">Abrir de nuevo</button>
                 <button type="button" class="boton-sec" data-admin="copiar-aviso" data-numero="${escapar(p.numero)}">Copiar mensaje</button>
               </div>
-            </div>`) : ''}
+            </div>` : ''}
         </article>`;
     };
     cuerpo.innerHTML = `
@@ -2168,13 +2107,7 @@
       <div class="vistas-pedidos" role="tablist" aria-label="Pedidos">
         ${[['curso', 'En curso', enCurso], ['entregados', 'Entregados'], ['cancelados', 'Cancelados']].map(([v, t, n]) => `<button type="button" role="tab" data-admin="ver-pedidos" data-vista="${v}" aria-selected="${vista === v}">${t}${n ? ` <b>${n}</b>` : ''}</button>`).join('')}
       </div>
-      ${panel.despacho ? '' : rondaHtml()}
-      ${panel.despacho ? `<div class="despacho-cab">
-          <h3>¿Qué pedidos se lleva el domiciliario?</h3>
-          <p>Están listos en cocina. Marca los que salen ahora; los demás se quedan como están.</p>
-          <button type="button" class="enlace-sutil" data-admin="despacho-todos">${panel.despacho.length === listos.length ? 'Quitar todos' : 'Marcar todos'}</button>
-        </div>` : ''}
-      ${vista === 'curso' && totalVista && !panel.despacho && !esPC ? `<div class="flujo" role="group" aria-label="Filtrar por paso">
+      ${vista === 'curso' && totalVista && !esPC ? `<div class="flujo" role="group" aria-label="Filtrar por paso">
           ${ETAPAS.map((e) => { const n = deEtapa(conEtapa, e).length; return `<button type="button" data-admin="etapa" data-valor="${e[0]}" aria-pressed="${panel.etapa === e[0]}" class="${n ? '' : 'sin'} flujo-${e[0]}"><strong>${n}</strong><span>${e[1]}</span></button>`; }).join('')}
         </div>` : ''}
       ${vista !== 'curso' ? `<div class="filtros periodo" role="group" aria-label="Periodo">
@@ -2186,26 +2119,19 @@
           <div><span>Para recoger</span><strong>${pesos(lista.filter((p) => p.entrega === 'recoger').reduce((t, p) => t + p.total, 0))}</strong><small>${plural(lista.length - nDom, 'pedido', 'pedidos')}</small></div>
         </div>` : ''}
       <div class="herramientas-pedidos">
-      ${vista === 'curso' && listos.length >= 2 && !panel.despacho ? `<button type="button" class="boton-despacho" data-admin="despacho-iniciar">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h7l2-6h-4l-2-4H8"/><path d="M15 7h3"/></svg>
-          <span><strong>Sale el domiciliario</strong><small>${listos.length} domicilios listos en cocina. Elige cuáles salen y avisa a todos.</small></span></button>` : ''}
-      ${totalVista && !panel.despacho ? `<div class="segmentado" role="group" aria-label="Tipo de entrega">
+      ${totalVista ? `<div class="segmentado" role="group" aria-label="Tipo de entrega">
           ${[['todos', 'Todos'], ['domicilio', 'Domicilio'], ['recoger', 'Recoger']].map(([v, t]) => `<button type="button" data-admin="tipo-entrega" data-valor="${v}" aria-pressed="${tipo === v}">${t} <b>${nTipo[v]}</b></button>`).join('')}
         </div>` : ''}
-      ${(totalVista > 3 || q) && !panel.despacho ? `<label class="buscador buscador-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      ${(totalVista > 3 || q) ? `<label class="buscador buscador-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
             <input type="search" id="buscar-pedido" placeholder="Buscar cliente o número, ej. 06" value="${escapar(panel.buscarPedido || '')}" aria-label="Buscar por nombre del cliente o número de pedido"></label>` : ''}
       </div>
-      ${panel.despacho || tablero ? '' : totalVista && hayFiltro ? `<p class="linea-filtro">${lista.length ? `${plural(lista.length, 'pedido', 'pedidos')} ${descFiltro}` : 'Ningún pedido con ese filtro'}${vista === 'curso' && lista.length > 1 ? ', el más antiguo arriba' : ''}. <button type="button" class="enlace-sutil" data-admin="quitar-filtros">Ver todos</button></p>`
+      ${tablero ? '' : totalVista && hayFiltro ? `<p class="linea-filtro">${lista.length ? `${plural(lista.length, 'pedido', 'pedidos')} ${descFiltro}` : 'Ningún pedido con ese filtro'}${vista === 'curso' && lista.length > 1 ? ', el más antiguo arriba' : ''}. <button type="button" class="enlace-sutil" data-admin="quitar-filtros">Ver todos</button></p>`
         : vista === 'curso' && lista.length > 1 ? '<p class="linea-filtro">El más antiguo va arriba.</p>' : ''}
       <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
       ${tablero ? `<div class="tablero">${ETAPAS.map((e) => { const l = deEtapa(lista, e); return `<section class="columna columna-${e[0]}"><h3>${e[1]} <b>${l.length}</b></h3>${l.length ? l.map(tarjeta).join('') : '<p class="columna-vacia">Nada por ahora.</p>'}</section>`; }).join('')}</div>`
         : lista.length ? (vista === 'curso' ? lista.map(tarjeta).join('') : `<div class="historial">
             <div class="hist-cab" aria-hidden="true"><span>Pedido</span><span>Cliente</span><span>Entrega</span><span>${vista === 'cancelados' ? 'Motivo' : 'Pago'}</span><span>Hora</span><span>Total</span><span></span></div>
             ${lista.map(tarjeta).join('')}</div>`) : hayFiltro && totalVista ? '' : `<p class="vacio" style="text-align:left">${vista === 'entregados' ? 'Todavía no hay pedidos entregados.' : vista === 'cancelados' ? 'No hay pedidos cancelados.' : 'No hay pedidos en curso. Los pedidos que hagan los clientes por la página aparecen aquí.'}</p>`}
-      ${panel.despacho ? `<div class="barra-despacho">
-          <button type="button" class="boton-sec" data-admin="despacho-cancelar">Cancelar</button>
-          <button type="button" class="agregar" data-admin="despacho-salen" ${panel.despacho.length ? '' : 'disabled'}>${panel.despacho.length ? `Salen ${panel.despacho.length} · avisar a cada uno` : 'Marca al menos uno'}</button>
-        </div>` : ''}
       <div class="demo-zona"><span>Solo en la demo</span><button type="button" class="enlace-sutil" data-admin="pedido-prueba">Crear un pedido de prueba</button></div>`;
   }
 
@@ -2429,25 +2355,6 @@
       panel.seccion = b.dataset.seccion; panel.aviso = ''; panel.vista = 'lista'; panel.editando = null; panel.hoyModo = null; panel.formDia = false;
       pintarPanel(); $('#admin-cuerpo').scrollTop = 0; $('#admin').scrollTop = 0; return;
     }
-    if (b.dataset.admin === 'despacho-iniciar') { panel.despacho = []; panel.aviso = ''; pintarPanel(); $('#admin-cuerpo').scrollTop = 0; return; }
-    if (b.dataset.admin === 'despacho-cancelar') { panel.despacho = null; return pintarPanel(); }
-    if (b.dataset.admin === 'despacho-todos') {
-      const listos = leerPedidos().filter((p) => p.entrega === 'domicilio' && p.estado === 'preparacion').map((p) => p.numero);
-      panel.despacho = panel.despacho.length === listos.length ? [] : listos; return pintarPanel();
-    }
-    if (b.dataset.admin === 'despacho-salen') {
-      const lista = leerPedidos();
-      lista.forEach((p) => { if (panel.despacho.includes(p.numero)) { p.estado = 'camino'; p.avisado = false; } });
-      guardarPedidos(lista);
-      panel.ronda = [...panel.despacho]; panel.despacho = null; panel.etapa = null;
-      pintarSeguimiento(); pintarPanel(); $('#admin-cuerpo').scrollTop = 0; return;
-    }
-    if (b.dataset.admin === 'avisar-ronda') {
-      const lista = leerPedidos();
-      const p = lista.find((x) => x.numero === b.dataset.numero);
-      abrirAviso(p); p.avisado = true; guardarPedidos(lista); return pintarPanel();
-    }
-    if (b.dataset.admin === 'cerrar-ronda') { panel.ronda = null; return pintarPanel(); }
     if (['etapa', 'quitar-filtros', 'tipo-entrega', 'periodo'].includes(b.dataset.admin)) panel.aviso = '';
     if (b.dataset.admin === 'etapa') { panel.etapa = panel.etapa === b.dataset.valor ? null : b.dataset.valor; return pintarPanel(); }
     if (b.dataset.admin === 'quitar-filtros') { panel.etapa = null; panel.tipoEntrega = 'todos'; panel.buscarPedido = ''; return pintarPanel(); }
@@ -2479,7 +2386,6 @@
       if (!p) return;
       if (b.dataset.admin === 'avanzar' && p.estado === 'camino') {
         abrirAviso(p);
-        const l2 = leerPedidos(); const p2 = l2.find((x) => x.numero === p.numero); if (p2) { p2.avisado = true; guardarPedidos(l2); }
         panel.aviso = '';
       } else panel.aviso = `${p.numero}: ${nombreEstado(p, p.estado)}.`;
       return pintarPanel();
@@ -2601,11 +2507,6 @@
 
   $('#admin').addEventListener('change', async (e) => {
     const t = e.target;
-    if (t.dataset.despacho) {
-      const n = t.dataset.despacho;
-      panel.despacho = t.checked ? [...panel.despacho, n] : panel.despacho.filter((x) => x !== n);
-      const y = $('#admin-cuerpo').scrollTop; pintarPanel(); $('#admin-cuerpo').scrollTop = y; return;
-    }
     if (t.name === 'h-tipo') {
       $('#h-horas').hidden = t.value !== 'abierto';
       $('#h-motivo').placeholder = t.value === 'abierto' ? 'Ej.: Abrimos por el puente festivo, horario extendido' : 'Ej.: Vacaciones del equipo, mantenimiento';
