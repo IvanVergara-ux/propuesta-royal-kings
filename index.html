@@ -2094,28 +2094,48 @@
     const t = totales();
     const n = numeroPedido();
     ultimoNumero = n;
+    // Mismo formato que usa hoy el negocio para sus pedidos
+    const $c = (v) => '$' + v.toLocaleString('en-US');
+    const SEP = '==============================';
     const lineas = [...pedido].map(([id, l]) => {
       const p = platos.get(id);
       const donde = textoDonde(id, l);
-      return `${l.cantidad} × ${p.nombre}${donde ? ` (${donde})` : ''} — ${pesos(p.precio * l.cantidad)}${l.nota ? `\n   Nota: ${l.nota}` : ''}`;
+      return `  • ${l.cantidad}x ${p.nombre}${donde ? ` - ${donde}` : ''} (${$c(p.precio * l.cantidad)})${l.nota ? `\n      Nota: ${l.nota}` : ''}`;
     });
     const notas = $('#notas').value.trim();
+    const dom = entrega() === 'domicilio';
     return [
-      `*Pedido ${n}* · Royal Kings Burger`,
+      `NUEVO PEDIDO ${n}`,
+      SEP,
       '',
+      'DETALLE DEL PEDIDO:',
       ...lineas,
       '',
-      `Subtotal: ${pesos(t.sub)}`,
-      t.dom ? `Domicilio: ${pesos(t.dom)}` : null,
-      t.recargo ? `Recargo tarjeta (5 %): ${pesos(t.recargo)}` : null,
-      `*Total: ${pesos(t.total)}*`,
+      SEP,
       '',
-      `Entrega: ${entrega() === 'domicilio' ? 'Domicilio' : 'Recoger en el local'}`,
-      entrega() === 'domicilio' ? `Dirección: ${datos.dir}` : null,
-      `Pago: ${pago()} (se prepara al confirmar el pago)`,
-      `Cliente: ${datos.nombre}`,
-      `Celular: ${datos.tel.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3')}`,
+      'ENTREGA:',
+      dom ? `Direccion de entrega: ${datos.dir}` : 'Recoger en el local: Cra. 12 #9-31',
+      `Tipo: ${dom ? `Domicilio (+${$c(t.dom)})` : 'Recoger en el local'}`,
+      'PAGO:',
+      `Metodo de pago: ${pago()}${t.recargo ? ' (+5%)' : ''}`,
+      '',
+      SEP,
+      '',
+      'RESUMEN TOTAL:',
+      `Subtotal: ${$c(t.sub)}`,
+      t.dom ? `Domicilio: +${$c(t.dom)}` : null,
+      t.recargo ? `Recargo tarjeta: +${$c(t.recargo)}` : null,
+      '',
+      `TOTAL A PAGAR: ${$c(t.total)}`,
+      '',
+      SEP,
+      '',
+      'CLIENTE:',
+      `Nombre: ${datos.nombre}`,
+      `Telefono: ${datos.tel}`,
       notas ? `Notas: ${notas}` : null,
+      '',
+      SEP,
     ].filter((l) => l !== null).join('\n');
   }
 
