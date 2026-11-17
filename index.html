@@ -101,7 +101,7 @@
       radial-gradient(60% 55% at 78% 38%, rgba(230,173,50,.20), transparent 70%),
       radial-gradient(45% 50% at 8% 105%, rgba(196,54,31,.22), transparent 70%),
       radial-gradient(70% 60% at 30% -10%, rgba(244,237,226,.06), transparent 70%),
-      linear-gradient(180deg, #1d1510 0%, var(--carbon) 100%);
+      linear-gradient(180deg, #1d1510 0%, #1e1611 100%);
   }
   /* Textura de grano, como papel de envoltura */
   .portada::before {
@@ -110,8 +110,8 @@
   }
   /* Línea dorada que cierra la portada */
   .portada::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(230,173,50,.55) 30%, rgba(230,173,50,.55) 70%, transparent);
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 110px; z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(30,22,17,0), #1e1611);
   }
   /* Corona en línea dorada, muy tenue, detrás del título */
   .corona {
@@ -229,7 +229,14 @@
   .categorias a[aria-current="true"] { background: var(--papel); color: var(--carbon); border-color: var(--papel); }
 
   /* Menú */
-  .menu { padding: 8px 0 24px; }
+  .menu { padding: 8px 0 24px;
+    background-color: #1e1611;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .85 0 0 0 0 .6 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(55% 30% at 100% 12%, rgba(230,173,50,.07), transparent 70%),
+      radial-gradient(45% 25% at 0% 55%, rgba(196,54,31,.07), transparent 70%),
+      linear-gradient(180deg, #1e1611 0%, #211813 45%, #1c1511 calc(100% - 240px), var(--carbon) 100%);
+    background-size: 180px 180px, auto, auto, auto; }
   .menu section { padding-top: 34px; }
   .menu section + section { margin-top: 10px; }
   .titulo-cat { display: flex; align-items: center; gap: 12px; }
@@ -277,8 +284,10 @@
   .info {
     position: relative; padding: 64px 0 56px;
     background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .85 0 0 0 0 .6 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 180px 180px,
       radial-gradient(55% 70% at 85% 100%, rgba(230,173,50,.11), transparent 70%),
-      radial-gradient(40% 60% at 0% 0%, rgba(196,54,31,.10), transparent 70%);
+      radial-gradient(40% 50% at 0% 45%, rgba(196,54,31,.09), transparent 70%),
+      var(--carbon);
   }
   .info__cabeza h2 { margin: 0; font-family: var(--display); font-weight: 900; font-size: clamp(44px, 10vw, 84px); line-height: .95; }
   .info__cabeza p { margin: 10px 0 0; color: var(--papel-suave); font-size: 17px; }
@@ -325,7 +334,7 @@
 
   /* ===== Pasada de diseño: página del cliente ===== */
   /* Barra superior */
-  .barra { background: rgba(23,17,13,.9); -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2); }
+  .barra { background: rgba(26,19,15,.9); -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2); }
   .barra .contenedor { gap: 8px; }
   .marca img { width: 40px; height: 40px; }
   .boton-texto { height: 40px; padding: 0 10px; border: 0; border-radius: 10px; color: var(--papel-suave); }
@@ -340,7 +349,7 @@
   @media (max-width: 380px) { .boton-texto { padding: 0 6px; } .estado { padding-right: 4px; } }
 
   /* Categorías: pestañas con subrayado */
-  .categorias { background: rgba(23,17,13,.9); -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2); }
+  .categorias { background: rgba(30,22,17,.9); -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2); }
   .categorias .contenedor { gap: 4px; padding: 0; }
   .categorias a { position: relative; padding: 14px 12px 13px; border: 0; border-radius: 0; background: none; color: var(--gris); font-size: 14.5px; transition: color .15s; }
   .categorias a svg { color: currentColor; opacity: .8; }
