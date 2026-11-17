@@ -119,7 +119,7 @@
     width: 190px; right: -28px; top: 10px; transform: rotate(14deg); opacity: .13;
   }
   @media (min-width: 560px) { .corona { width: min(420px, 55vw); left: -20px; right: auto; top: 30px; transform: rotate(-8deg); opacity: .10; } }
-  @media (min-width: 900px) { .corona { width: min(560px, 45vw); left: 2%; right: auto; top: 40px; opacity: .09; transform: rotate(-8deg); } }
+  @media (min-width: 900px) { .corona { width: min(560px, 45vw); left: 2%; right: auto; top: 40px; opacity: .06; transform: rotate(-8deg); } }
   /* Brasas que suben despacio */
   .brasas { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
   .brasas i {
@@ -321,6 +321,86 @@
     .info__cols { grid-template-columns: 1.15fr 1fr 1fr; gap: 56px; margin-top: 56px; }
   }
   .pie { padding: 22px 0 30px; color: var(--gris); font-size: 13px; text-align: center; border-top: 1px solid var(--linea); }
+
+
+  /* ===== Pasada de diseño: página del cliente ===== */
+  /* Barra superior */
+  .barra { background: rgba(23,17,13,.9); -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2); }
+  .barra .contenedor { gap: 8px; }
+  .marca img { width: 40px; height: 40px; }
+  .boton-texto { height: 40px; padding: 0 10px; border: 0; border-radius: 10px; color: var(--papel-suave); }
+  .boton-texto:hover { color: var(--papel); background: var(--brasa); }
+  .estado { padding: 0 10px 0 4px; height: 40px; background: none; color: var(--papel-suave); font-size: 14px; }
+  .estado::before { width: 7px; height: 7px; }
+  .estado.abierto { color: var(--papel); }
+  .boton-carrito { width: 42px; height: 42px; border-radius: 12px; background: transparent; transition: background .15s, border-color .15s; }
+  .boton-carrito:hover { border-color: var(--papel-suave); }
+  #abrir-carrito:has(#cuenta-barra:not([hidden])) { background: var(--mostaza); border-color: var(--mostaza); color: var(--carbon); }
+  .boton-carrito span { box-shadow: 0 0 0 2px var(--carbon); }
+  @media (max-width: 380px) { .boton-texto { padding: 0 6px; } .estado { padding-right: 4px; } }
+
+  /* Categorías: pestañas con subrayado */
+  .categorias { background: rgba(23,17,13,.9); -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2); }
+  .categorias .contenedor { gap: 4px; padding: 0; }
+  .categorias a { position: relative; padding: 14px 12px 13px; border: 0; border-radius: 0; background: none; color: var(--gris); font-size: 14.5px; transition: color .15s; }
+  .categorias a svg { color: currentColor; opacity: .8; }
+  .categorias a:hover { color: var(--papel); }
+  .categorias a[aria-current="true"] { background: none; color: var(--papel); }
+  .categorias a[aria-current="true"] svg { color: var(--mostaza); opacity: 1; }
+  .categorias a::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; border-radius: 2px 2px 0 0; background: var(--mostaza); transform: scaleX(0); transition: transform .2s ease; }
+  .categorias a[aria-current="true"]::after { transform: scaleX(1); }
+  .categorias .contenedor > a:first-child { margin-left: -12px; }
+
+  /* Portada */
+  .portada__estado { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 18px 0 0; color: var(--papel-suave); font-size: 15px; }
+  .portada__estado::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ketchup); }
+  .portada__estado.abierto::before { background: var(--verde); box-shadow: 0 0 0 4px rgba(79,174,106,.2); }
+  .portada__estado strong { color: var(--papel); }
+  .portada__acciones { display: none; }
+  @media (max-width: 719px) { .portada__estado { justify-content: center; } }
+  @media (min-width: 720px) {
+    .portada { padding: 56px 0 60px; }
+    .portada__acciones { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 20px; margin-top: 28px; }
+    .portada__acciones .agregar { text-decoration: none; padding: 0 26px; }
+    .portada__dom { color: var(--gris); font-size: 14px; }
+    .portada .subtitulo { font-size: 17px; }
+  }
+
+  /* Hamburguesa del mes */
+  .destacada__cuerpo { padding: 18px 18px 20px; }
+  .destacada h2 { font-size: clamp(40px, 5vw, 52px); }
+  .destacada p { margin: 0; color: var(--gris); font-size: 14.5px; line-height: 1.5; }
+  .destacada p.destacada__lema { margin: 8px 0 6px; color: var(--papel); font-size: 17px; font-weight: 600; }
+  .destacada .plato__pie { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--linea); }
+  .destacada .precio { font-family: var(--display); font-weight: 900; font-size: 34px; line-height: 1; color: var(--papel); letter-spacing: .01em; }
+
+  /* Tarjetas del menú */
+  .menu h2 { font-size: 34px; }
+  .titulo-cat .info__icono { width: 40px; height: 40px; }
+  .plato { gap: 14px; transition: border-color .2s; }
+  .plato:hover { border-color: rgba(244,237,226,.16); }
+  .plato__foto { width: 108px; height: 108px; border-radius: 12px; }
+  .plato__texto { display: flex; flex-direction: column; min-width: 0; }
+  .plato__texto > p { margin: 4px 0 6px; }
+  .plato__pie { margin-top: auto; padding-top: 4px; }
+  .precio { font-family: var(--display); font-weight: 800; font-size: 22px; line-height: 1; letter-spacing: .01em; }
+  .agregar { height: 40px; }
+  .plato--sin-foto .plato__texto { display: grid; }
+  .plato--sin-foto .plato__pie { margin-top: 0; padding-top: 0; }
+  @media (min-width: 1000px) {
+    .lista { gap: 18px; }
+    .plato { grid-template-rows: auto 1fr; gap: 0; }
+    .plato__foto { aspect-ratio: 5 / 4; overflow: hidden; }
+    .plato__foto img { transition: transform .5s ease; }
+    .plato:hover .plato__foto img { transform: scale(1.035); }
+    .menu .plato__texto { padding: 16px 18px 18px; }
+    .menu .plato__texto p { flex: 0 1 auto; }
+    .plato h3 { font-size: 26px; }
+    .menu .plato__pie { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--linea); }
+    .menu .plato--sin-foto .plato__pie { border-top: 0; padding-top: 0; }
+    .plato__texto > .ver-mas { margin-bottom: 12px; }
+    .plato__texto > p + .plato__pie { margin-top: auto; }
+  }
 
   /* Barra inferior del pedido */
   .barra-pedido {
@@ -566,14 +646,36 @@
     border: 0; border-radius: 999px; background: var(--mostaza); color: var(--carbon); font-weight: 800; box-shadow: 0 10px 24px rgba(0,0,0,.5);
   }
   /* Formulario */
-  .form-admin__cab { position: sticky; top: -16px; z-index: 2; display: grid; gap: 8px; margin: -16px -16px 8px; padding: 12px 16px; background: var(--carbon); border-bottom: 1px solid var(--linea); }
-  .form-admin__cab h3 { margin: 0; font-size: 20px; }
-  .volver { display: inline-flex; align-items: center; gap: 4px; width: fit-content; padding: 6px 12px 6px 8px; border-radius: 999px; border: 1px solid var(--linea); background: var(--brasa); color: var(--mostaza); font-weight: 700; font-size: 14px; }
+  .form-admin__cab { position: sticky; top: -16px; z-index: 2; display: grid; gap: 2px; margin: -16px -16px 16px; padding: 10px 16px 12px; background: rgba(21,16,12,.88); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--linea); }
+  .form-admin__cab h3 { margin: 0; font-family: var(--display); font-weight: 900; font-size: 28px; line-height: 1.1; }
+  .volver { display: inline-flex; align-items: center; gap: 2px; width: fit-content; margin-left: -6px; padding: 4px 8px 4px 2px; border: 0; border-radius: 8px; background: none; color: var(--mostaza); font-weight: 700; font-size: 14px; }
+  .volver:hover { background: rgba(230,173,50,.1); }
+  .foto-bloque { padding: 14px; border-radius: 14px; background: var(--brasa); border: 1px solid var(--linea); }
+  .foto-bloque__cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 38px; margin-bottom: 12px; }
+  .foto-bloque__tit { font-weight: 700; }
+  .foto-bloque .subir-foto { height: 38px; padding: 0 14px; font-size: 14px; }
+  .foto-bloque .subir-foto[hidden] { display: none; }
+  .foto-vacia { position: relative; display: grid; justify-items: center; gap: 4px; padding: 34px 16px; border-radius: 12px; border: 1.5px dashed rgba(230,173,50,.45); color: var(--mostaza); text-align: center; cursor: pointer; }
+  .foto-vacia[hidden] { display: none; }
+  .foto-vacia strong { color: var(--papel); margin-top: 6px; }
+  .foto-vacia small { color: var(--gris); font-size: 13px; }
+  .foto-vacia input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .foto-vacia:hover { background: rgba(230,173,50,.05); }
+  .foto-bloque .encuadre { margin: 0; padding: 0; background: none; gap: 14px; }
+  .encuadre__lado { display: grid; gap: 12px; align-content: start; }
+  .encuadre__lado .enlace-sutil { justify-self: start; padding: 0; }
+  .foto-bloque .encuadre__original { width: 100%; }
+  @media (min-width: 560px) {
+    .foto-bloque .encuadre:not([hidden]) { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+    .foto-bloque .encuadre__previas { flex-direction: column; align-items: flex-start; }
+  }
+  .foto-bloque + .campo { margin-top: 16px; }
   .opciones-producto { display: grid; gap: 4px; margin-top: 16px; padding: 4px 14px; border-radius: 14px; background: var(--brasa); }
   .fila-switch { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 10px 0; cursor: pointer; }
   .fila-switch + .fila-switch { border-top: 1px solid var(--linea); }
   .fila-switch small { display: block; color: var(--gris); font-size: 13px; }
-  .form-admin__pie { display: grid; grid-template-columns: auto 1fr; gap: 10px; margin-top: 16px; padding: 12px 0; background: var(--carbon); }
+  .form-admin__pie { display: grid; grid-template-columns: auto 1fr; gap: 10px; margin-top: 16px; padding: 12px 0; background: none; }
+  .form-admin__pie .boton-sec { padding: 0 18px; }
   .form-admin__pie .boton-sec { height: 48px; }
   .form-admin__pie .agregar { justify-content: center; }
   .confirmar-borrar { margin-top: 16px; padding: 14px; border-radius: 12px; background: rgba(196,54,31,.15); display: grid; gap: 10px; }
@@ -771,6 +873,29 @@
   .admin__cuerpo .aviso-ok:empty { display: none; }
   .admin__cuerpo .aviso-ok { display: flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin: 0 0 12px; padding: 8px 12px; border-radius: 10px; background: rgba(109,187,133,.12); color: #a8dcb7; font-size: 13.5px; }
   .admin__cuerpo .aviso-ok::before { content: ""; flex: none; width: 14px; height: 14px; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center / contain no-repeat; }
+
+  /* Fondo del panel: misma calidez que la página, sin distraer */
+  dialog.admin {
+    background-color: #15100c;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .85 0 0 0 0 .6 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(70% 45% at 85% -5%, rgba(230,173,50,.10), transparent 70%),
+      radial-gradient(50% 40% at 0% 105%, rgba(196,54,31,.08), transparent 70%),
+      linear-gradient(180deg, #1b140f 0%, #15100c 60%);
+    background-size: 180px 180px, auto, auto, auto;
+    background-attachment: local, fixed, fixed, fixed;
+  }
+  .admin__cab { background: rgba(21,16,12,.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .admin__cuerpo { background: none; }
+  @media (min-width: 1024px) {
+    .admin__nav { background: rgba(255,240,215,.018); }
+    .columna { background: rgba(12,9,7,.35); border-color: rgba(244,237,226,.07); }
+    .comanda { background: #221a14; border-color: rgba(244,237,226,.08); box-shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 8px 20px -12px rgba(0,0,0,.6); }
+    .por-resolver, .historial, .ventas, .segmentado, .admin__cuerpo .buscador { background-color: rgba(34,26,20,.85); }
+  }
+  .flujo button:not([aria-pressed="true"]) { background: #261d16; }
+  @media (min-width: 1024px) {
+  }
   /* Historial (entregados y cancelados) */
   .historial { border-radius: 12px; border: 1px solid var(--linea); overflow: hidden; background: var(--brasa); }
   .hist-cab { display: none; }
@@ -841,11 +966,10 @@
     .horario-grid .tarjeta-admin { margin: 0; }
     .admin__cuerpo:has(.horario-grid) > .aviso-ok { max-width: 1100px; }
     .admin__cuerpo:has(#form-producto) > * { margin-inline: auto; }
-    .encuadre:not([hidden]) { grid-template-columns: 280px 1fr; column-gap: 24px; align-items: start; }
-    .encuadre > :not(.encuadre__original):not(.encuadre__previas) { grid-column: 1 / -1; }
-    .encuadre__previas { flex-direction: column; align-items: flex-start; }
-    .encuadre__marco--ancho { width: 220px; height: 136px; }
-    .encuadre__marco:not(.encuadre__marco--ancho) { width: 110px; height: 110px; }
+    .encuadre__marco--ancho { width: 240px; height: 150px; }
+    .encuadre__marco:not(.encuadre__marco--ancho) { width: 120px; height: 120px; }
+    .form-admin__cab { top: -24px; margin: -24px 0 18px; padding: 16px 0 14px; background: #19130e; border-bottom: 0; -webkit-backdrop-filter: none; backdrop-filter: none;
+      box-shadow: 0 0 0 100vmax #19130e, 0 1px 0 100vmax var(--linea); clip-path: inset(0 -100vmax -1px); }
     .tablero { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
     .columna { min-height: 200px; padding: 12px; border-radius: 14px; background: rgba(255,255,255,.025); border: 1px solid var(--linea); }
     .columna h3 { display: flex; align-items: center; gap: 8px; margin: 2px 4px 12px; font-size: 16px; }
@@ -1009,7 +1133,7 @@
         <strong>Royal Kings</strong>
       </a>
       <button type="button" class="boton-texto" id="abrir-nosotros">Nosotros</button>
-      <span class="estado" id="estado" aria-live="polite">Abierto ahora</span>
+      <span class="estado" id="estado" aria-live="polite">Abierto</span>
       <a class="boton-carrito boton-wa" href="https://wa.me/573044472252" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Royal Kings">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.08.81.82-3-.2-.31a8.2 8.2 0 1 1 6.94 3.83zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.42h-.48a.92.92 0 0 0-.67.31 2.8 2.8 0 0 0-.87 2.08 4.9 4.9 0 0 0 1.02 2.58 11.1 11.1 0 0 0 4.27 3.77c1.6.69 2.22.75 3.02.63.49-.07 1.46-.6 1.67-1.18.2-.58.2-1.08.14-1.18-.06-.1-.23-.16-.48-.29z"/></svg>
       </a>
@@ -1033,8 +1157,10 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
             Pedir lo mismo de la última vez
           </button>
-          <div class="portada__datos">
-            <span class="chip">Jueves a domingo · 6:00 p. m. a 11:00 p. m.</span>
+          <p class="portada__estado" id="portada-estado"></p>
+          <div class="portada__acciones">
+            <a class="agregar boton-grande" href="#cat-hamburguesas">Ver el menú</a>
+            <span class="portada__dom">Domicilio en San Juan por $3.000</span>
           </div>
         </div>
         <article class="destacada" id="destacada"></article>
@@ -1402,6 +1528,8 @@
     const e = estadoNegocio();
     const el = $('#estado');
     el.textContent = e.abierto ? 'Abierto' : 'Cerrado';
+    const pe = $('#portada-estado');
+    if (pe) { pe.classList.toggle('abierto', e.abierto); pe.innerHTML = e.abierto ? `<strong>Abierto ahora</strong> ${escapar(e.texto.split('·')[1]?.trim() || '')}` : `<strong>Cerrado</strong> Abrimos ${escapar(e.corto || 'pronto')}`; }
     el.title = e.texto;
     el.classList.toggle('abierto', e.abierto);
     const aviso = $('#aviso-cerrado');
@@ -1463,7 +1591,7 @@
       <div class="destacada__foto"><img src="${d.foto}" style="object-position:${foco(d)}" alt="${escapar(d.nombre)}" width="640" height="400"><span class="sello"><svg width="16" height="13" viewBox="0 0 200 140" aria-hidden="true"><path d="M20 118 L10 34 L58 74 L100 12 L142 74 L190 34 L180 118 Z" fill="currentColor"/><rect x="20" y="124" width="160" height="14" rx="4" fill="currentColor"/></svg>Hamburguesa del mes</span></div>
       <div class="destacada__cuerpo">
         <h2>${escapar(d.nombre)}</h2>
-        <p>${textoDesc(d.desc)}</p>
+        ${(() => { const [lema, ...resto] = d.desc.split('\n'); return resto.length ? `<p class="destacada__lema">${textoDesc(lema)}</p><p>${textoDesc(resto.join('\n'))}</p>` : `<p>${textoDesc(d.desc)}</p>`; })()}
         <div class="plato__pie"><span class="precio">${pesos(d.precio)}</span>${botonAgregar(d, 'boton-grande')}</div>
       </div>`;
     const visibles = categoriasVisibles();
@@ -2178,7 +2306,7 @@
               ${et === 'pago' ? `<button type="button" class="boton-sec" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
             </div>`}
           </div>` : ''}
-          ${p.estado === 'recibido' && minutos >= 30 && !ocupado ? `<div class="alerta-pago"><span>Lleva ${minutos} min sin pago.</span><button type="button" class="enlace-sutil" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button></div>` : ''}
+          ${p.estado === 'recibido' && minutos >= 30 && !ocupado ? `<div class="alerta-pago"><span>Lleva ${minutos < 60 ? minutos + ' min' : Math.floor(minutos / 60) + ' h' + (minutos % 60 ? ' ' + (minutos % 60) + ' min' : '')} sin pago.</span><button type="button" class="enlace-sutil" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button></div>` : ''}
           ${panel.cancelando === p.numero ? `<div class="confirmar-paso cancelar-caja">
               <p><strong>¿Cancelar el pedido #${escapar(corto(p))}?</strong> Elige el motivo:</p>
               <div class="motivos">
@@ -2368,31 +2496,35 @@
         <div class="form-admin__cab">
           <button type="button" class="volver" data-admin="volver">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Volver al menú</button>
-          <h3>${p ? 'Editar: ' + escapar(p.nombre) : 'Nuevo producto'}</h3>
+          <h3>${p ? escapar(p.nombre) : 'Nuevo producto'}</h3>
         </div>
-        <div class="foto-carga">
-          ${foto ? `<img class="foto-carga__vista" src="${foto}" alt="Vista previa">` : '<span class="foto-carga__vista"></span>'}
-          <div class="campo" style="margin:0">
-            <label class="subir-foto">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
-              ${foto ? 'Cambiar foto' : 'Tomar o subir foto'}
-              <input type="file" id="f-foto" accept="image/*">
-            </label>
-            <small class="previa__nota">Se ajusta sola para que la página cargue rápido.</small>
+        <section class="foto-bloque">
+          <div class="foto-bloque__cab">
+            <span class="foto-bloque__tit">Foto</span>
+            <label class="subir-foto" id="subir-foto" ${foto ? '' : 'hidden'}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+              Cambiar foto<input type="file" id="f-foto" accept="image/*"></label>
           </div>
-        </div>
-        <div class="encuadre" id="encuadre" ${foto ? '' : 'hidden'}>
-          <p class="encuadre__ayuda"><strong>Encuadre:</strong> toca la parte de la foto que siempre debe verse, por ejemplo el centro de la hamburguesa.</p>
-          <div class="encuadre__original" id="enc-orig">
-            <img src="${foto}" alt="Foto completa: toca para elegir el centro">
-            <span class="encuadre__punto" style="left:${fx};top:${fy}"></span>
+          <label class="foto-vacia" id="foto-vacia" ${foto ? 'hidden' : ''}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <strong>Tomar o subir foto</strong><small>Se ajusta sola para que la página cargue rápido.</small>
+            <input type="file" id="f-foto-vacia" accept="image/*">
+          </label>
+          <div class="encuadre" id="encuadre" ${foto ? '' : 'hidden'}>
+            <div class="encuadre__original" id="enc-orig">
+              <img src="${foto}" alt="Foto completa: toca para elegir el centro">
+              <span class="encuadre__punto" style="left:${fx};top:${fy}"></span>
+            </div>
+            <div class="encuadre__lado">
+              <p class="encuadre__ayuda">Toca en la foto la parte que siempre debe verse, por ejemplo el centro de la hamburguesa.</p>
+              <div class="encuadre__previas">
+                <figure><div class="encuadre__marco encuadre__marco--ancho"><img src="${foto}" style="object-position:${panel.foco}" alt=""></div><figcaption>Hamburguesa del mes</figcaption></figure>
+                <figure><div class="encuadre__marco"><img src="${foto}" style="object-position:${panel.foco}" alt=""></div><figcaption>En el menú</figcaption></figure>
+              </div>
+              <button type="button" class="enlace-sutil" data-admin="centrar">Volver a centrar</button>
+            </div>
           </div>
-          <div class="encuadre__previas">
-            <figure><div class="encuadre__marco encuadre__marco--ancho"><img src="${foto}" style="object-position:${panel.foco}" alt=""></div><figcaption>Hamburguesa del mes</figcaption></figure>
-            <figure><div class="encuadre__marco"><img src="${foto}" style="object-position:${panel.foco}" alt=""></div><figcaption>En el menú</figcaption></figure>
-          </div>
-          <button type="button" class="boton-sec" data-admin="centrar">Centrar foto</button>
-        </div>
+        </section>
         <div class="campo"><label for="f-nombre">Nombre</label><input type="text" id="f-nombre" value="${escapar(p?.nombre || '')}" placeholder="Ej.: La Duquesa"><span class="error" id="e-nombre" hidden>Escribe el nombre.</span></div>
         <div class="campo"><label for="f-desc">Descripción</label><textarea id="f-desc" placeholder="Ingredientes y detalles">${escapar(p?.desc || '')}</textarea></div>
         <div class="campo"><label for="f-precio">Precio</label><input type="text" id="f-precio" inputmode="numeric" autocomplete="off" value="${p ? p.precio.toLocaleString('es-CO') : ''}" placeholder="Ej.: 22.000"><span class="error" id="e-precio" hidden>Escribe un precio mayor que cero.</span></div>
@@ -2658,13 +2790,11 @@
       return;
     }
     if (t.id === 'f-cat') { $('#fila-destacada').hidden = t.value !== 'hamburguesas'; return; }
-    if (t.id === 'f-foto' && t.files[0]) {
+    if ((t.id === 'f-foto' || t.id === 'f-foto-vacia') && t.files[0]) {
       try { panel.foto = await comprimirFoto(t.files[0]); } catch { panel.foto = null; }
-      const vista = $('#admin .foto-carga__vista');
       if (panel.foto) {
-        vista.outerHTML = `<img class="foto-carga__vista" src="${panel.foto}" alt="Vista previa">`;
         document.querySelectorAll('#encuadre img').forEach((img) => { img.src = panel.foto; });
-        $('#encuadre').hidden = false;
+        $('#encuadre').hidden = false; $('#foto-vacia').hidden = true; $('#subir-foto').hidden = false;
         ponerFoco(50, 50);
       }
       return;
