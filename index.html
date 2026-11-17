@@ -751,6 +751,18 @@
   .comanda__reaviso { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 12px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--brasa-2); color: var(--gris); font-size: 12.5px; }
   .comanda__reaviso span { flex-basis: 100%; }
   .comanda__reaviso .enlace-sutil { font-size: 13px; padding: 0; color: var(--papel-suave); }
+  .comanda.etapa-resolver { --et: #d9694c; }
+  .comanda__intento { padding: 0 7px; border-radius: 6px; background: var(--brasa-2); color: var(--papel); font-size: 12px; font-weight: 700; }
+  .comanda__fallo { display: block; margin: 10px auto 0; padding: 4px 8px; color: var(--papel-suave); font-size: 13.5px; }
+  .resolver-opc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .resolver-opc .boton-sec { height: 42px; justify-content: center; color: var(--papel); white-space: nowrap; padding: 0 8px; }
+  .resolver-opc .opc-cerrar { grid-column: 1 / -1; color: var(--papel-suave); }
+  .por-resolver { margin: 0 0 16px; padding: 14px; border-radius: 14px; border: 1px solid rgba(217,105,76,.45); background: rgba(217,105,76,.06); }
+  .por-resolver h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 2px; font-size: 17px; }
+  .por-resolver h3 b { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 7px; border-radius: 999px; background: #d9694c; color: #fff; font-size: 13px; }
+  .por-resolver > p { margin: 0 0 12px; color: var(--papel-suave); font-size: 13.5px; }
+  .por-resolver .comanda:last-child { margin-bottom: 0; }
+  .fila-hist.estado-cancelado.no-entregado .fh-total { text-decoration: none; color: var(--papel-suave); }
   .flujo-cocina strong { color: var(--et-cocina); }
   .flujo-entregar strong { color: var(--et-entregar); }
   .admin__cuerpo .aviso-ok:empty { display: none; }
@@ -837,6 +849,9 @@
     .columna h3 b { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 7px; border-radius: 999px; background: var(--brasa-2); font-size: 13px; }
     .columna-vacia { margin: 20px 4px; color: var(--gris); font-size: 14px; }
     .columna .comanda { margin-bottom: 10px; }
+    .admin__cuerpo > .por-resolver { max-width: none; }
+    .por-resolver__lista { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+    .por-resolver__lista .comanda { margin: 0; }
     .columna .comanda__etapa { display: none; }
     .columna h3::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
     .columna-pago { --c: var(--et-pago); } .columna-cocina { --c: var(--et-cocina); } .columna-entregar { --c: var(--et-entregar); }
@@ -1884,7 +1899,7 @@
     banner.hidden = !activo;
     banner.classList.toggle('es-cancelado', !!p && p.estado === 'cancelado');
     if (activo && p.estado === 'cancelado') {
-      banner.innerHTML = `<span class="punto-vivo"></span><span class="sf-txt"><small>Tu pedido ${escapar(p.numero)}</small><strong>Pedido cancelado</strong></span><span class="ver">Ver</span>`;
+      banner.innerHTML = `<span class="punto-vivo"></span><span class="sf-txt"><small>Tu pedido ${escapar(p.numero)}</small><strong>${p.noEntregado ? 'Pedido cerrado' : 'Pedido cancelado'}</strong></span><span class="ver">Ver</span>`;
     } else if (activo) {
       const idx = ESTADOS.findIndex((e) => e.id === p.estado);
       banner.innerHTML = `<span class="punto-vivo"></span>
@@ -1903,7 +1918,7 @@
     const hora = new Date(p.fecha).toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' });
     if (p.estado === 'cancelado') {
       $('#seg-cuerpo').innerHTML = `<p class="seg-num"><strong>${escapar(p.numero)}</strong> · hecho a las ${hora}</p>
-        <p class="aviso-cerrado">Este pedido fue cancelado${p.motivoCancel ? ` (${escapar(p.motivoCancel.toLowerCase())})` : ''}. Si crees que es un error, escríbenos por WhatsApp.</p>`;
+        <p class="aviso-cerrado">${p.noEntregado ? `Este pedido se cerró sin ${p.entrega === 'domicilio' ? 'entregar' : 'recoger'}. Si tienes dudas, escríbenos por WhatsApp.` : `Este pedido fue cancelado${p.motivoCancel ? ` (${escapar(p.motivoCancel.toLowerCase())})` : ''}. Si crees que es un error, escríbenos por WhatsApp.`}</p>`;
       return;
     }
     $('#seg-cuerpo').innerHTML = `
@@ -2048,12 +2063,14 @@
     let base = todos.filter((p) => (vista === 'entregados' ? p.estado === 'entregado' : vista === 'cancelados' ? p.estado === 'cancelado' : !['entregado', 'cancelado'].includes(p.estado)));
     if (vista !== 'curso') base = base.filter((p) => new Date(p.fecha) >= desde);
     const deTipo = (l, t) => (t === 'todos' ? l : l.filter((p) => p.entrega === t));
-    const deEtapa = (l, e) => (e ? l.filter((p) => e[2].includes(p.estado)) : l);
+    const deEtapa = (l, e) => (e ? l.filter((p) => etapaDe(p) === e[0]) : l);
     const totalVista = base.length;
     const enCurso = todos.filter((p) => !['entregado', 'cancelado'].includes(p.estado)).length;
     let lista = deEtapa(deTipo(base, tipo), etapa);
     if (q) lista = lista.filter((p) => p.numero.toLowerCase().includes(q) || p.cliente.toLowerCase().includes(q));
     lista = [...lista].sort((a, b) => (vista === 'curso' ? a.fecha.localeCompare(b.fecha) : b.fecha.localeCompare(a.fecha)));
+    const pendientes = vista === 'curso' && !etapa ? lista.filter((p) => etapaDe(p) === 'resolver') : [];
+    if (vista === 'curso' && !etapa) lista = lista.filter((p) => etapaDe(p) !== 'resolver');
     const ventas = lista.reduce((t, p) => t + p.total, 0);
     const nDom = lista.filter((p) => p.entrega === 'domicilio').length;
     const conTipo = deEtapa(base, etapa);
@@ -2076,10 +2093,10 @@
           const cuando = (esHoy ? '' : f.toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) + ', ') + hora;
           const tipoTxt = p.entrega === 'domicilio' ? 'Domicilio' : 'Recoger';
           return `
-        <article class="fila-hist estado-${p.estado} ${abierto ? 'abierta' : ''}">
+        <article class="fila-hist estado-${p.estado} ${p.noEntregado ? 'no-entregado' : ''} ${abierto ? 'abierta' : ''}">
           <button type="button" class="fila-hist__main" data-admin="abrir-pedido" data-numero="${escapar(p.numero)}" aria-expanded="${abierto}">
             <span class="pa-id">#${escapar(corto(p))}</span>
-            <span class="fh-cliente"><strong>${escapar(p.cliente)}</strong><small>${tipoTxt} · ${escapar(p.pago)}${p.estado === 'cancelado' && p.motivoCancel ? ' · ' + escapar(p.motivoCancel) : ''}</small></span>
+            <span class="fh-cliente"><strong>${escapar(p.cliente)}</strong><small>${tipoTxt} · ${p.noEntregado ? escapar(p.motivoCancel) : escapar(p.pago) + (p.estado === 'cancelado' && p.motivoCancel ? ' · ' + escapar(p.motivoCancel) : '')}</small></span>
             <span class="fh-col fh-tipo"><span class="tipo-entrega ${p.entrega === 'domicilio' ? 'es-domicilio' : 'es-recoger'}">${tipoTxt}</span></span>
             <span class="fh-col fh-pago">${p.estado === 'cancelado' ? escapar(p.motivoCancel || 'Cancelado') : escapar(p.pago)}</span>
             <span class="fh-hora">${cuando}</span>
@@ -2106,8 +2123,9 @@
             <span class="chip-estado">Cancelado</span></div>
         </article>`;
         const et = etapaDe(p);
-        const etTxt = p.estado === 'pagado' ? 'Pagado, sin empezar' : et === 'pago' ? 'Por cobrar' : et === 'cocina' ? 'En cocina' : nombreEstado(p, 'camino');
-        const haceTxt = minutos < 1 ? 'Recién llegó' : `Hace ${minutos < 60 ? minutos + ' min' : Math.floor(minutos / 60) + ' h' + (minutos % 60 ? ' ' + (minutos % 60) + ' min' : '')}`;
+        const etTxt = et === 'resolver' ? (p.entrega === 'domicilio' ? 'No se pudo entregar' : 'No lo han recogido') : p.estado === 'pagado' ? 'Pagado, sin empezar' : et === 'pago' ? 'Por cobrar' : et === 'cocina' ? 'En cocina' : nombreEstado(p, 'camino');
+        const minRes = p.resolver ? Math.round((Date.now() - new Date(p.resolver.desde).getTime()) / 60000) : 0;
+        const haceTxt = et === 'resolver' ? (minRes < 1 ? 'Ahora mismo' : `Hace ${minRes} min`) : minutos < 1 ? 'Recién llegó' : `Hace ${minutos < 60 ? minutos + ' min' : Math.floor(minutos / 60) + ' h' + (minutos % 60 ? ' ' + (minutos % 60) + ' min' : '')}`;
         const tarde = (et === 'cocina' && minutos >= 25) || (et === 'pago' && minutos >= 30);
         const conNotas = p.notas || p.lineas.some((l) => l.nota);
         const accion = p.estado === 'recibido' ? 'Confirmar pago recibido' : p.estado === 'pagado' ? 'Pasar a cocina' : p.estado === 'preparacion' ? (p.entrega === 'domicilio' ? 'Avisar: va en camino' : 'Avisar: listo para recoger') : (p.entrega === 'domicilio' ? 'Marcar entregado' : 'Marcar recogido');
@@ -2127,6 +2145,7 @@
                 <span class="comanda__etapa">${etTxt}</span>
                 <span class="tipo-txt ${p.entrega === 'domicilio' ? 'es-domicilio' : 'es-recoger'}">${p.entrega === 'domicilio' ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h7l2-6h-4l-2-4H8"/><path d="M15 7h3"/></svg>Domicilio' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Recoger'}</span>
                 ${et === 'pago' ? `<span class="comanda__pago">${escapar(p.pago)}</span>` : ''}
+                ${p.intentos && et !== 'pago' ? `<span class="comanda__intento">${p.intentos + 1}.º intento</span>` : ''}
               </span>
               <span class="comanda__hace ${tarde ? 'tarde' : ''}" title="Llegó a las ${hora}">${haceTxt}</span>
             </span>
@@ -2150,9 +2169,9 @@
               <button type="button" class="enlace-sutil" data-admin="reabrir-aviso" data-numero="${escapar(p.numero)}">Abrir de nuevo</button>
               <button type="button" class="enlace-sutil" data-admin="copiar-aviso" data-numero="${escapar(p.numero)}">Copiar aviso</button>
             </div>` : ''}
-            ${ocupado ? '' : `<div class="comanda__secundarias">
+            ${ocupado || et === 'resolver' ? '' : `<div class="comanda__secundarias">
               ${atras ? `<button type="button" class="boton-sec" data-admin="retroceder" data-numero="${escapar(p.numero)}">Deshacer</button>` : ''}
-              ${p.estado !== 'camino' ? `<button type="button" class="boton-sec" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
+              ${et === 'pago' ? `<button type="button" class="boton-sec" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button>` : ''}
             </div>`}
           </div>` : ''}
           ${p.estado === 'recibido' && minutos >= 30 && !ocupado ? `<div class="alerta-pago"><span>Lleva ${minutos} min sin pago.</span><button type="button" class="enlace-sutil" data-admin="cancelar-pedido" data-numero="${escapar(p.numero)}">Cancelar pedido</button></div>` : ''}
@@ -2164,13 +2183,21 @@
               <div class="acciones-2"><button type="button" class="boton-sec" data-admin="cancelar-no">Volver</button>
                 <button type="button" class="agregar boton-peligro-lleno" data-admin="cancelar-si" data-numero="${escapar(p.numero)}">Sí, cancelar</button></div>
             </div>` : panel.confirmar?.numero === p.numero ? `<div class="confirmar-paso">
-              <p>${panel.confirmar.accion === 'avanzar'
+              <p>${panel.confirmar.accion === 'cerrar-sin' ? `¿Cerrar el pedido #${escapar(corto(p))} sin ${p.entrega === 'domicilio' ? 'entregar' : 'que lo recojan'}? Sale de En curso y queda en «Cancelados» como pagado y no ${p.entrega === 'domicilio' ? 'entregado' : 'recogido'}.` : panel.confirmar.accion === 'avanzar'
                 ? `¿Ya recibiste <strong>${pesos(p.total)}</strong> por ${escapar(p.pago.toLowerCase())}? El pedido pasa directo a cocina.`
                 : `¿Devolver el pedido a <strong>${atras === 'recibido' ? 'Por cobrar' : escapar(nombreEstado(p, atras))}</strong>?`}</p>
               <div class="acciones-2"><button type="button" class="boton-sec" data-admin="cancelar-paso">No</button>
-                <button type="button" class="agregar" data-admin="${panel.confirmar.accion}" data-numero="${escapar(p.numero)}" data-ok="1">${panel.confirmar.accion === 'avanzar' ? 'Sí, a cocina' : 'Sí, devolver'}</button></div>
+                <button type="button" class="agregar" data-admin="${panel.confirmar.accion}" data-numero="${escapar(p.numero)}" data-ok="1">${panel.confirmar.accion === 'cerrar-sin' ? 'Sí, cerrar' : panel.confirmar.accion === 'avanzar' ? 'Sí, a cocina' : 'Sí, devolver'}</button></div>
+            </div>` : et === 'resolver' ? `<div class="comanda__accion">
+              <button type="button" class="agregar" data-admin="escribir-cliente" data-numero="${escapar(p.numero)}">${icoWa}Escribirle a ${escapar(p.cliente.split(/\s+/)[0])}</button>
+              <p>${p.resolver.escrito ? 'Ya le escribiste. Cuando sepas qué pasó, elige cómo terminó:' : 'Pregúntale qué pasó. Luego elige cómo terminó:'}</p>
+              <div class="resolver-opc">
+                ${(p.entrega === 'domicilio' ? [['reenviar', 'Volver a enviarlo'], ['pasa-recoger', 'Lo recoge en el local'], ['cerrar-sin', 'Cerrar sin entregar']] : [['ya-recogio', 'Ya lo recogió'], ['sigue-esperando', 'Sigue en espera'], ['cerrar-sin', 'Cerrar sin recoger']])
+                  .map(([a, t]) => `<button type="button" class="boton-sec ${a === 'cerrar-sin' ? 'opc-cerrar' : ''}" data-admin="${a}" data-numero="${escapar(p.numero)}">${t}</button>`).join('')}
+              </div>
             </div>` : `<div class="comanda__accion">
               <button type="button" class="agregar" data-admin="avanzar" data-numero="${escapar(p.numero)}">${p.estado === 'preparacion' ? icoWa : ''}${accion}</button>
+              ${p.estado === 'camino' ? `<button type="button" class="enlace-sutil comanda__fallo" data-admin="no-entregado" data-numero="${escapar(p.numero)}">${p.entrega === 'domicilio' ? 'No se pudo entregar' : 'No lo han recogido'}</button>` : ''}
               ${p.estado === 'preparacion' ? `<p>Se abre WhatsApp con el mensaje listo para ${escapar(p.cliente.split(/\s+/)[0])}. Solo dale <strong>Enviar</strong>.</p>` : ''}
             </div>`}
         </article>`;
@@ -2201,6 +2228,11 @@
       ${tablero ? '' : totalVista && hayFiltro ? `<p class="linea-filtro">${lista.length ? `${plural(lista.length, 'pedido', 'pedidos')} ${descFiltro}` : 'Ningún pedido con ese filtro'}${vista === 'curso' && lista.length > 1 ? ', el más antiguo arriba' : ''}. <button type="button" class="enlace-sutil" data-admin="quitar-filtros">Ver todos</button></p>`
         : vista === 'curso' && lista.length > 1 ? '<p class="linea-filtro">El más antiguo va arriba.</p>' : ''}
       <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
+      ${vista === 'curso' && pendientes.length ? `<section class="por-resolver">
+          <h3>Por resolver <b>${pendientes.length}</b></h3>
+          <p>Pedidos pagados que no se pudieron entregar. Escríbele al cliente y elige cómo terminó.</p>
+          <div class="por-resolver__lista">${pendientes.map(tarjeta).join('')}</div>
+        </section>` : ''}
       ${tablero ? `<div class="tablero">${ETAPAS.map((e) => { const l = deEtapa(lista, e); return `<section class="columna columna-${e[0]}"><h3>${e[1]} <b>${l.length}</b></h3>${l.length ? l.map(tarjeta).join('') : '<p class="columna-vacia">Nada por ahora.</p>'}</section>`; }).join('')}</div>`
         : lista.length ? (vista === 'curso' ? lista.map(tarjeta).join('') : `<div class="historial">
             <div class="hist-cab" aria-hidden="true"><span>Pedido</span><span>Cliente</span><span>Entrega</span><span>${vista === 'cancelados' ? 'Motivo' : 'Pago'}</span><span>Hora</span><span>Total</span><span></span></div>
@@ -2209,7 +2241,7 @@
   }
 
   const corto = (p) => p.numero.split('-').pop();
-  const etapaDe = (p) => (['recibido', 'pagado'].includes(p.estado) ? 'pago' : p.estado === 'preparacion' ? 'cocina' : p.estado === 'camino' ? 'entregar' : p.estado);
+  const etapaDe = (p) => (p.resolver && p.estado === 'camino' ? 'resolver' : ['recibido', 'pagado'].includes(p.estado) ? 'pago' : p.estado === 'preparacion' ? 'cocina' : p.estado === 'camino' ? 'entregar' : p.estado);
   window.matchMedia('(min-width: 1024px)').addEventListener('change', () => { if ($('#admin').open) pintarPanel(); });
   function textoAviso(p) {
     const nombre = p.cliente.split(/\s+/)[0];
@@ -2448,6 +2480,35 @@
       guardarPedidos(lista);
       panel.cancelando = null; panel.aviso = `${p.numero} cancelado. Lo encuentras en «Cancelados».`;
       pintarSeguimiento();
+      return pintarPanel();
+    }
+    if (['no-entregado', 'escribir-cliente', 'reenviar', 'pasa-recoger', 'ya-recogio', 'sigue-esperando', 'cerrar-sin'].includes(b.dataset.admin)) {
+      const a = b.dataset.admin;
+      if (a === 'cerrar-sin' && !b.dataset.ok) { panel.confirmar = { numero: b.dataset.numero, accion: 'cerrar-sin' }; return pintarPanel(); }
+      const lista = leerPedidos();
+      const p = lista.find((x) => x.numero === b.dataset.numero);
+      if (!p) return;
+      const n = `#${corto(p)}`;
+      panel.confirmar = null;
+      if (a === 'no-entregado') { p.resolver = { desde: new Date().toISOString() }; panel.abierto = null; panel.aviso = `${n} pasó a «Por resolver».`; }
+      if (a === 'escribir-cliente') {
+        const nombre = p.cliente.split(/\s+/)[0];
+        const texto = p.entrega === 'domicilio'
+          ? `Hola ${nombre}, te escribimos de Royal Kings Burger. Pasamos con tu pedido ${p.numero} y no pudimos entregarlo. ¿Nos cuentas qué pasó?`
+          : `Hola ${nombre}, te escribimos de Royal Kings Burger. Tu pedido ${p.numero} está listo en el local. ¿Vas a pasar por él?`;
+        window.open(`https://wa.me/57${p.tel}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
+        p.resolver.escrito = true; panel.aviso = '';
+      }
+      if (a === 'reenviar') { delete p.resolver; p.intentos = (p.intentos || 0) + 1; panel.aviso = `${n} volvió a «Por entregar».`; }
+      if (a === 'pasa-recoger') { delete p.resolver; p.entrega = 'recoger'; panel.aviso = `${n} ahora es para recoger en el local.`; }
+      if (a === 'ya-recogio') { delete p.resolver; p.estado = 'entregado'; panel.aviso = `${n} quedó recogido.`; }
+      if (a === 'sigue-esperando') { delete p.resolver; panel.aviso = `${n} volvió a «Por entregar».`; }
+      if (a === 'cerrar-sin') {
+        p.motivoCancel = p.entrega === 'domicilio' ? 'Pagado, no entregado' : 'Pagado, no recogido';
+        p.noEntregado = true; delete p.resolver; p.estado = 'cancelado';
+        panel.aviso = `${n} se cerró. Lo encuentras en «Cancelados».`;
+      }
+      guardarPedidos(lista); pintarSeguimiento();
       return pintarPanel();
     }
     if ((b.dataset.admin === 'avanzar' || b.dataset.admin === 'retroceder') && !b.dataset.ok) {
