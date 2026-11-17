@@ -549,7 +549,7 @@
   .admin__marca { display: flex; align-items: center; gap: 10px; min-width: 0; }
   .admin__marca span { min-width: 0; }
   .admin__marca small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  @media (max-width: 359px) { .admin__marca small { display: none; } }
+  @media (max-width: 359px) { .admin__marca span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
   .admin__marca img { width: 38px; height: 38px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px var(--mostaza); }
   .admin__marca span { display: grid; font-size: 20px; }
   .admin__marca small { font-family: var(--texto); font-weight: 600; font-size: 11px; color: var(--gris); letter-spacing: .02em; }
@@ -1010,12 +1010,16 @@
   /* Campanita */
   .admin__sonido { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px; border-radius: 10px; border: 1px solid var(--linea); background: none; color: var(--mostaza); font-size: 13px; font-weight: 600; }
   .admin__sonido[hidden] { display: none; }
+  .admin__wa { color: #6dc38a; }
+  .admin__wa b { color: var(--papel); font-weight: 700; }
+  .admin__cab .admin__wa + .admin__sonido { margin-left: -2px; }
   .admin__sonido .sin { display: none; }
   .admin__sonido[aria-pressed="false"] { color: var(--gris); }
   .admin__sonido[aria-pressed="false"] .con { display: none; }
   .admin__sonido[aria-pressed="false"] .sin { display: block; }
   .admin__sonido-txt { color: var(--papel-suave); }
   @media (max-width: 520px) { .admin__sonido-txt { display: none; } .admin__sonido { padding: 0 9px; } }
+  @media (max-width: 520px) { #admin-estado { font-size: 0; gap: 0; padding: 0 4px; } .admin__cab { gap: 8px; } .admin__marca small { display: none; } }
   #nav-conteo.late { animation: late 1.2s ease-out; }
   @keyframes late { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.45); box-shadow: 0 0 0 6px rgba(230,173,50,.35); } 35% { transform: scale(.95); } 55% { transform: scale(1.15); } }
 
@@ -1505,6 +1509,10 @@
     <div class="admin__cab">
       <h2 id="admin-titulo" class="admin__marca"><img src="data:image/webp;base64,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" alt="" width="38" height="38"><span>Panel<small>Royal Kings Burger</small></span></h2>
       <span class="estado" id="admin-estado" hidden></span>
+      <button type="button" class="admin__sonido admin__wa" id="admin-wa" hidden>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2z"/></svg>
+        <span class="admin__sonido-txt">WhatsApp:</span> <b>App</b>
+      </button>
       <button type="button" class="admin__sonido" id="admin-sonido" aria-pressed="true" title="Campanita al llegar un pedido" hidden>
         <svg class="con" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
         <svg class="sin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 9.5-4.9M18 11v5l1.5 2H8"/><path d="M10 20a2 2 0 0 0 4 0"/><path d="M4 4l16 16"/></svg>
@@ -2403,7 +2411,7 @@
     $('#admin-estado').hidden = false;
     $('#admin-estado').textContent = est.abierto ? 'Abierto' : 'Cerrado';
     $('#admin-estado').classList.toggle('abierto', est.abierto);
-    $('#admin-sonido').hidden = false; $('#admin-sonido').setAttribute('aria-pressed', String(sonidoActivo()));
+    $('#admin-sonido').hidden = false; $('#admin-wa').hidden = false; pintarBotonWa(); $('#admin-sonido').setAttribute('aria-pressed', String(sonidoActivo()));
     revisarNuevos();
     if (panel.vista === 'form') return pintarFormulario(cuerpo);
     const pestanas = '';
@@ -2737,6 +2745,12 @@
     if (panel.confirmar || panel.cancelando || (ae && ae.closest?.('#admin') && /INPUT|TEXTAREA|SELECT/.test(ae.tagName))) return;
     pintarPanel();
   }, 30000);
+  $('#admin-wa').addEventListener('click', () => {
+    const nuevo = modoWa() === 'app' ? 'web' : 'app';
+    escribir('rk-wa-modo', nuevo); pintarBotonWa();
+    panel.aviso = nuevo === 'app' ? 'Los avisos se abrirán directo en la app de WhatsApp.' : 'Los avisos se abrirán en WhatsApp Web, siempre en la misma pestaña.';
+    pintarPanel();
+  });
   $('#admin-sonido').addEventListener('click', () => {
     const on = !sonidoActivo(); escribir('rk-sonido', on);
     $('#admin-sonido').setAttribute('aria-pressed', String(on));
@@ -2751,7 +2765,30 @@
       ? `¡Hola, ${nombre}! Tu pedido ${p.numero} de Royal Kings Burger ya va en camino. ¡Que lo disfrutes!`
       : `¡Hola, ${nombre}! Tu pedido ${p.numero} de Royal Kings Burger ya está listo para recoger. Te esperamos.`;
   }
-  const abrirAviso = (p) => window.open(`https://wa.me/57${p.tel}?text=${encodeURIComponent(textoAviso(p))}`, '_blank', 'noopener');
+  // Abrir WhatsApp directo, sin la página intermedia de wa.me
+  const tactil = () => matchMedia('(pointer: coarse)').matches;
+  const modoWa = () => leer('rk-wa-modo') || (tactil() ? 'app' : 'web');
+  function abrirWhatsApp(tel, texto) {
+    const t = encodeURIComponent(texto);
+    if (modoWa() === 'app') {
+      // Si la app no se abre (no está instalada), se usa el enlace normal
+      const respaldo = setTimeout(() => { if (document.visibilityState === 'visible' && tactil()) window.open(`https://wa.me/${tel}?text=${t}`, '_blank'); }, 1800);
+      const cancelar = () => clearTimeout(respaldo);
+      addEventListener('visibilitychange', cancelar, { once: true });
+      addEventListener('pagehide', cancelar, { once: true });
+      location.href = `whatsapp://send?phone=${tel}&text=${t}`;
+    } else {
+      // Siempre la misma pestaña de WhatsApp Web
+      window.open(`https://web.whatsapp.com/send?phone=${tel}&text=${t}`, 'rk-whatsapp');
+    }
+  }
+  const abrirAviso = (p) => abrirWhatsApp(`57${p.tel}`, textoAviso(p));
+  function pintarBotonWa() {
+    const b = $('#admin-wa'); if (!b) return;
+    const m = modoWa();
+    b.querySelector('b').textContent = m === 'app' ? 'App' : 'Web';
+    b.title = m === 'app' ? 'Los avisos se abren en la app de WhatsApp. Toca para usar WhatsApp Web.' : 'Los avisos se abren en WhatsApp Web, siempre en la misma pestaña. Toca para usar la app.';
+  }
 
   function cambiarEstado(numero, delta) {
     const lista = leerPedidos();
@@ -3005,7 +3042,7 @@
         const texto = p.entrega === 'domicilio'
           ? `Hola ${nombre}, te escribimos de Royal Kings Burger. Pasamos con tu pedido ${p.numero} y no pudimos entregarlo. ¿Nos cuentas qué pasó?`
           : `Hola ${nombre}, te escribimos de Royal Kings Burger. Tu pedido ${p.numero} está listo en el local. ¿Vas a pasar por él?`;
-        window.open(`https://wa.me/57${p.tel}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
+        abrirWhatsApp(`57${p.tel}`, texto);
         p.resolver.escrito = true; panel.aviso = '';
       }
       if (a === 'reenviar') { delete p.resolver; p.intentos = (p.intentos || 0) + 1; panel.aviso = `${n} volvió a «Por entregar».`; }
