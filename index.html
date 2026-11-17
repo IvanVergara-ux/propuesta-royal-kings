@@ -1234,6 +1234,9 @@
   .seg-wa { display: flex; align-items: center; justify-content: center; gap: 8px; height: 46px; margin-top: 16px; border-radius: 12px; border: 1px solid var(--linea); color: var(--papel); text-decoration: none; font-weight: 600; }
   .seg-wa svg { color: #6dc38a; }
   .seg-wa:hover { border-color: var(--papel-suave); }
+  .seg-repetir { width: 100%; justify-content: center; margin-top: 16px; }
+  .seg-enlaces { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; }
+  .seg-enlaces .enlace-sutil { font-size: 13px; }
   .seg-nota { margin: 10px 0 0; text-align: center; color: var(--gris); font-size: 12.5px; }
   .seg-num { margin: 0 0 12px; color: var(--papel-suave); }
   .linea-tiempo { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 12px; }
@@ -2154,9 +2157,11 @@
     $('#nombre').focus();
   });
   document.addEventListener('click', (e) => {
+    if (e.target.closest('#ocultar-seguimiento')) { const p = miPedido(); if (p) escribir('rk-seg-oculto', p.numero); $('#seguimiento').close(); pintarSeguimiento(); return; }
     if (!e.target.closest('[data-repetir]')) return;
     const omitidos = cargarLineas(leer(CLAVE_ULTIMO));
     actualizar();
+    if ($('#seguimiento').open) { $('#seguimiento').close(); setTimeout(abrirHoja, 150); }
     avisar(omitidos
       ? 'Agregamos tu último pedido. Algunos productos no están disponibles hoy.'
       : 'Agregamos tu último pedido. Puedes sumar más cosas del menú.');
@@ -2224,7 +2229,7 @@
   function pintarSeguimiento() {
     const p = miPedido();
     const banner = $('#seguimiento-banner');
-    const recienEntregado = p && p.estado === 'entregado' && Date.now() - new Date(p.entregadoEn || 0).getTime() < 30 * 60 * 1000;
+    const recienEntregado = p && p.estado === 'entregado' && leer('rk-seg-oculto') !== p.numero && Date.now() - new Date(p.entregadoEn || 0).getTime() < 30 * 60 * 1000;
     const activo = p && (p.estado !== 'entregado' || recienEntregado) && Date.now() - new Date(p.fecha).getTime() < 12 * 3600 * 1000;
     banner.hidden = !activo;
     banner.classList.toggle('es-cancelado', !!p && p.estado === 'cancelado');
@@ -2291,9 +2296,16 @@
         <div class="seg-ticket__total"><span>Total · ${escapar(p.pago)}</span><strong>${pesos(p.total)}</strong></div>
         <p class="seg-ticket__entrega">${dom ? `Domicilio a: ${escapar(p.dir || 'tu dirección')}` : 'Para recoger en Cra. 12 #9-31'}</p>
       </section>
+      ${p.estado === 'entregado' ? `
+      <button type="button" class="agregar boton-grande seg-repetir" data-repetir>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Pedir lo mismo otra vez</button>
+      <div class="seg-enlaces">
+        <a class="enlace-sutil" href="https://wa.me/${WHATSAPP_PEDIDOS}?text=${encodeURIComponent(`Hola, tuve un problema con mi pedido ${p.numero}.`)}" target="_blank" rel="noopener noreferrer">¿Algún problema? Escríbenos</a>
+        <button type="button" class="enlace-sutil" id="ocultar-seguimiento">Quitar el aviso de abajo</button>
+      </div>` : `
       <a class="seg-wa" href="https://wa.me/${WHATSAPP_PEDIDOS}?text=${waTxt}" target="_blank" rel="noopener noreferrer">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.9 9.9 0 1 0 12.04 2z"/></svg>Preguntar por mi pedido</a>
-      <p class="seg-nota">Esta pantalla se actualiza sola cuando el restaurante cambia el estado.</p>`;
+      <p class="seg-nota">Esta pantalla se actualiza sola cuando el restaurante cambia el estado.</p>`}`;
   }
   const abrirSeguimiento = () => { pintarDetalleSeguimiento(); $('#seguimiento').showModal(); };
   $('#seguimiento-banner').addEventListener('click', abrirSeguimiento);
