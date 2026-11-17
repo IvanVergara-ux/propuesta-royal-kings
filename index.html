@@ -729,7 +729,7 @@
   .comanda__nota { display: inline-block; margin-left: 4px; padding: 0 7px; vertical-align: 1px; border-radius: 6px; border: 1px solid rgba(230,173,50,.5); color: var(--mostaza); font-size: 12px; font-weight: 700; }
   .comanda__ver { flex: none; margin-left: auto; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--brasa-2); color: var(--papel-suave); }
   .comanda__ver svg { transition: transform .15s; }
-  .abierta .comanda__ver svg { transform: rotate(180deg); }
+  .comanda.abierta .comanda__ver svg { transform: rotate(180deg); }
   .comanda__detalle { margin: 0 16px 12px 18px; padding: 12px 0 0; border-top: 1px dashed var(--linea); font-size: 14px; }
   .comanda__detalle ul { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 6px; }
   .comanda__detalle li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; font-variant-numeric: tabular-nums; }
@@ -757,10 +757,13 @@
   .resolver-opc { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
   .resolver-opc .boton-sec { height: 42px; justify-content: center; color: var(--papel); white-space: nowrap; padding: 0 8px; }
   .resolver-opc .opc-cerrar { grid-column: 1 / -1; color: var(--papel-suave); }
-  .por-resolver { margin: 0 0 16px; padding: 14px; border-radius: 14px; border: 1px solid rgba(217,105,76,.45); background: rgba(217,105,76,.06); }
-  .por-resolver h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 2px; font-size: 17px; }
-  .por-resolver h3 b { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 7px; border-radius: 999px; background: #d9694c; color: #fff; font-size: 13px; }
-  .por-resolver > p { margin: 0 0 12px; color: var(--papel-suave); font-size: 13.5px; }
+  .por-resolver { margin: 0 0 12px; border-radius: 12px; background: var(--brasa); border: 1px solid var(--linea); }
+  .por-resolver__barra { width: 100%; display: flex; align-items: center; gap: 10px; padding: 11px 14px; border: 0; background: none; color: var(--papel-suave); text-align: left; font-size: 14px; }
+  .por-resolver__barra strong { color: var(--papel); }
+  .por-resolver__punto { flex: none; width: 8px; height: 8px; border-radius: 50%; background: #d9694c; }
+  .por-resolver__ver { flex: none; margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--gris); font-size: 13px; }
+  .por-resolver.abierta .por-resolver__ver svg { transform: rotate(180deg); }
+  .por-resolver__lista { padding: 0 10px 10px; }
   .por-resolver .comanda:last-child { margin-bottom: 0; }
   .fila-hist.estado-cancelado.no-entregado .fh-total { text-decoration: none; color: var(--papel-suave); }
   .flujo-cocina strong { color: var(--et-cocina); }
@@ -850,6 +853,7 @@
     .columna-vacia { margin: 20px 4px; color: var(--gris); font-size: 14px; }
     .columna .comanda { margin-bottom: 10px; }
     .admin__cuerpo > .por-resolver { max-width: none; }
+    .por-resolver:not(.abierta) { width: fit-content; min-width: 420px; }
     .por-resolver__lista { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
     .por-resolver__lista .comanda { margin: 0; }
     .columna .comanda__etapa { display: none; }
@@ -2228,10 +2232,13 @@
       ${tablero ? '' : totalVista && hayFiltro ? `<p class="linea-filtro">${lista.length ? `${plural(lista.length, 'pedido', 'pedidos')} ${descFiltro}` : 'Ningún pedido con ese filtro'}${vista === 'curso' && lista.length > 1 ? ', el más antiguo arriba' : ''}. <button type="button" class="enlace-sutil" data-admin="quitar-filtros">Ver todos</button></p>`
         : vista === 'curso' && lista.length > 1 ? '<p class="linea-filtro">El más antiguo va arriba.</p>' : ''}
       <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
-      ${vista === 'curso' && pendientes.length ? `<section class="por-resolver">
-          <h3>Por resolver <b>${pendientes.length}</b></h3>
-          <p>Pedidos pagados que no se pudieron entregar. Escríbele al cliente y elige cómo terminó.</p>
-          <div class="por-resolver__lista">${pendientes.map(tarjeta).join('')}</div>
+      ${vista === 'curso' && pendientes.length ? `<section class="por-resolver ${panel.verResolver ? 'abierta' : ''}">
+          <button type="button" class="por-resolver__barra" data-admin="ver-resolver" aria-expanded="${!!panel.verResolver}">
+            <span class="por-resolver__punto"></span>
+            <span><strong>Por resolver: ${pendientes.length}</strong> ${pendientes.length === 1 ? 'pedido que no se pudo entregar' : 'pedidos que no se pudieron entregar'}</span>
+            <span class="por-resolver__ver">${panel.verResolver ? 'Ocultar' : 'Ver'}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          ${panel.verResolver ? `<div class="por-resolver__lista">${pendientes.map(tarjeta).join('')}</div>` : ''}
         </section>` : ''}
       ${tablero ? `<div class="tablero">${ETAPAS.map((e) => { const l = deEtapa(lista, e); return `<section class="columna columna-${e[0]}"><h3>${e[1]} <b>${l.length}</b></h3>${l.length ? l.map(tarjeta).join('') : '<p class="columna-vacia">Nada por ahora.</p>'}</section>`; }).join('')}</div>`
         : lista.length ? (vista === 'curso' ? lista.map(tarjeta).join('') : `<div class="historial">
@@ -2482,6 +2489,7 @@
       pintarSeguimiento();
       return pintarPanel();
     }
+    if (b.dataset.admin === 'ver-resolver') { panel.verResolver = !panel.verResolver; return pintarPanel(); }
     if (['no-entregado', 'escribir-cliente', 'reenviar', 'pasa-recoger', 'ya-recogio', 'sigue-esperando', 'cerrar-sin'].includes(b.dataset.admin)) {
       const a = b.dataset.admin;
       if (a === 'cerrar-sin' && !b.dataset.ok) { panel.confirmar = { numero: b.dataset.numero, accion: 'cerrar-sin' }; return pintarPanel(); }
@@ -2490,7 +2498,7 @@
       if (!p) return;
       const n = `#${corto(p)}`;
       panel.confirmar = null;
-      if (a === 'no-entregado') { p.resolver = { desde: new Date().toISOString() }; panel.abierto = null; panel.etapa = null; panel.aviso = `${n} pasó a «Por resolver», arriba de todo.`; panel.irArriba = true; }
+      if (a === 'no-entregado') { p.resolver = { desde: new Date().toISOString() }; panel.abierto = null; panel.etapa = null; panel.aviso = `${n} pasó a «Por resolver».`; }
       if (a === 'escribir-cliente') {
         const nombre = p.cliente.split(/\s+/)[0];
         const texto = p.entrega === 'domicilio'
@@ -2510,7 +2518,6 @@
       }
       guardarPedidos(lista); pintarSeguimiento();
       pintarPanel();
-      if (panel.irArriba) { panel.irArriba = false; const r = $('.por-resolver'); if (r) { $('#admin-cuerpo').scrollTop = 0; r.scrollIntoView({ block: 'start' }); } }
       return;
     }
     if ((b.dataset.admin === 'avanzar' || b.dataset.admin === 'retroceder') && !b.dataset.ok) {
