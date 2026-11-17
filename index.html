@@ -539,8 +539,11 @@
   /* Panel del dueño */
   dialog.admin {
     width: 100%; max-width: 760px; height: 100dvh; max-height: 100dvh; margin: 0 auto; border-radius: 0;
-    background: var(--carbon); overflow-y: auto;
+    background: var(--carbon); overflow-y: auto; overscroll-behavior: contain;
   }
+  @media (max-width: 799px) { dialog.admin[open] { position: fixed; inset: 0; height: 100%; max-height: none; max-width: none; } }
+  .admin__cuerpo { overscroll-behavior: contain; }
+  html.bloqueo-scroll body { position: fixed; left: 0; right: 0; width: 100%; overflow: hidden; }
   @media (min-width: 800px) { dialog.admin { height: 92dvh; max-height: 92dvh; margin: auto; border-radius: 20px; border: 1px solid var(--linea); } }
   .admin__cab { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 10px; padding: 14px 18px; background: var(--carbon); border-bottom: 1px solid var(--linea); }
   .admin__marca { display: flex; align-items: center; gap: 10px; min-width: 0; }
@@ -1162,7 +1165,9 @@
   body:not(.con-carrito).con-seguimiento { padding-bottom: 92px; }
   body.con-carrito .seguimiento-flotante { bottom: calc(84px + env(safe-area-inset-bottom)); }
   body.con-carrito.con-seguimiento { padding-bottom: 170px; }
-  dialog.envio { overflow: hidden; }
+  dialog.envio { overflow-y: auto; overscroll-behavior: contain; }
+  dialog { overscroll-behavior: contain; }
+  html:has(dialog[open]) { overflow: hidden; }
   .envio__cab { position: relative; padding: 20px 64px 16px 20px; text-align: left; background: var(--brasa); border-bottom: 1px dashed rgba(244,237,226,.14); }
   .envio__cab .cerrar { position: absolute; top: 14px; right: 14px; }
   .envio__num { margin: 0; color: var(--gris); font-size: 13px; font-variant-numeric: tabular-nums; }
@@ -2320,6 +2325,23 @@
   $('#seguir-pedido').addEventListener('click', () => { $('#previa').close(); abrirSeguimiento(); });
   addEventListener('storage', (e) => { if (e.key === CLAVE_PEDIDOS) { pintarSeguimiento(); if (panel.seccion === 'pedidos' && $('#admin').open) pintarPanel(); } });
 
+
+  // Mientras haya una ventana abierta, la página de atrás no se mueve (también en celulares)
+  (() => {
+    let y = 0;
+    const sync = () => {
+      const abierta = [...document.querySelectorAll('dialog')].some((d) => d.open);
+      const html = document.documentElement;
+      if (abierta && !html.classList.contains('bloqueo-scroll')) {
+        y = window.scrollY; document.body.style.top = `-${y}px`; html.classList.add('bloqueo-scroll');
+      } else if (!abierta && html.classList.contains('bloqueo-scroll')) {
+        html.classList.remove('bloqueo-scroll'); document.body.style.top = ''; window.scrollTo(0, y);
+      }
+    };
+    const obs = new MutationObserver(sync);
+    document.querySelectorAll('dialog').forEach((d) => obs.observe(d, { attributes: true, attributeFilter: ['open'] }));
+    sync();
+  })();
   // ---------- Panel del dueño (demo: datos en este navegador) ----------
   const DEMO_CORREO = 'admin@royalkingsburger.com';
   const DEMO_CLAVE = 'royal2026';
@@ -2617,7 +2639,7 @@
           ${[['hoy', 'Hoy'], ['7d', 'Últimos 7 días'], ['todo', 'Todo']].map(([v, t]) => `<button type="button" data-admin="periodo" data-valor="${v}" aria-pressed="${periodo === v}">${t}</button>`).join('')}
         </div>` : ''}
       ${vista === 'entregados' && totalVista ? `<div class="ventas">
-          <div class="ventas__total"><span>Vendido por la página</span><strong>${pesos(ventas)}</strong><small>${plural(lista.length, 'pedido entregado', 'pedidos entregados')}</small></div>
+          <div class="ventas__total"><span>Ventas desde la página</span><strong>${pesos(ventas)}</strong><small>${plural(lista.length, 'pedido entregado', 'pedidos entregados')}</small></div>
           <div><span>A domicilio</span><strong>${pesos(lista.filter((p) => p.entrega === 'domicilio').reduce((t, p) => t + p.total, 0))}</strong><small>${plural(nDom, 'pedido', 'pedidos')}</small></div>
           <div><span>Para recoger</span><strong>${pesos(lista.filter((p) => p.entrega === 'recoger').reduce((t, p) => t + p.total, 0))}</strong><small>${plural(lista.length - nDom, 'pedido', 'pedidos')}</small></div>
         </div>` : ''}
