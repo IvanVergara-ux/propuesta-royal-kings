@@ -447,6 +447,17 @@
   .hoja__cuerpo { padding: 6px 18px 18px; }
   .hoja h3 { margin: 18px 0 8px; font-size: 15px; font-weight: 700; color: var(--papel-suave); }
   .linea { padding: 12px 0; border-bottom: 1px solid var(--linea); }
+  .linea.con-foto { display: grid; grid-template-columns: 56px 1fr; column-gap: 12px; }
+  .linea.con-foto > :not(.linea__foto) { grid-column: 2; }
+  .linea__foto { grid-row: 1 / span 2; width: 56px; height: 56px; border-radius: 10px; overflow: hidden; background: var(--brasa-2); }
+  .linea__foto img { width: 100%; height: 100%; object-fit: cover; }
+  .linea__foto.es-producto { background: #fff; }
+  .linea__foto.es-producto img { object-fit: contain; padding: 4px; }
+  .hoja__cab h2 small { margin-left: 6px; font-family: var(--texto); font-size: 14px; font-weight: 600; color: var(--gris); letter-spacing: 0; }
+  .nota-general { display: block; margin-top: 4px; }
+  .hoja__pie { position: sticky; bottom: 0; z-index: 3; margin: 16px -18px -18px; padding: 12px 18px calc(14px + env(safe-area-inset-bottom)); background: var(--brasa); border-top: 1px solid var(--linea); box-shadow: 0 -12px 24px -12px rgba(0,0,0,.55); }
+  .hoja__pie .aviso-cerrado { margin: 0 0 10px; font-size: 13px; }
+  .hoja__pie .enviar { margin-top: 10px; }
   .linea__fila { display: flex; justify-content: space-between; gap: 10px; font-weight: 600; }
   .linea__control { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 10px; }
   .cantidad { display: inline-flex; align-items: center; border: 1px solid var(--linea); border-radius: 10px; overflow: hidden; }
@@ -527,9 +538,12 @@
   .pago-info small { color: var(--mostaza); font-size: 13px; }
   .ayuda { color: var(--gris); font-size: 13px; line-height: 1.4; }
   .textarea-alta { min-height: 110px; }
-  .resumen { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--linea); display: grid; gap: 4px; }
+  .resumen { display: grid; gap: 4px; }
   .resumen div { display: flex; justify-content: space-between; color: var(--papel-suave); font-variant-numeric: tabular-nums; }
-  .resumen .total { color: var(--papel); font-size: 20px; font-weight: 700; margin-top: 4px; }
+  .resumen .total { align-items: center; color: var(--papel); font-weight: 700; }
+  .resumen .total > span { display: grid; font-size: 16px; }
+  .resumen .total small { font-size: 12.5px; font-weight: 500; color: var(--gris); }
+  .resumen .total strong { font-family: var(--display); font-weight: 900; font-size: 28px; line-height: 1; letter-spacing: .01em; }
   .enviar { width: 100%; margin-top: 14px; justify-content: center; }
   .enviar:disabled { background: var(--brasa-2); color: var(--gris); cursor: not-allowed; }
   .aviso-cerrado { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: rgba(196,54,31,.15); color: #f0b3a8; font-size: 14px; }
@@ -1449,7 +1463,7 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
 
   <dialog class="hoja" id="hoja" aria-labelledby="hoja-titulo">
     <div class="hoja__cab">
-      <h2 id="hoja-titulo">Tu pedido</h2>
+      <h2 id="hoja-titulo">Tu pedido <small id="hoja-cuenta"></small></h2>
       <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
@@ -1494,14 +1508,17 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
           <textarea id="direccion" class="textarea-alta" autocomplete="street-address" aria-describedby="ayuda-direccion" placeholder="Ej.: Barrio Abajo, Calle 5 #10-20. Por la calle del colegio, segunda casa después de la tienda, puerta negra."></textarea>
           <span class="error" id="error-direccion" hidden>Escribe la dirección y cómo llegar.</span>
         </div>
-        <div class="campo">
-          <label for="notas">Notas para el pedido (opcional)</label>
+        <button type="button" class="nota-btn nota-general" id="abrir-notas" aria-expanded="false">+ Agregar una nota al pedido</button>
+        <div class="campo" id="campo-notas" hidden>
+          <label for="notas">Nota para el pedido</label>
           <textarea id="notas" placeholder="¿Algo más que necesites?"></textarea>
         </div>
         <label class="interruptor recordar"><input type="checkbox" id="recordar" checked> Recordar mis datos en este dispositivo</label>
-        <div class="resumen" id="resumen"></div>
-        <p class="aviso-cerrado" id="aviso-cerrado" hidden></p>
-        <button type="submit" class="agregar boton-grande enviar" id="enviar">Enviar pedido por WhatsApp</button>
+        <div class="hoja__pie">
+          <p class="aviso-cerrado" id="aviso-cerrado" hidden></p>
+          <div class="resumen" id="resumen"></div>
+          <button type="submit" class="agregar boton-grande enviar" id="enviar">Enviar pedido por WhatsApp</button>
+        </div>
       </form>
     </div>
   </dialog>
@@ -2039,7 +2056,8 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
     // Conserva lo que se esté escribiendo en las notas
     cont.innerHTML = [...pedido].map(([id, l]) => {
       const p = platos.get(id);
-      return `<div class="linea">
+      return `<div class="linea ${p.foto ? 'con-foto' : ''}">
+        ${p.foto ? `<span class="linea__foto ${p.producto ? 'es-producto' : ''}"><img src="${p.foto}" alt="" style="object-position:${foco(p)}"></span>` : ''}
         <div class="linea__fila"><span>${escapar(p.nombre)}</span><span>${pesos(p.precio * l.cantidad)}</span></div>
         <div class="linea__control">
           <div class="cantidad" role="group" aria-label="Cantidad de ${escapar(p.nombre)}">
@@ -2061,11 +2079,11 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
 
   function pintarResumen() {
     const t = totales();
+    const partes = [`Productos ${pesos(t.sub)}`, t.dom ? `domicilio ${pesos(t.dom)}` : null, t.recargo ? `tarjeta ${pesos(t.recargo)}` : null].filter(Boolean);
     $('#resumen').innerHTML = `
-      <div><span>Subtotal</span><span>${pesos(t.sub)}</span></div>
-      ${t.dom ? `<div><span>Domicilio</span><span>${pesos(t.dom)}</span></div>` : ''}
-      ${t.recargo ? `<div><span>Recargo tarjeta (5 %)</span><span>${pesos(t.recargo)}</span></div>` : ''}
-      <div class="total"><span>Total</span><span>${pesos(t.total)}</span></div>`;
+      <div class="total"><span>Total<small>${partes.join(' + ')}</small></span><strong>${pesos(t.total)}</strong></div>`;
+    const n = [...pedido.values()].reduce((a, l) => a + l.cantidad, 0);
+    const c = $('#hoja-cuenta'); if (c) c.textContent = n ? `${n} ${n === 1 ? 'producto' : 'productos'}` : '';
   }
 
   function numeroPedido() {
@@ -2196,12 +2214,13 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
     if (id && pedido.has(id)) { pedido.get(id).nota = e.target.value; escribir(CLAVE_CARRITO, lineasPedido()); }
   });
 
-  const abrirHoja = () => { pintarEstado(); llenarDatosGuardados(); aplicarEntrega(); $('#hoja').showModal(); };
+  const abrirHoja = () => { pintarEstado(); llenarDatosGuardados(); aplicarEntrega(); const conNota = !!$('#notas').value.trim(); $('#campo-notas').hidden = !conNota; $('#abrir-notas').hidden = conNota; $('#hoja').showModal(); };
   $('#abrir-carrito').addEventListener('click', abrirHoja);
   $('#cambiar-direccion').addEventListener('click', () => {
     $('#e-domicilio').checked = true; aplicarEntrega(); actualizar();
     $('#direccion').value = ''; $('#direccion').focus();
   });
+  $('#abrir-notas').addEventListener('click', () => { $('#campo-notas').hidden = false; $('#abrir-notas').hidden = true; $('#notas').focus(); });
   $('#borrar-datos').addEventListener('click', () => {
     ['#nombre', '#telefono', '#direccion'].forEach((sel) => { $(sel).value = ''; });
     escribir(CLAVE_DATOS, null);
