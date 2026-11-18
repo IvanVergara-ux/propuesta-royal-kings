@@ -116,10 +116,10 @@
   /* Corona en línea dorada, muy tenue, detrás del título */
   .corona {
     position: absolute; z-index: -1; pointer-events: none; color: var(--mostaza); opacity: .10;
-    width: 190px; right: -28px; top: 10px; transform: rotate(14deg); opacity: .13;
+    width: 190px; right: -28px; top: 10px; transform: rotate(14deg); opacity: .09;
   }
-  @media (min-width: 560px) { .corona { width: min(420px, 55vw); left: -20px; right: auto; top: 30px; transform: rotate(-8deg); opacity: .10; } }
-  @media (min-width: 900px) { .corona { width: min(560px, 45vw); left: 2%; right: auto; top: 40px; opacity: .06; transform: rotate(-8deg); } }
+  @media (min-width: 560px) { .corona { width: min(420px, 55vw); left: -20px; right: auto; top: 30px; transform: rotate(-8deg); opacity: .07; } }
+  @media (min-width: 900px) { .corona { width: min(560px, 45vw); left: 2%; right: auto; top: 40px; opacity: .05; transform: rotate(-8deg); } }
   /* Brasas que suben despacio */
   .brasas { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
   .brasas i {
@@ -156,12 +156,27 @@
     filter: drop-shadow(0 0 16px rgba(230,173,50,.18));
     animation: destello 4s ease-in-out 0.4s infinite;
   }
+  .titulo-rojo {
+    background: linear-gradient(110deg,
+      var(--papel) 0%, var(--papel) 34%,
+      #e0402c 41%, #d83a28 45%, #ff7a5c 50%, #d83a28 55%, #e0402c 59%,
+      var(--papel) 66%, var(--papel) 100%);
+    background-size: var(--rk-bw, 260%) 100%; background-position: var(--rk-a, 100%) 0;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    padding-bottom: .16em; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    animation: destello-rojo 4s ease-in-out 0.4s infinite;
+  }
+  @keyframes destello-rojo {
+    0% { background-position: var(--rk-a, 100%) 0; }
+    55%, 100% { background-position: var(--rk-b, 0%) 0; }
+  }
   @keyframes destello {
     0% { background-position: 100% 0; }
     55%, 100% { background-position: 0% 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .titulo-dorado { animation: none; background: none; -webkit-text-fill-color: currentColor; }
+    .titulo-rojo { animation: none; background: none; -webkit-text-fill-color: currentColor; }
   }
   .portada__datos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   @media (max-width: 719px) {
@@ -811,6 +826,14 @@
   .buscador-sm input { padding: 9px 0; }
   .periodo { margin-top: -4px; }
   .periodo button { padding: 5px 12px; font-size: 13px; }
+  .periodo__dia { position: relative; display: inline-flex; white-space: nowrap; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--linea); background: var(--brasa); color: var(--papel-suave); font-size: 13px; cursor: pointer; }
+  .periodo__dia.activo { border-color: var(--mostaza); color: var(--papel); background: var(--brasa-2); }
+  .periodo__dia svg { color: var(--mostaza); }
+  .periodo__dia input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+  .periodo__dia input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: 100%; height: 100%; cursor: pointer; }
+  .hist-dia { display: flex; justify-content: space-between; gap: 10px; padding: 9px 14px; background: rgba(255,255,255,.035); border-bottom: 1px solid var(--linea); color: var(--papel-suave); font-size: 13px; font-weight: 700; }
+  .hist-dia span:last-child { color: var(--gris); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .fila-hist + .hist-dia { border-top: 1px solid var(--linea); }
   .ventas { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-bottom: 12px; border-radius: 12px; overflow: hidden; background: var(--linea); }
   .ventas > div { display: grid; gap: 1px; padding: 12px 14px; background: var(--brasa); }
   .ventas__total { grid-column: 1 / -1; box-shadow: inset 3px 0 0 var(--mostaza); }
@@ -1380,11 +1403,11 @@
 
   <main id="inicio">
     <section class="portada">
-      <svg class="corona" viewBox="0 0 200 140" aria-hidden="true"><path d="M20 118 L10 34 L58 74 L100 12 L142 74 L190 34 L180 118 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M24 130 H176" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="34" r="5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="100" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="190" cy="34" r="5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M100 60 l10 14 -10 14 -10 -14z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+      <svg class="corona" viewBox="0 0 232 140" aria-hidden="true"><path d="M8 35 L56 58 A16 16 0 0 0 88 58 L104 42 L98 28 L117 8 L136 28 L130 42 L146 58 A16 16 0 0 0 178 58 L226 32 L202 106 Q117 88 32 106 Z" fill="currentColor"/><path d="M38 117 Q117 99 196 117 L194 127 Q117 109 40 127 Z" fill="#d83a28"/></svg>
       <div class="brasas" aria-hidden="true"><i style="left:43%;animation-duration:15.6s;animation-delay:-6.3s;--deriva:-34px;width:2px;height:2px"></i><i style="left:70%;animation-duration:9.7s;animation-delay:-9.3s;--deriva:24px;width:3px;height:3px"></i><i style="left:6%;animation-duration:9.6s;animation-delay:-6.7s;--deriva:-10px;width:2px;height:2px"></i><i style="left:72%;animation-duration:12.0s;animation-delay:-13.2s;--deriva:-25px;width:3px;height:3px"></i><i style="left:82%;animation-duration:13.4s;animation-delay:-15.2s;--deriva:33px;width:4px;height:4px"></i><i style="left:8%;animation-duration:15.8s;animation-delay:-0.7s;--deriva:-23px;width:3px;height:3px"></i><i style="left:55%;animation-duration:10.0s;animation-delay:-1.9s;--deriva:-1px;width:3px;height:3px"></i><i style="left:15%;animation-duration:13.1s;animation-delay:-10.2s;--deriva:7px;width:2px;height:2px"></i><i style="left:72%;animation-duration:14.0s;animation-delay:-9.0s;--deriva:39px;width:3px;height:3px"></i><i style="left:65%;animation-duration:13.8s;animation-delay:-6.8s;--deriva:0px;width:4px;height:4px"></i><i style="left:76%;animation-duration:15.5s;animation-delay:-5.8s;--deriva:-9px;width:3px;height:3px"></i><i style="left:91%;animation-duration:14.5s;animation-delay:-1.3s;--deriva:-2px;width:4px;height:4px"></i><i style="left:45%;animation-duration:14.1s;animation-delay:-4.6s;--deriva:-31px;width:2px;height:2px"></i><i style="left:67%;animation-duration:11.9s;animation-delay:-12.1s;--deriva:-21px;width:4px;height:4px"></i></div>
       <div class="contenedor portada__grid">
         <div class="portada__texto">
-          <h1 class="titulo-dorado">Royal Kings Burger</h1>
+          <h1 class="titulo-dorado">Royal <span class="titulo-rojo">Kings</span> Burger</h1>
           <p class="subtitulo">Hamburguesas artesanales con carne Certified Angus Beef® en San Juan Nepomuceno</p>
           <p class="aviso-dia" id="aviso-dia" hidden></p>
           <p class="portada__estado" id="portada-estado"></p>
@@ -1837,7 +1860,7 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
     const d = hamburguesas.find((p) => p.destacada && !p.oculto && p.foto);
     $('#destacada').hidden = !d;
     if (d) $('#destacada').innerHTML = `
-      <div class="destacada__foto"><img src="${d.foto}" style="object-position:${foco(d)}" alt="${escapar(d.nombre)}" width="640" height="400"><span class="sello"><svg width="16" height="13" viewBox="0 0 200 140" aria-hidden="true"><path d="M20 118 L10 34 L58 74 L100 12 L142 74 L190 34 L180 118 Z" fill="currentColor"/><rect x="20" y="124" width="160" height="14" rx="4" fill="currentColor"/></svg>Hamburguesa del mes</span></div>
+      <div class="destacada__foto"><img src="${d.foto}" style="object-position:${foco(d)}" alt="${escapar(d.nombre)}" width="640" height="400"><span class="sello"><svg width="19" height="12" viewBox="0 0 232 140" aria-hidden="true"><path d="M8 35 L56 58 A16 16 0 0 0 88 58 L104 42 L98 28 L117 8 L136 28 L130 42 L146 58 A16 16 0 0 0 178 58 L226 32 L202 106 Q117 88 32 106 Z" fill="currentColor"/><path d="M38 117 Q117 99 196 117 L194 127 Q117 109 40 127 Z" fill="currentColor"/></svg>Hamburguesa del mes</span></div>
       <div class="destacada__cuerpo">
         <h2>${escapar(d.nombre)}</h2>
         ${(() => { const [lema, ...resto] = d.desc.split('\n'); return resto.length ? `<p class="destacada__lema">${textoDesc(lema)}</p><p>${textoDesc(resto.join('\n'))}</p>` : `<p>${textoDesc(d.desc)}</p>`; })()}
@@ -1856,7 +1879,7 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
             <article class="plato ${p.foto ? '' : 'plato--sin-foto'} ${p.agotado ? 'plato--agotado' : ''}">
               ${p.foto ? `<div class="plato__foto ${p.producto ? 'plato__foto--producto' : ''}"><img src="${p.foto}" style="object-position:${foco(p)}" alt="${escapar(p.nombre)}" loading="lazy" width="300" height="300"></div>` : ''}
               <div class="plato__texto">
-                <h3>${escapar(p.nombre)}${p.destacada ? ' <span class="insignia-mes"><svg width="15" height="11" viewBox="0 0 200 140" aria-hidden="true"><path d="M20 118 L10 34 L58 74 L100 12 L142 74 L190 34 L180 118 Z" fill="currentColor"/><rect x="20" y="124" width="160" height="14" rx="4" fill="currentColor"/></svg>Del mes</span>' : ''}</h3>
+                <h3>${escapar(p.nombre)}${p.destacada ? ' <span class="insignia-mes"><svg width="17" height="11" viewBox="0 0 232 140" aria-hidden="true"><path d="M8 35 L56 58 A16 16 0 0 0 88 58 L104 42 L98 28 L117 8 L136 28 L130 42 L146 58 A16 16 0 0 0 178 58 L226 32 L202 106 Q117 88 32 106 Z" fill="currentColor"/><path d="M38 117 Q117 99 196 117 L194 127 Q117 109 40 127 Z" fill="currentColor"/></svg>Del mes</span>' : ''}</h3>
                 <p>${textoDesc(p.desc)}</p>
                 <div class="plato__pie"><span class="precio">${pesos(p.precio)}</span>${botonAgregar(p)}</div>
               </div>
@@ -2406,6 +2429,20 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
     document.querySelectorAll('dialog').forEach((d) => obs.observe(d, { attributes: true, attributeFilter: ['open'] }));
     sync();
   })();
+
+  // El destello rojo de "Kings" va sincronizado con el dorado del título
+  (() => {
+    const h = document.querySelector('.titulo-dorado'), k = document.querySelector('.titulo-rojo');
+    if (!h || !k) return;
+    const ajustar = () => {
+      const W = h.getBoundingClientRect().width, L = k.getBoundingClientRect().left - h.getBoundingClientRect().left;
+      const bw = W * 2.6;
+      k.style.setProperty('--rk-bw', `${bw}px`);
+      k.style.setProperty('--rk-a', `${W - bw - L}px`);
+      k.style.setProperty('--rk-b', `${-L}px`);
+    };
+    ajustar(); addEventListener('resize', ajustar); document.fonts?.ready.then(ajustar);
+  })();
   // ---------- Panel del dueño (demo: datos en este navegador) ----------
   const DEMO_CORREO = 'admin@royalkingsburger.com';
   const DEMO_CLAVE = 'royal2026';
@@ -2523,12 +2560,14 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
     const tipo = panel.tipoEntrega || 'todos';
     const q = (panel.buscarPedido || '').trim().toLowerCase();
     const periodo = panel.periodo || 'hoy';
-    const desde = periodo === 'hoy' ? new Date(new Date().setHours(0, 0, 0, 0)) : periodo === '7d' ? new Date(Date.now() - 7 * 864e5) : new Date(0);
+    const desde = periodo === 'hoy' ? new Date(new Date().setHours(0, 0, 0, 0)) : periodo === '7d' ? new Date(Date.now() - 7 * 864e5) : periodo === 'dia' && panel.fechaDia ? new Date(panel.fechaDia + 'T00:00:00') : new Date(0);
+    const hasta = periodo === 'dia' && panel.fechaDia ? new Date(new Date(panel.fechaDia + 'T00:00:00').getTime() + 864e5) : null;
+    const hoyISO = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })();
     const ETAPAS = [['pago', 'Por cobrar', ['recibido', 'pagado']], ['cocina', 'En cocina', ['preparacion']], ['entregar', 'Por entregar', ['camino']]];
     if (vista !== 'curso') panel.etapa = null;
     const etapa = ETAPAS.find((e) => e[0] === panel.etapa);
     let base = todos.filter((p) => (vista === 'entregados' ? p.estado === 'entregado' : vista === 'cancelados' ? p.estado === 'cancelado' : !['entregado', 'cancelado'].includes(p.estado)));
-    if (vista !== 'curso') base = base.filter((p) => new Date(p.fecha) >= desde);
+    if (vista !== 'curso') base = base.filter((p) => new Date(p.fecha) >= desde && (!hasta || new Date(p.fecha) < hasta));
     const deTipo = (l, t) => (t === 'todos' ? l : l.filter((p) => p.entrega === t));
     const deEtapa = (l, e) => (e ? l.filter((p) => etapaDe(p) === e[0]) : l);
     const totalVista = base.length;
@@ -2701,6 +2740,9 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
         </div>` : ''}
       ${vista !== 'curso' ? `<div class="filtros periodo" role="group" aria-label="Periodo">
           ${[['hoy', 'Hoy'], ['7d', 'Últimos 7 días'], ['todo', 'Todo']].map(([v, t]) => `<button type="button" data-admin="periodo" data-valor="${v}" aria-pressed="${periodo === v}">${t}</button>`).join('')}
+          <label class="periodo__dia ${periodo === 'dia' ? 'activo' : ''}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            <span>${periodo === 'dia' && panel.fechaDia ? new Date(panel.fechaDia + 'T00:00:00').toLocaleDateString('es-CO', { weekday: 'short', day: 'numeric', month: 'short' }) : 'Elegir día'}</span>
+            <input type="date" id="filtro-dia" max="${hoyISO}" value="${periodo === 'dia' ? escapar(panel.fechaDia || '') : ''}" aria-label="Elegir un día"></label>
         </div>` : ''}
       ${vista === 'entregados' && totalVista ? `<div class="ventas">
           <div class="ventas__total"><span>Ventas desde la página</span><strong>${pesos(ventas)}</strong><small>${plural(lista.length, 'pedido entregado', 'pedidos entregados')}</small></div>
@@ -2728,7 +2770,21 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
       ${tablero ? `<div class="tablero">${ETAPAS.map((e) => { const l = deEtapa(lista, e); return `<section class="columna columna-${e[0]}"><h3>${e[1]} <b>${l.length}</b></h3>${l.length ? l.map(tarjeta).join('') : vacioIlustrado(e[0])}</section>`; }).join('')}</div>`
         : lista.length ? (vista === 'curso' ? lista.map(tarjeta).join('') : `<div class="historial">
             <div class="hist-cab" aria-hidden="true"><span>Pedido</span><span>Cliente</span><span>Entrega</span><span>${vista === 'cancelados' ? 'Motivo' : 'Pago'}</span><span>Hora</span><span>Total</span><span></span></div>
-            ${lista.map(tarjeta).join('')}</div>`) : hayFiltro && totalVista ? '' : (vista === 'curso' ? vacioIlustrado('pago', 'No hay pedidos en curso. Cuando un cliente pida por la página, llega aquí con una campanita.') : `<p class="vacio" style="text-align:left">${vista === 'entregados' ? 'Todavía no hay pedidos entregados.' : 'No hay pedidos cancelados.'}</p>`)}
+            ${(() => {
+              const hoyD = new Date().toDateString(), ayerD = new Date(Date.now() - 864e5).toDateString();
+              let dia = null, html = '';
+              for (const p of lista) {
+                const d = new Date(p.fecha), k = d.toDateString();
+                if (k !== dia) {
+                  dia = k;
+                  const delDia = lista.filter((x) => new Date(x.fecha).toDateString() === k);
+                  const etq = k === hoyD ? 'Hoy' : k === ayerD ? 'Ayer' : d.toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' });
+                  html += `<div class="hist-dia"><span>${etq.charAt(0).toUpperCase() + etq.slice(1)}</span><span>${delDia.length} ${delDia.length === 1 ? 'pedido' : 'pedidos'}${vista === 'entregados' ? ' · ' + pesos(delDia.reduce((t, x) => t + x.total, 0)) : ''}</span></div>`;
+                }
+                html += tarjeta(p);
+              }
+              return html;
+            })()}</div>`) : hayFiltro && totalVista ? '' : (vista === 'curso' ? vacioIlustrado('pago', 'No hay pedidos en curso. Cuando un cliente pida por la página, llega aquí con una campanita.') : `<p class="vacio" style="text-align:left">${vista === 'entregados' ? 'Todavía no hay pedidos entregados.' : 'No hay pedidos cancelados.'}</p>`)}
       <div class="demo-zona"><span>Solo en la demo</span><button type="button" class="enlace-sutil" data-admin="pedido-prueba">Crear un pedido de prueba</button></div>`;
   }
 
@@ -3244,8 +3300,13 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
     const campo = $('#buscar-producto'); campo.focus(); campo.setSelectionRange(pos, pos);
   });
 
+  $('#admin').addEventListener('click', (e) => { if (e.target.id === 'filtro-dia') { try { e.target.showPicker(); } catch { /* sin soporte */ } } });
   $('#admin').addEventListener('change', async (e) => {
     const t = e.target;
+    if (t.id === 'filtro-dia') {
+      if (t.value) { panel.periodo = 'dia'; panel.fechaDia = t.value; } else { panel.periodo = 'hoy'; panel.fechaDia = null; }
+      panel.aviso = ''; return pintarPanel();
+    }
     if (t.name === 'h-tipo') {
       $('#h-horas').hidden = t.value !== 'abierto';
       $('#h-motivo').placeholder = t.value === 'abierto' ? 'Ej.: Abrimos por el puente festivo, horario extendido' : 'Ej.: Vacaciones del equipo, mantenimiento';
