@@ -673,6 +673,8 @@
   .producto-admin__abrir { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; text-align: left; }
   .producto-admin__abrir img, .producto-admin .sin-foto { flex: none; width: 54px; height: 54px; border-radius: 10px; object-fit: cover; background: var(--brasa-2); }
   .producto-admin .sin-foto { display: grid; place-items: center; font-size: 10px; color: var(--gris); }
+  .producto-admin .pos { flex: none; width: 26px; text-align: center; font-family: var(--display); font-size: 24px; font-weight: 900; color: var(--mostaza); font-variant-numeric: tabular-nums; }
+  .producto-admin .pos--oculto { color: var(--gris); }
   .producto-admin__txt { min-width: 0; display: grid; gap: 1px; }
   .producto-admin__txt strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .producto-admin__txt > span { color: var(--papel-suave); font-size: 14px; }
@@ -1141,6 +1143,7 @@
     .herramientas-pedidos .segmentado { flex: 0 1 400px; }
     .herramientas-pedidos .buscador { flex: 0 1 360px; margin: 0 !important; height: 44px; }
     .lista-productos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lista-productos.con-orden { grid-auto-flow: column; grid-template-rows: repeat(var(--filas), auto); }
     .admin__cuerpo:has(.lista-productos) > .buscador, .admin__cuerpo:has(.lista-productos) > .admin__barra { max-width: 760px; }
     .historial { max-width: none !important; }
     .hist-cab { display: grid; grid-template-columns: 70px minmax(160px, 1.6fr) 1fr 1.2fr 1fr 120px 24px; column-gap: 16px; padding: 10px 18px; border-bottom: 1px solid var(--linea); color: var(--gris); font-size: 12.5px; font-weight: 600; }
@@ -2535,10 +2538,11 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
       </div>`}
       <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
       ${agotados && !q ? `<p class="nota-agotados">${agotados === 1 ? 'Hay 1 producto apagado' : `Hay ${agotados} productos apagados`}: los clientes lo ven como <strong>agotado</strong> y no lo pueden pedir. Si ya no lo vas a vender, tócalo y apaga <strong>“Visible en el menú”</strong> para quitarlo de la carta.</p>` : ''}
-      <ul class="lista-productos">
+      <ul class="lista-productos ${q ? '' : 'con-orden'}" style="--filas:${Math.max(1, Math.ceil(lista.length / 2))}">
         ${lista.map(({ p, c }, i) => `
           <li class="producto-admin ${p.agotado ? 'es-agotado' : ''} ${p.oculto ? 'es-oculto' : ''}">
             <button type="button" class="producto-admin__abrir" data-admin="editar" data-id="${p.id}" ${panel.ordenar ? 'tabindex="-1"' : ''}>
+              ${q ? '' : p.oculto ? '<span class="pos pos--oculto" aria-label="No aparece en el menú">–</span>' : `<span class="pos" aria-label="Posición ${lista.slice(0, i + 1).filter((x) => !x.p.oculto).length} en el menú">${lista.slice(0, i + 1).filter((x) => !x.p.oculto).length}</span>`}
               ${p.foto ? `<img src="${p.foto}" style="object-position:${foco(p)}" alt="">` : '<span class="sin-foto">Sin foto</span>'}
               <span class="producto-admin__txt"><strong>${escapar(p.nombre)}</strong>
                 <span>${pesos(p.precio)}${q ? ` · ${escapar(c.nombre)}` : ''}</span>
@@ -2553,7 +2557,7 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
               : `<label class="switch" title="Disponible hoy"><input type="checkbox" data-admin="disponible" data-id="${p.id}" ${p.agotado ? '' : 'checked'} aria-label="${escapar(p.nombre)} disponible hoy"><span></span></label>`}
           </li>`).join('') || `<li class="vacio">${q ? 'No hay productos con ese nombre.' : 'Esta categoría está vacía.'}</li>`}
       </ul>
-      <p class="ayuda-lista" ${panel.ordenar ? 'hidden' : ''}><strong>Interruptor:</strong> encendido se puede pedir; apagado aparece como agotado. <strong>Toca un producto</strong> para editarlo, ocultarlo o eliminarlo.</p>
+      <p class="ayuda-lista" ${panel.ordenar ? 'hidden' : ''}><strong>Interruptor:</strong> encendido se puede pedir; apagado aparece como agotado. <strong>Toca un producto</strong> para editarlo, ocultarlo o eliminarlo. El <strong>número</strong> es el orden en que aparece en el menú; los ocultos no llevan número.</p>
       ${q ? '' : panel.ordenar
         ? '<div class="barra-orden"><span>Mueve con las flechas</span><button type="button" class="agregar" data-admin="ordenar">Listo</button></div>'
         : `<button type="button" class="boton-sec ancho boton-orden" data-admin="ordenar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M3 8l4-4 4 4M17 20V4M13 16l4 4 4-4"/></svg>Cambiar el orden de ${escapar(cat.nombre.toLowerCase())}</button>`}
