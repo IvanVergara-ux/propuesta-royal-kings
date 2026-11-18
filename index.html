@@ -760,39 +760,87 @@
   .dia-info small { color: var(--gris); }
   .abierto-txt { color: #8fd6a2; }
   .quitar { flex: none; width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--linea); background: none; color: var(--gris); }
-  .cal-ley { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; color: var(--gris); }
-  .cal-ley i { width: 10px; height: 10px; border-radius: 3px; margin-left: 6px; }
-  .ley-abre { background: #3f7a4f; } .ley-cierra { background: #3a2a27; border: 1px solid #6b3a32; } .ley-esp { background: none; border: 2px solid var(--mostaza); }
-  .cal { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
-  .cal-dia { width: 100%; min-height: 92px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 8px 9px; border-radius: 12px; border: 1px solid var(--linea); background: var(--brasa-2); color: var(--papel); text-align: left; position: relative; transition: border-color .15s, transform .15s; }
-  .cal-dia:hover { border-color: rgba(242,178,67,.55); }
-  .cal-dia b { font-family: var(--display); font-size: 26px; font-weight: 900; line-height: 1; }
-  .cal-sem { font-size: 12px; font-weight: 600; color: var(--gris); }
-  .cal-est { font-size: 12px; font-weight: 600; line-height: 1.2; }
-  .cal-dia.es-abre { background: linear-gradient(180deg, rgba(63,122,79,.28), rgba(63,122,79,.12)); border-color: rgba(95,158,110,.45); }
-  .cal-dia.es-abre .cal-est { color: #8fd6a2; }
-  .cal-dia.es-cierra { background: repeating-linear-gradient(135deg, #1f1a19 0 6px, #231c1b 6px 12px); }
-  .cal-dia.es-cierra b { color: var(--gris); }
-  .cal-dia.es-cierra .cal-est { color: #d77b6c; }
-  .cal-dia.es-esp { border: 2px solid var(--mostaza); }
-  .cal-dia.es-hoy .cal-sem { color: var(--mostaza); }
-  .cal-dia.es-hoy::after { content: ""; position: absolute; top: 9px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--mostaza); }
-  .cal-dia.es-sel { outline: 2px solid var(--papel); outline-offset: 2px; }
-  .cal-tag { margin-top: auto; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: rgba(242,178,67,.16); color: var(--mostaza); }
-  .semana-chips { list-style: none; margin: 2px 0 10px; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
-  .semana-chips li { display: grid; place-items: center; height: 38px; border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--gris); background: var(--brasa-2); text-decoration: line-through; text-decoration-color: rgba(215,123,108,.6); }
-  .semana-chips li.es-abre { background: rgba(63,122,79,.3); color: #cfeed7; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(95,158,110,.5); }
-  .semana-hora { margin: 0 0 6px; font-size: 14px; color: var(--papel-suave); }
+  /* Horario: calendario de papel impreso */
+  .hz-hoy { padding: 16px 18px; border-radius: 16px; background: var(--brasa); border: 1px solid var(--linea); margin-bottom: 18px; }
+  .hz-hoy__fila { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .hz-hoy__fecha { margin: 0; font-size: 13px; color: var(--gris); }
+  .hz-hoy__estado { margin: 2px 0 0; display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1.05; }
+  .hz-hoy__estado::before { content: ""; width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .hz-hoy.es-abierto .hz-hoy__estado::before { background: var(--verde); box-shadow: 0 0 0 4px rgba(76,179,122,.18); }
+  .hz-hoy.es-cerrado .hz-hoy__estado::before { background: var(--ketchup); box-shadow: 0 0 0 4px rgba(224,83,58,.16); }
+  .hz-hoy__sub { margin: 4px 0 0; font-size: 14px; color: var(--papel-suave); }
+  .hz-hoy__sub::first-letter { text-transform: uppercase; }
+  .hz-hoy__acc { display: flex; gap: 8px; flex-wrap: wrap; }
+  .hz-hoy__acc button { height: 42px; padding: 0 16px; justify-content: center; }
+  .hz-cal {
+    --tinta: #2a1e14; --tinta-2: #7a6853; --raya: rgba(42,30,20,.16);
+    position: relative; color: var(--tinta); padding: 22px 18px 26px; border-radius: 4px 4px 0 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0) 80px), #f3ead8;
+    -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 7px repeat-x;
+            mask: linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 7px repeat-x;
+    filter: drop-shadow(0 10px 14px rgba(0,0,0,.35)); margin-bottom: 18px;
+  }
+  .hz-cal::before { content: ""; position: absolute; top: 0; left: 50%; width: 46px; height: 9px; margin-left: -23px; border-radius: 0 0 4px 4px; background: linear-gradient(180deg, #8d867d, #5b5651); }
+  .hz-cal__cab { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .hz-cal__cab h3 { margin: 0; font-family: var(--display); font-weight: 900; font-size: 26px; letter-spacing: .01em; }
+  .hz-cal__cab span { font-size: 13px; color: var(--tinta-2); }
+  .hz-cal__sem { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); padding-bottom: 6px; border-bottom: 2px solid var(--tinta); }
+  .hz-cal__sem span { font-size: 12px; font-weight: 700; color: var(--tinta-2); padding-left: 8px; }
+  .hz-cal__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .hz-cal__grid li { border-bottom: 1px solid var(--raya); }
+  .hz-cal__grid li:not(:nth-child(7n)) { border-right: 1px solid var(--raya); }
+  .hz-d { width: 100%; min-height: 86px; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 8px; border: 0; border-radius: 0; background: none; color: var(--tinta); text-align: left; position: relative; cursor: pointer; }
+  .hz-d:not(:disabled):hover { background: rgba(42,30,20,.05); }
+  .hz-d:focus-visible { outline: 2px solid var(--tinta); outline-offset: -3px; }
+  .hz-d__n { display: inline-grid; place-items: center; min-width: 32px; height: 32px; margin: -4px 0 0 -4px; font-family: var(--display); font-weight: 900; font-size: 24px; line-height: 1; border-radius: 50%; }
+  .hz-d__n small { position: absolute; top: 9px; right: 9px; font-family: var(--texto); font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--tinta-2); letter-spacing: .04em; }
+  .hz-d__h { font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .hz-d__nota { margin-top: auto; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; font-weight: 600; color: var(--tinta-2); font-style: italic; }
+  .hz-d.es-cierra .hz-d__n { color: rgba(42,30,20,.32); }
+  .hz-d.es-cierra .hz-d__h { color: #a8402e; font-weight: 600; }
+  .hz-d.es-pasado { cursor: default; }
+  .hz-d.es-pasado .hz-d__n { color: rgba(42,30,20,.2); }
+  .hz-d.es-esp { background: linear-gradient(transparent 6%, rgba(242,178,67,.42) 6%, rgba(242,178,67,.42) 94%, transparent 94%); }
+  .hz-d.es-esp:hover { background: linear-gradient(transparent 6%, rgba(242,178,67,.55) 6%, rgba(242,178,67,.55) 94%, transparent 94%); }
+  .hz-d.es-esp .hz-d__nota { color: #6b4a00; }
+  .hz-d.es-hoy .hz-d__n { box-shadow: 0 0 0 2px #c0392b; color: #c0392b; transform: rotate(-4deg); }
+  .hz-d.es-sel { box-shadow: inset 0 0 0 2px var(--tinta); }
+  .hz-cal__pie { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 12px 0 0; font-size: 12.5px; color: var(--tinta-2); }
+  .hz-marca { width: 18px; height: 10px; background: rgba(242,178,67,.6); }
+  .hz-circ { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 0 2px #c0392b; margin-left: 8px; }
+  .hz-lado .tarjeta-admin { margin-bottom: 14px; }
+  .mini-form--plano { margin-top: 0; padding-top: 0; border-top: 0; }
+  .hz-form__ayuda { margin: 0 0 10px; font-size: 14px; color: var(--papel-suave); }
+  .hz-form__quitar { width: 100%; margin-top: 10px; }
+  .hz-esp__lista { list-style: none; margin: 0; padding: 0; }
+  .hz-esp__lista li { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--linea); }
+  .hz-esp__lista li:first-child { border-top: 0; padding-top: 2px; }
+  .hz-esp__f { flex: none; width: 40px; text-align: center; font-size: 11px; text-transform: uppercase; color: var(--gris); line-height: 1.05; }
+  .hz-esp__f b { display: block; font-family: var(--display); font-size: 24px; font-weight: 900; color: var(--papel); }
+  .hz-esp__info { flex: 1; min-width: 0; display: grid; font-size: 14px; }
+  .hz-esp__info small { color: var(--gris); }
+  .hz-normal__l { margin: 0 0 8px; }
+  .hz-normal__l div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--linea); font-size: 14px; }
+  .hz-normal__l div:first-child { border-top: 0; padding-top: 2px; }
+  .hz-normal__l dt { color: var(--papel-suave); }
+  .hz-normal__l dd { margin: 0; font-weight: 600; text-align: right; }
+  @media (min-width: 1024px) {
+    .hz { display: grid; grid-template-columns: minmax(0, 1fr) 340px; column-gap: 22px; align-items: start; max-width: 1240px !important; }
+    .hz-hoy { grid-column: 1 / -1; }
+    .hz-cal { margin-bottom: 0; }
+  }
   @media (max-width: 560px) {
-    .cal { gap: 4px; }
-    .cal-dia { min-height: 74px; padding: 6px 4px; align-items: center; text-align: center; border-radius: 10px; }
-    .cal-dia b { font-size: 21px; }
-    .cal-sem { font-size: 10.5px; }
-    .cal-est { font-size: 11px; white-space: nowrap; }
-    .cal-pm { display: none; }
-    .cal-tag { font-size: 8.5px; padding: 1px 3px; }
-    .cal-dia.es-hoy::after { top: 5px; right: 5px; width: 5px; height: 5px; }
-    .cal-ley { display: none; }
+    .hz-cal { padding: 18px 10px 22px; }
+    .hz-cal__cab { flex-direction: column; gap: 2px; }
+    .hz-cal__sem span { padding-left: 0; text-align: center; font-size: 11px; }
+    .hz-d { min-height: 64px; padding: 6px 2px; align-items: center; text-align: center; }
+    .hz-d__n { margin: 0; min-width: 28px; height: 28px; font-size: 20px; }
+    .hz-d__h { font-size: 10.5px; }
+    .hz-pm { display: none; }
+    .hz-d__nota { font-size: 9px; }
+    .hz-d__n small { top: 3px; right: 3px; font-size: 8px; }
+    .hz-hoy__acc { width: 100%; }
+    .hz-hoy__acc button { flex: 1; }
   }
   .semana { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
   .semana li { display: flex; justify-content: space-between; gap: 10px; color: var(--papel-suave); }
@@ -1196,9 +1244,9 @@
     .ventas strong { font-size: 26px !important; }
     .admin__cuerpo > .periodo { max-width: none !important; }
     .horario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; max-width: 1100px !important; }
-    .horario-grid .tarjeta-hoy, .horario-grid .tarjeta-cal { grid-column: 1 / -1; }
+    .horario-grid .tarjeta-hoy { grid-column: 1 / -1; }
     .horario-grid .tarjeta-admin { margin: 0; }
-    .admin__cuerpo:has(.horario-grid) > .aviso-ok { max-width: 1100px; }
+    .admin__cuerpo:has(.horario-grid) > .aviso-ok, .admin__cuerpo:has(.hz) > .aviso-ok { max-width: 1240px; }
     .admin__cuerpo:has(#form-producto) > * { margin-inline: auto; }
     .encuadre__marco--ancho { width: 240px; height: 150px; }
     .encuadre__marco:not(.encuadre__marco--ancho) { width: 120px; height: 120px; }
@@ -2962,6 +3010,7 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
 
   function pintarPanelHorario(cuerpo) {
     const hoy = new Date();
+    const hoy0 = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
     const hoyISO = fechaISO(hoy);
     const h = ajustesHorario();
     const espHoy = h.especiales.find((x) => x.fecha === hoyISO);
@@ -2972,29 +3021,34 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
     const modo = panel.hoyModo;
     const minAhora = hoy.getHours() * 60 + hoy.getMinutes();
     const etiquetaHoy = minAhora < aMinutos(horasHoy.abre) ? 'Hoy abrimos' : minAhora < aMinutos(horasHoy.cierra) ? 'Abierto ahora' : 'Ya cerramos por hoy';
-    const DIA_CORTO = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     const horaCorta = (hhmm) => { const [hh, mm] = hhmm.split(':').map(Number); return `${((hh + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''}`; };
-    const rangoCorto = ({ abre, cierra }) => `${horaCorta(abre)}–${horaCorta(cierra)}<span class="cal-pm"> ${Number(cierra.slice(0, 2)) < 12 ? 'a. m.' : 'p. m.'}</span>`;
-    const dias14 = Array.from({ length: 14 }, (_, i) => masDias(new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()), i));
+    const rangoCorto = ({ abre, cierra }) => `${horaCorta(abre)}–${horaCorta(cierra)}<span class="hz-pm"> ${Number(cierra.slice(0, 2)) < 12 ? 'a. m.' : 'p. m.'}</span>`;
+    const inicio = masDias(hoy0, -((hoy0.getDay() + 6) % 7));
+    const dias = Array.from({ length: 21 }, (_, i) => masDias(inicio, i));
+    const mesesTxt = [...new Set(dias.map((d) => MESES[d.getMonth()]))].map((m) => m[0].toUpperCase() + m.slice(1)).join(' – ');
     let proxApertura = null;
-    for (let i = 1; i < 30 && !abreHoy; i++) { const d = masDias(hoy, i); if (abreEseDia(d)) { proxApertura = `${fechaLarga(fechaISO(d))} a las ${horaLegible(horasDe(d).abre)}`; break; } }
+    for (let i = 1; i < 30; i++) { const d = masDias(hoy0, i); if (abreEseDia(d)) { proxApertura = `${i === 1 ? 'mañana' : fechaLarga(fechaISO(d)).replace(/ de \S+$/, '')} a las ${horaLegible(horasDe(d).abre)}`; break; } }
     const f = panel.formDia || {};
     const fEsp = f.fecha ? h.especiales.find((x) => x.fecha === f.fecha) : null;
     const fTipo = fEsp ? fEsp.tipo : f.tipo || 'cerrado';
     const fHoras = fEsp?.abre ? { abre: fEsp.abre, cierra: fEsp.cierra } : { abre: HORA_ABRE, cierra: HORA_CIERRA };
-    const semanaOrden = [1, 2, 3, 4, 5, 6, 0];
+    const rangoNormal = rangoLegible({ abre: HORA_ABRE, cierra: HORA_CIERRA });
     cuerpo.innerHTML = `
       <p class="aviso-ok" role="status">${escapar(panel.aviso)}</p>
-      <div class="horario-grid">
-      <section class="tarjeta-admin tarjeta-hoy ${abreHoy ? 'es-abierto' : 'es-cerrado'}">
-        <p class="tarjeta-admin__eti">Hoy · ${fechaLarga(hoyISO)}</p>
-        <p class="hoy-estado">${abreHoy ? `${etiquetaHoy} <span>de <i class="sin-corte">${horaLegible(horasHoy.abre)}</i> a <i class="sin-corte">${horaLegible(horasHoy.cierra)}</i></span>` : 'Hoy no abrimos'}</p>
-        ${espHoy ? `<p class="hoy-nota">${espHoy.tipo === 'cerrado' ? 'Cerrado por ti' : 'Horario especial'}${espHoy.motivo ? `: ${escapar(espHoy.motivo)}` : ''}</p>` : ''}
-        ${!abreHoy && proxApertura ? `<p class="hoy-nota">Próxima apertura: <strong>${proxApertura}</strong></p>` : ''}
-        ${abreHoy && !modo ? `<div class="acciones-2">
-            <button type="button" class="boton-sec" data-admin="hoy-modo" data-modo="hora">Cambiar hora</button>
-            <button type="button" class="boton-sec boton-peligro" data-admin="hoy-modo" data-modo="cerrar">Cerrar hoy</button>
-          </div>` : ''}
+      <div class="hz">
+      <section class="hz-hoy ${abreHoy ? 'es-abierto' : 'es-cerrado'}">
+        <div class="hz-hoy__fila">
+          <div class="hz-hoy__txt">
+            <p class="hz-hoy__fecha">Hoy, ${fechaLarga(hoyISO)}</p>
+            <p class="hz-hoy__estado">${abreHoy ? etiquetaHoy : 'Hoy no abrimos'}</p>
+            <p class="hz-hoy__sub">${abreHoy ? `De ${rangoLegible(horasHoy)}` : proxApertura ? `Vuelve a abrir ${proxApertura}` : ''}${espHoy ? ` · ${espHoy.tipo === 'cerrado' ? 'cerrado por ti' : 'horario especial'}${espHoy.motivo ? ` (${escapar(espHoy.motivo)})` : ''}` : ''}</p>
+          </div>
+          <div class="hz-hoy__acc">
+            ${abreHoy && !modo ? `<button type="button" class="boton-sec" data-admin="hoy-modo" data-modo="hora">Cambiar hora de hoy</button>
+              <button type="button" class="boton-sec boton-peligro" data-admin="hoy-modo" data-modo="cerrar">Cerrar hoy</button>` : ''}
+            ${!abreHoy ? (espHoy ? '<button type="button" class="agregar" data-admin="reabrir-hoy">Volver a abrir hoy</button>' : '<button type="button" class="boton-sec" data-admin="abrir-hoy">Abrir hoy</button>') : ''}
+          </div>
+        </div>
         ${abreHoy && modo === 'hora' ? `<div class="mini-form">
             <div class="horas">
               <div class="campo"><label for="h-abre-hoy">Abre</label><input type="time" id="h-abre-hoy" value="${horasHoy.abre}"></div>
@@ -3007,29 +3061,31 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
             <div class="campo"><label for="h-motivo-hoy">Motivo (opcional, lo verán los clientes)</label><input type="text" id="h-motivo-hoy" placeholder="Ej.: Mantenimiento"></div>
             <div class="acciones-2"><button type="button" class="boton-sec" data-admin="hoy-modo" data-modo="">Cancelar</button><button type="button" class="agregar boton-peligro-lleno" data-admin="cerrar-hoy">Cerrar hoy</button></div>
           </div>` : ''}
-        ${!abreHoy ? (espHoy ? '<button type="button" class="agregar ancho" data-admin="reabrir-hoy">Volver a abrir hoy</button>' : '<button type="button" class="boton-sec ancho" data-admin="abrir-hoy">Abrir hoy de forma especial</button>') : ''}
       </section>
 
-      <section class="tarjeta-admin tarjeta-cal">
-        <div class="tarjeta-admin__cab"><h3>Próximas dos semanas</h3><span class="cal-ley"><i class="ley-abre"></i>Abre <i class="ley-cierra"></i>Cerrado <i class="ley-esp"></i>Cambiado por ti</span></div>
-        <p class="tarjeta-admin__vacio" style="margin:-4px 0 10px">Así lo ven los clientes. Toca un día para cerrarlo, abrirlo o cambiarle la hora.</p>
-        <ol class="cal">${dias14.map((d, i) => {
-          const iso = fechaISO(d), esp = especialDe(d), abre = abreEseDia(d), fest = esLunesFestivo(d);
-          return `<li><button type="button" class="cal-dia ${abre ? 'es-abre' : 'es-cierra'} ${esp ? 'es-esp' : ''} ${i === 0 ? 'es-hoy' : ''} ${f.fecha === iso ? 'es-sel' : ''}" data-admin="dia-cal" data-fecha="${iso}" aria-label="${fechaLarga(iso)}: ${abre ? rangoLegible(horasDe(d)) : 'cerrado'}${esp ? ', cambiado por ti' : ''}${fest ? ', festivo' : ''}">
-            <span class="cal-sem">${i === 0 ? 'Hoy' : DIA_CORTO[d.getDay()]}</span>
-            <b>${d.getDate()}</b>
-            <span class="cal-est">${abre ? rangoCorto(horasDe(d)) : 'Cerrado'}</span>
-            ${fest ? '<em class="cal-tag">Festivo</em>' : esp?.motivo ? `<em class="cal-tag cal-tag--esp">${escapar(esp.motivo)}</em>` : ''}
+      <section class="hz-cal" aria-labelledby="hz-cal-tit">
+        <header class="hz-cal__cab"><h3 id="hz-cal-tit">${mesesTxt}</h3><span>Toca un día para cambiarlo</span></header>
+        <div class="hz-cal__sem" aria-hidden="true"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
+        <ol class="hz-cal__grid">${dias.map((d) => {
+          const iso = fechaISO(d), pasado = iso < hoyISO, esp = especialDe(d), abre = abreEseDia(d), fest = esLunesFestivo(d);
+          const nota = esp ? (esp.motivo || (esp.tipo === 'cerrado' ? 'Cerrado por ti' : 'Cambiado')) : fest ? 'Festivo' : '';
+          return `<li><button type="button" class="hz-d ${pasado ? 'es-pasado' : abre ? 'es-abre' : 'es-cierra'} ${esp && !pasado ? 'es-esp' : ''} ${iso === hoyISO ? 'es-hoy' : ''} ${f.fecha === iso ? 'es-sel' : ''}" ${pasado ? 'disabled' : `data-admin="dia-cal" data-fecha="${iso}"`} aria-label="${fechaLarga(iso)}: ${abre ? rangoLegible(horasDe(d)) : 'cerrado'}${nota ? `, ${escapar(nota)}` : ''}">
+            <span class="hz-d__n">${d.getDate()}${d.getDate() === 1 ? `<small>${MESES[d.getMonth()].slice(0, 3)}</small>` : ''}</span>
+            ${pasado ? '' : `<span class="hz-d__h">${abre ? rangoCorto(horasDe(d)) : 'Cerrado'}</span>`}
+            ${nota && !pasado ? `<span class="hz-d__nota">${escapar(nota)}</span>` : ''}
           </button></li>`;
         }).join('')}</ol>
+        <p class="hz-cal__pie"><span class="hz-marca"></span> Resaltado: días que cambiaste tú. <span class="hz-circ"></span> Hoy.</p>
       </section>
 
-      <section class="tarjeta-admin">
-        <div class="tarjeta-admin__cab"><h3>Días especiales</h3>
+      <div class="hz-lado">
+      <section class="tarjeta-admin hz-esp">
+        <div class="tarjeta-admin__cab"><h3>${panel.formDia ? (f.fecha ? fechaLarga(f.fecha).replace(/^./, (c) => c.toUpperCase()) : 'Nuevo día especial') : 'Días especiales'}</h3>
           ${panel.formDia ? '' : '<button type="button" class="boton-sec" data-admin="nuevo-dia">+ Agregar</button>'}</div>
-        ${panel.formDia ? `<div class="mini-form">
-            <div class="campo"><label for="h-fecha">Fecha</label><input type="date" id="h-fecha" min="${hoyISO}" value="${f.fecha || ''}"></div>
-            <div class="opciones opciones--2" style="margin-top:10px">
+        ${panel.formDia ? `<div class="mini-form mini-form--plano">
+            <div class="campo" ${f.fecha ? 'hidden' : ''}><label for="h-fecha">Fecha</label><input type="date" id="h-fecha" min="${hoyISO}" value="${f.fecha || ''}"></div>
+            <p class="hz-form__ayuda">${f.fecha ? `Normalmente ${abreNormalmente(new Date(...f.fecha.split('-').map((n, i) => i === 1 ? n - 1 : +n))) ? `abre de ${rangoNormal}` : 'está cerrado.'} ¿Cómo quieres este día?` : '¿Cómo quieres ese día?'}</p>
+            <div class="opciones opciones--2">
               <div class="opcion"><input type="radio" name="h-tipo" id="h-cerrado" value="cerrado" ${fTipo === 'cerrado' ? 'checked' : ''}><label for="h-cerrado">Cerrado</label></div>
               <div class="opcion"><input type="radio" name="h-tipo" id="h-abierto" value="abierto" ${fTipo === 'abierto' ? 'checked' : ''}><label for="h-abierto">Abierto</label></div>
             </div>
@@ -3037,25 +3093,28 @@ Diseño y desarrollo: <strong>Iván Vergara Mercado</strong>
               <div class="campo"><label for="h-abre">Abre</label><input type="time" id="h-abre" value="${fHoras.abre}"></div>
               <div class="campo"><label for="h-cierra">Cierra</label><input type="time" id="h-cierra" value="${fHoras.cierra}"></div>
             </div>
-            <div class="campo"><label for="h-motivo">Motivo (opcional, lo verán los clientes)</label><input type="text" id="h-motivo" value="${escapar(fEsp?.motivo || '')}" placeholder="Ej.: Vacaciones del equipo, mantenimiento"></div>
+            <div class="campo"><label for="h-motivo">Motivo (opcional, lo verán los clientes)</label><input type="text" id="h-motivo" value="${escapar(fEsp?.motivo || '')}" placeholder="Ej.: Vacaciones, mantenimiento"></div>
             <span class="error" id="h-error" hidden>Elige una fecha.</span>
-            <div class="acciones-2"><button type="button" class="boton-sec" data-admin="cancelar-dia">Cancelar</button><button type="button" class="agregar" data-admin="agregar-dia">${fEsp ? 'Guardar cambios' : 'Guardar día'}</button></div>
-          </div>` : ''}
-        ${proximos.length ? `<ul class="dias-lista">${proximos.map((x) => `
-          <li><span class="dia-fecha"><b>${Number(x.fecha.slice(8))}</b>${MESES[Number(x.fecha.slice(5, 7)) - 1].slice(0, 3)}</span>
-            <span class="dia-info"><strong>${fechaLarga(x.fecha).split(' ')[0].replace(/^./, (c) => c.toUpperCase())}</strong>
-              <span class="${x.tipo === 'cerrado' ? 'cerrado-txt' : 'abierto-txt'}">${x.tipo === 'cerrado' ? 'Cerrado' : rangoLegible({ abre: x.abre || HORA_ABRE, cierra: x.cierra || HORA_CIERRA })}</span>
+            <div class="acciones-2"><button type="button" class="boton-sec" data-admin="cancelar-dia">Cancelar</button><button type="button" class="agregar" data-admin="agregar-dia">${fEsp ? 'Guardar cambios' : 'Guardar'}</button></div>
+            ${fEsp ? `<button type="button" class="enlace-sutil hz-form__quitar" data-admin="quitar-dia" data-fecha="${fEsp.fecha}">Volver al horario normal</button>` : ''}
+          </div>` : proximos.length ? `<ul class="hz-esp__lista">${proximos.map((x) => `
+          <li><span class="hz-esp__f"><b>${Number(x.fecha.slice(8))}</b>${MESES[Number(x.fecha.slice(5, 7)) - 1].slice(0, 3)}</span>
+            <span class="hz-esp__info"><strong>${NOMBRES_DIA[new Date(...x.fecha.split('-').map((n, i) => i === 1 ? n - 1 : +n)).getDay()].replace(/^./, (c) => c.toUpperCase())}: ${x.tipo === 'cerrado' ? '<span class="cerrado-txt">cerrado</span>' : rangoLegible({ abre: x.abre || HORA_ABRE, cierra: x.cierra || HORA_CIERRA })}</strong>
               ${x.motivo ? `<small>${escapar(x.motivo)}</small>` : ''}</span>
-            <button type="button" class="quitar" data-admin="quitar-dia" data-fecha="${x.fecha}" aria-label="Quitar ${fechaLarga(x.fecha)}">✕</button>
-          </li>`).join('')}</ul>` : (panel.formDia ? '' : '<p class="tarjeta-admin__vacio">Aún no hay días especiales. Aquí aparecerán los días que cierres, abras de más o con otra hora.</p>')}
+            <button type="button" class="quitar" data-admin="quitar-dia" data-fecha="${x.fecha}" aria-label="Quitar ${fechaLarga(x.fecha)} y volver al horario normal">✕</button>
+          </li>`).join('')}</ul>` : '<p class="tarjeta-admin__vacio">Ninguno por ahora. Cuando cierres un día o abras uno extra, aparecerá aquí.</p>'}
       </section>
 
-      <section class="tarjeta-admin">
-        <div class="tarjeta-admin__cab"><h3>Horario normal</h3></div>
-        <ul class="semana-chips">${semanaOrden.map((n) => `<li class="${HORARIO.dias.includes(n) ? 'es-abre' : ''}"><span>${DIA_CORTO[n]}</span></li>`).join('')}</ul>
-        <p class="semana-hora">Abre de <strong>${rangoLegible({ abre: HORA_ABRE, cierra: HORA_CIERRA })}</strong> de jueves a domingo.</p>
-        <p class="tarjeta-admin__vacio">Los <strong>lunes festivos</strong> también abre, sin que tengas que hacer nada. Próximos: ${festivos.map((x) => fechaLarga(x).replace('lunes ', '')).join(', ')}.</p>
+      <section class="tarjeta-admin hz-normal">
+        <div class="tarjeta-admin__cab"><h3>Horario de siempre</h3></div>
+        <dl class="hz-normal__l">
+          <div><dt>Jueves a domingo</dt><dd>${rangoNormal}</dd></div>
+          <div><dt>Lunes festivos</dt><dd>${rangoNormal}</dd></div>
+          <div><dt>Lunes a miércoles</dt><dd class="cerrado-txt">Cerrado</dd></div>
+        </dl>
+        <p class="tarjeta-admin__vacio">Los lunes festivos se abren solos. Próximos: ${festivos.map((x) => fechaLarga(x).replace('lunes ', '')).join(', ')}.</p>
       </section>
+      </div>
       </div>`;
   }
 
